@@ -1,0 +1,4358 @@
+#include "library/trig"
+
+struct ModelSegment {
+    Vec pos;
+    Vec size;
+}
+
+struct ModelSegments {
+    ModelSegment[] f, h, v;
+}
+
+struct Model {
+    string name;
+    bool ismodel;
+    float minx, maxx;
+    ModelSegments[] seg;
+}
+
+Model[] models = new Model[] {
+    new Model {
+        name="road",
+        ismodel=true,
+        maxx=4, minx=-4,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 8, y = 100 }
+                    }
+                },
+                v = new ModelSegment[0]
+            }
+        }
+    },
+    new Model {
+        name="cpy_short",
+        ismodel=true,
+        maxx=6, minx=-6,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 12, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -6, y = -7, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 6, y = -7, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 12, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -6, y = -7, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 6, y = -7, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -4, z = 2 },
+                        size = new Vec { x = 0.4, y = 8 }
+                    }
+                },
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 12, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -6, y = -7, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 6, y = -7, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 12, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -6, y = -7, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 6, y = -7, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 12, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -6, y = -7, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 6, y = -7, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 12, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -6, y = -7, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 6, y = -7, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 12, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -6, y = -7, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 6, y = -7, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -4, z = 7 },
+                        size = new Vec { x = 0.4, y = 8 }
+                    }
+                },
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 12, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -6, y = -7, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 6, y = -7, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 12, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -6, y = -7, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 6, y = -7, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 12, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -6, y = -7, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 6, y = -7, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            }
+        }
+    },
+    new Model {
+        name="canopy",
+        ismodel=true,
+        maxx=-999, minx=999,
+        seg=new ModelSegments[0]
+    },
+    new Model {
+        name="cpy_wide",
+        ismodel=true,
+        maxx=10, minx=-10,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 20, y = 20 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 20, y = 20 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -4, z = 2 },
+                        size = new Vec { x = 0.4, y = 8 }
+                    }
+                },
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 20, y = 20 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 20, y = 20 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 20, y = 20 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 20, y = 20 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -4, z = 6 },
+                        size = new Vec { x = 0.4, y = 8 }
+                    }
+                },
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 20, y = 20 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 20, y = 20 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 20, y = 20 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 20, y = 20 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -4, z = 10 },
+                        size = new Vec { x = 0.4, y = 8 }
+                    }
+                },
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 20, y = 20 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 20, y = 20 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 20, y = 20 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 20, y = 20 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -4, z = 14 },
+                        size = new Vec { x = 0.4, y = 8 }
+                    }
+                },
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 20, y = 20 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 20, y = 20 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 20, y = 20 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 20, y = 20 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -4, z = 18 },
+                        size = new Vec { x = 0.4, y = 8 }
+                    }
+                },
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 20, y = 20 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8, z = 0 },
+                        size = new Vec { x = 20, y = 20 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 10, y = -7, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            }
+        }
+    },
+    new Model {
+        name="dist",
+        ismodel=true,
+        maxx=1, minx=-1,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -0.25, z = 0 },
+                        size = new Vec { x = 2, y = 0.5 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -0.25, z = 10 },
+                        size = new Vec { x = 2, y = 0.5 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -0.25, z = 20 },
+                        size = new Vec { x = 2, y = 0.5 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            }
+        }
+    },
+    new Model {
+        name="shoulder",
+        ismodel=true,
+        maxx=0.5, minx=-0.5,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 1, y = 2 }
+                    }
+                },
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 1, y = 2 }
+                    }
+                },
+                v = new ModelSegment[0]
+            }
+        }
+    },
+    new Model {
+        name="stadium",
+        ismodel=true,
+        maxx=3, minx=-3,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -5, z = 0 },
+                        size = new Vec { x = 6, y = 4 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -1.5, z = 0 },
+                        size = new Vec { x = 6, y = 3 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -5, z = 20 },
+                        size = new Vec { x = 6, y = 4 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -1.5, z = 20 },
+                        size = new Vec { x = 6, y = 3 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            }
+        }
+    },
+    new Model {
+        name="stadium_short",
+        ismodel=true,
+        maxx=3, minx=-3,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -5, z = 0 },
+                        size = new Vec { x = 6, y = 4 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -1.5, z = 0 },
+                        size = new Vec { x = 6, y = 3 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 10, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 10, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 10, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 10, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 10, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 10, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 10, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 10, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 10, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -1.5, z = 0 },
+                        size = new Vec { x = 10, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -4, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -5, z = 10 },
+                        size = new Vec { x = 6, y = 4 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -1.5, z = 10 },
+                        size = new Vec { x = 6, y = 3 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            }
+        }
+    },
+    new Model {
+        name="stadiumr",
+        ismodel=true,
+        maxx=3, minx=-3,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -5, z = 0 },
+                        size = new Vec { x = 6, y = 4 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -1.5, z = 0 },
+                        size = new Vec { x = 6, y = 3 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 20, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 20, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 20, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -5, z = 20 },
+                        size = new Vec { x = 6, y = 4 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -1.5, z = 20 },
+                        size = new Vec { x = 6, y = 3 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            }
+        }
+    },
+    new Model {
+        name="stadium_shortr",
+        ismodel=true,
+        maxx=3, minx=-3,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -5, z = 0 },
+                        size = new Vec { x = 6, y = 4 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -1.5, z = 0 },
+                        size = new Vec { x = 6, y = 3 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 10, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 10, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 10, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 10, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 10, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 10, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 10, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 10, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 10, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -1.5, z = 0 },
+                        size = new Vec { x = 10, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -4, z = 0 },
+                        size = new Vec { x = 10, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -5, z = 10 },
+                        size = new Vec { x = 6, y = 4 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -1.5, z = 10 },
+                        size = new Vec { x = 6, y = 3 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            }
+        }
+    },
+    new Model {
+        name="lights",
+        ismodel=true,
+        maxx=15.25, minx=-8,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -3.25, z = 0 },
+                        size = new Vec { x = 3, y = 1.5 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 11, y = -4.25, z = 0 },
+                        size = new Vec { x = 8, y = 0.5 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 15, y = -2, z = 0 },
+                        size = new Vec { x = 0.5, y = 4 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -5, z = 0 },
+                        size = new Vec { x = 16, y = 2 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            }
+        }
+    },
+    new Model {
+        name="b_pico",
+        ismodel=true,
+        maxx=0, minx=0,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -0.5, z = 0 },
+                        size = new Vec { x = 1, y = 1 }
+                    }
+                }
+            }
+        }
+    },
+    new Model {
+        name="b_white",
+        ismodel=true,
+        maxx=0, minx=0,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -0.5, z = 0 },
+                        size = new Vec { x = 1, y = 1 }
+                    }
+                }
+            }
+        }
+    },
+    new Model {
+        name="b_redwhite",
+        ismodel=true,
+        maxx=0, minx=0,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -0.5, z = 0 },
+                        size = new Vec { x = 1, y = 1 }
+                    }
+                }
+            }
+        }
+    },
+    new Model {
+        name="b_fence",
+        ismodel=true,
+        maxx=0, minx=0,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -1.5, z = 0 },
+                        size = new Vec { x = 1, y = 3 }
+                    }
+                }
+            }
+        }
+    },
+    new Model {
+        name="tree1",
+        ismodel=true,
+        maxx=3, minx=-3,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -3, z = 0 },
+                        size = new Vec { x = 6, y = 6 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            }
+        }
+    },
+    new Model {
+        name="tree2",
+        ismodel=true,
+        maxx=3, minx=-3,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -3, z = 0 },
+                        size = new Vec { x = 6, y = 6 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            }
+        }
+    },
+    new Model {
+        name="box4x2",
+        ismodel=true,
+        maxx=2, minx=-2,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -2, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 2, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -2, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 2, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -2, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 2, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -2, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 2, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                }
+            }
+        }
+    },
+    new Model {
+        name="box2x3",
+        ismodel=true,
+        maxx=1, minx=-1,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -1.5, z = 0 },
+                        size = new Vec { x = 2, y = 3 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -1, y = -1.5, z = 0 },
+                        size = new Vec { x = 2, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 1, y = -1.5, z = 0 },
+                        size = new Vec { x = 2, y = 3 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -1, y = -1.5, z = 0 },
+                        size = new Vec { x = 2, y = 3 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 1, y = -1.5, z = 0 },
+                        size = new Vec { x = 2, y = 3 }
+                    }
+                }
+            }
+        }
+    },
+    new Model {
+        name="box6x6x10",
+        ismodel=true,
+        maxx=3, minx=-3,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -3, z = 0 },
+                        size = new Vec { x = 6, y = 6 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    }
+                }
+            }
+        }
+    },
+    new Model {
+        name="rroof",
+        ismodel=true,
+        maxx=2, minx=-2,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -3, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -3, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -3, z = 2 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -3, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -3, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                }
+            }
+        }
+    },
+    new Model {
+        name="redhouse",
+        ismodel=true,
+        maxx=2, minx=-2,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -2, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 2, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -2, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 2, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -2, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 2, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -2, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 2, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                }
+            }
+        }
+    },
+    new Model {
+        name="broof",
+        ismodel=true,
+        maxx=2, minx=-2,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -3, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -3, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -3, z = 2 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -3, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -3, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                }
+            }
+        }
+    },
+    new Model {
+        name="bluehouse",
+        ismodel=true,
+        maxx=2, minx=-2,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -2, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 2, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -2, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 2, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -2, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 2, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -2, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 2, y = -1, z = 0 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                }
+            }
+        }
+    },
+    new Model {
+        name="crane",
+        ismodel=true,
+        maxx=3.5, minx=-3.5,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -8.5, z = 0 },
+                        size = new Vec { x = 7, y = 17 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            }
+        }
+    },
+    new Model {
+        name="sign_gravel",
+        ismodel=true,
+        maxx=2, minx=-2,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -0.5, z = 0 },
+                        size = new Vec { x = 4, y = 1 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            }
+        }
+    },
+    new Model {
+        name="bridgesign_gravel",
+        ismodel=true,
+        maxx=12, minx=-12,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -4, z = 1 },
+                        size = new Vec { x = 24, y = 2 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -4, z = 1 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            }
+        }
+    },
+    new Model {
+        name="building1",
+        ismodel=true,
+        maxx=3, minx=-5,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -3, z = 0 },
+                        size = new Vec { x = 6, y = 6 }
+                    }
+                },
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -3, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -3, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -3, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -3, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -3, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -3, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -3, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -3, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -3, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -3, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -3, z = 0 },
+                        size = new Vec { x = 10, y = 6 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    }
+                }
+            }
+        }
+    },
+    new Model {
+        name="building2",
+        ismodel=true,
+        maxx=3, minx=-5,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -6, z = 0 },
+                        size = new Vec { x = 6, y = 12 }
+                    }
+                },
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -3, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -6, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -6, z = 0 },
+                        size = new Vec { x = 10, y = 12 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -6, z = 0 },
+                        size = new Vec { x = 10, y = 12 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -6.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -3, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -6, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -6, z = 0 },
+                        size = new Vec { x = 10, y = 12 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -6, z = 0 },
+                        size = new Vec { x = 10, y = 12 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -6.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -3, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -6, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -6, z = 0 },
+                        size = new Vec { x = 10, y = 12 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -6, z = 0 },
+                        size = new Vec { x = 10, y = 12 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -6.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -3, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -6, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -6, z = 0 },
+                        size = new Vec { x = 10, y = 12 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -6, z = 0 },
+                        size = new Vec { x = 10, y = 12 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -6.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -3, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -6, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -6, z = 0 },
+                        size = new Vec { x = 10, y = 12 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -6, z = 0 },
+                        size = new Vec { x = 10, y = 12 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -6.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -3, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -6, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -6, z = 0 },
+                        size = new Vec { x = 10, y = 12 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -6, z = 0 },
+                        size = new Vec { x = 10, y = 12 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -6.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -3, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -6, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -6, z = 0 },
+                        size = new Vec { x = 10, y = 12 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -6, z = 0 },
+                        size = new Vec { x = 10, y = 12 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -6.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -3, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -6, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -6, z = 0 },
+                        size = new Vec { x = 10, y = 12 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -6, z = 0 },
+                        size = new Vec { x = 10, y = 12 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -6.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -3, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -6, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -6, z = 0 },
+                        size = new Vec { x = 10, y = 12 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -6, z = 0 },
+                        size = new Vec { x = 10, y = 12 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -6.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    }
+                }
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -3, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -4, y = -6, z = 0 },
+                        size = new Vec { x = 2, y = 10 }
+                    }
+                },
+                v = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = -3, y = -6, z = 0 },
+                        size = new Vec { x = 10, y = 12 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 3, y = -6, z = 0 },
+                        size = new Vec { x = 10, y = 12 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -3.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = -5, y = -6.5, z = 0 },
+                        size = new Vec { x = 10, y = 1 }
+                    }
+                }
+            }
+        }
+    },
+    new Model {
+        name="marker",
+        ismodel=true,
+        maxx=0.5, minx=-0.5,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 1, y = 1 }
+                    }
+                },
+                v = new ModelSegment[0]
+            }
+        }
+    },
+    new Model {
+        name="tower",
+        ismodel=true,
+        maxx=2, minx=-2,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -10, z = 2 },
+                        size = new Vec { x = 2, y = 10 }
+                    },
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -2.5, z = 2 },
+                        size = new Vec { x = 1, y = 5 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[0],
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            },
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = -16, z = 4 },
+                        size = new Vec { x = 4, y = 2 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            }
+        }
+    },
+    new Model {
+        name="sign_pico_sm",
+        ismodel=true,
+        maxx=2, minx=-2,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 4, y = 1 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            }
+        }
+    },
+    new Model {
+        name="ridge",
+        ismodel=true,
+        maxx=50, minx=-50,
+        seg=new ModelSegments[] {
+            new ModelSegments {
+                f = new ModelSegment[] {
+                    new ModelSegment {
+                        pos = new Vec { x = 0, y = 0, z = 0 },
+                        size = new Vec { x = 100, y = 4 }
+                    }
+                },
+                h = new ModelSegment[0],
+                v = new ModelSegment[0]
+            }
+        }
+    }
+};

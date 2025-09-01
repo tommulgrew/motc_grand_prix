@@ -1,0 +1,90 @@
+// Palette
+int[] colourPalette = new int[] {
+    0x000000,
+    0x1d2b53,
+    0xff004d,
+    0x125359,
+    0x065ab5,
+    0x5f574f,
+    0xab5236,
+    0x008751,
+    0x83769c,
+    0x00b543,
+    0x29adff,
+    0xffa300,
+    0xc2c3c7,
+    0xffccaa,
+    0xffec27,
+    0xfff1e8
+};
+
+pal(colourPalette);
+
+// Textures
+Image textureImage = loadimg("assets/textures.png");
+
+struct Texture {
+    string name;
+    int u, v;           // Coordinates in textureImage
+    int w, h;           // Size in textureImage
+    int tran;           // Transparent colour
+}
+
+Texture[] textures = new Texture[] {
+    new Texture { name = "road00", u = 32, v = 0, w = 8, h = 4, tran = 14 },
+    new Texture { name = "b_pico", u = 0, v = 0, w = 4, h = 2, tran = -1 },
+    new Texture { name = "b_gravel", u = 66, v = 0, w = 4, h = 2, tran = -1 },
+    new Texture { name = "b_white", u = 4, v = 4, w = 1, h = 2, tran = -1 },
+    new Texture { name = "b_red", u = 5, v = 4, w = 1, h = 2, tran = -1 },
+    new Texture { name = "b_redwhite", u = 16, v = 16, w = 8, h = 2, tran = -1 },
+    new Texture { name = "b_fence", u = 0, v = 16, w = 8, h = 6, tran = 0 },
+    new Texture { name = "cpy_side", u = 0, v = 2, w = 1, h = 4, tran = -1 },
+    new Texture { name = "cpy_side_inner", u = 1, v = 3, w = 1, h = 1, tran = -1 },
+    new Texture { name = "cpy_under", u = 0, v = 6, w = 16, h = 2, tran = -1 },
+    new Texture { name = "pole", u = 1, v = 2, w = 1, h = 1, tran = -1 },
+    new Texture { name = "poleh", u = 2, v = 2, w = 1, h = 1, tran = -1 },
+    new Texture { name = "polev", u = 2, v = 3, w = 1, h = 1, tran = -1 },
+    new Texture { name = "wirefence", u = 4, v = 0, w = 8, h = 4, tran = 0 },
+    new Texture { name = "wirefence2", u = 4, v = 0, w = 8, h = 2, tran = 0 },
+    new Texture { name = "graywall", u = 12, v = 0, w = 4, h = 6, tran = -1 },
+    new Texture { name = "walla_dk", u = 16, v = 0, w = 8, h = 8, tran = 0 },
+    new Texture { name = "walla_lt", u = 24, v = 0, w = 8, h = 8, tran = 0 },
+    new Texture { name = "walla_dkr", u = 36, v = 16, w = 8, h = 8, tran = 0 },
+    new Texture { name = "walla_ltr", u = 28, v = 16, w = 8, h = 8, tran = 0 },
+    new Texture { name = "wall_lt", u = 1, v = 4, w = 1, h = 1, tran = -1 },
+    new Texture { name = "wall_dk", u = 1, v = 3, w = 1, h = 1, tran = -1 },
+    new Texture { name = "windows", u = 45, v = 20, w = 8, h = 4, tran = -1 },
+    new Texture { name = "windows2", u = 44, v = 16, w = 10, h = 8, tran = -1 },
+    new Texture { name = "windows3", u = 46, v = 14, w = 4, h = 2, tran = -1 },
+    new Texture { name = "crowd", u = 16, v = 8, w = 4, h = 4, tran = 10 },
+    new Texture { name = "s_pico", u = 0, v = 14, w = 16, h = 2, tran = -1 },
+    new Texture { name = "s_gravel", u = 66, v = 0, w = 4, h = 2, tran = -1 },
+    new Texture { name = "s_gravel_sm", u = 64, v = 0, w = 8, h = 2, tran = -1 },
+    new Texture { name = "lights", u = 8, v = 4, w = 4, h = 2, tran = 10 },
+    new Texture { name = "tree1", u = 44, v = 0, w = 6, h = 6, tran = 0 },
+    new Texture { name = "tree2", u = 50, v = 0, w = 6, h = 7, tran = 0 },
+    new Texture { name = "rroof", u = 26, v = 8, w = 4, h = 2, tran = 0 },
+    new Texture { name = "broof", u = 38, v = 8, w = 4, h = 2, tran = 0 },
+    new Texture { name = "shoulder", u = 8, v = 16, w = 1, h = 2, tran = 99 },
+    new Texture { name = "crane", u = 80, v = 0, w = 7, h = 1, tran = -1 },
+    new Texture { name = "d1", u = 9, v = 18, w = 4, h = 1, tran = 10 },
+    new Texture { name = "d2", u = 9, v = 17, w = 4, h = 1, tran = 10 },
+    new Texture { name = "d3", u = 9, v = 16, w = 4, h = 1, tran = 10 },
+    new Texture { name = "car_w", u = 56, v = 2, w = 2, h = 2, tran = 12 },
+    new Texture { name = "car_w_vert", u = 63, v = 2, w = 1, h = 2, tran = 12 },
+    new Texture { name = "car_bd", u = 58, v = 2, w = 4, h = 1, tran = 0 },
+    new Texture { name = "car_bd_top", u = 56, v = 6, w = 5, h = 2, tran = -1 },
+    new Texture { name = "car_bd_side", u = 56, v = 5, w = 4, h = 1, tran = -1 },
+    new Texture { name = "car_wing_white", u = 58, v = 3, w = 4, h = 1, tran = -1 },
+    new Texture { name = "car_wing_green", u = 58, v = 4, w = 4, h = 1, tran = -1 },
+    new Texture { name = "car_strut", u = 62, v = 2, w = 1, h = 2, tran = -1 },
+    new Texture { name = "car_rear", u = 56, v = 8, w = 4, h = 1, tran = -1 },
+    new Texture { name = "car_tail_side", u = 56, v = 4, w = 1, h = 1, tran = -1 },
+    new Texture { name = "car_contour", u = 60, v = 5, w = 2, h = 1, tran = 0 },
+    new Texture { name = "marker", u = 60, v = 8, w = 1, h = 1, tran = 0 },
+    new Texture { name = "towerwide", u = 44, v = 6, w = 2, h = 1, tran = -1 },
+    new Texture { name = "tower", u = 44, v = 6, w = 1, h = 5, tran = 12 },
+    new Texture { name = "s_pico_sm", u = 9, v = 19, w = 4, h = 1, tran = -1 },
+    new Texture { name = "balcony", u = 44, v = 24, w = 10, h = 1, tran = 0 },
+    new Texture { name = "windows4", u = 54, v = 20, w = 10, h = 4, tran = -1 }
+};

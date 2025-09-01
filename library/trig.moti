@@ -1,0 +1,43 @@
+struct Vec { 
+    float x, y, z;
+}
+
+Vec vec(float x, float y, float z = 0) {
+    return new Vec { x = x, y = y, z = z };
+}
+
+Vec clone(Vec v) {
+    return new Vec { x = v.x, y = v.y, z = v.z };
+}
+
+Vec operator+(Vec a, Vec b) {
+    return new Vec { x = a.x + b.x, y = a.y + b.y, z = a.z + b.z };
+}
+
+Vec operator-(Vec a, Vec b) {
+    return new Vec { x = a.x - b.x, y = a.y - b.y, z = a.z - b.z };
+}
+
+Vec operator*(Vec a, Vec b) {
+    return new Vec { x = a.x * b.x, y = a.y * b.y, z = a.z * b.z };
+}
+
+float dot(Vec a, Vec b) {
+    return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+
+Vec operator*(Vec a, float b) {
+    return new Vec { x = a.x * b, y = a.y * b, z = a.z * b };
+}
+
+Vec operator*(float a, Vec b) {
+    return b * a;
+}
+
+Vec operator/(Vec a, float b) {
+    return new Vec { x = a.x / b, y = a.y / b, z = a.z / b };
+}
+
+Vec operator-(Vec v) {
+    return new Vec { x = -v.x, y = -v.y, z = -v.z };
+}

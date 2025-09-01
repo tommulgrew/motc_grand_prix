@@ -1,0 +1,106 @@
+#include "stream"
+#include "models"
+
+// Constants
+
+const int TRACKSTREAMVERSION = 2;
+
+const int CURVEFLAG_TURN			= 1;
+const int CURVEFLAG_PITCH 			= 2;
+const int CURVEFLAG_LEFT 			= 4;
+const int CURVEFLAG_RIGHT 			= 8;
+const int CURVEFLAG_LEFTBARRIER 	= 16;
+const int CURVEFLAG_RIGHTBARRIER 	= 32;
+const int CURVEFLAG_TREES 			= 64;
+const int CURVEFLAG_DONTBRAKE 		= 128;
+
+// Structures
+
+struct TrackCurve {
+	int length;
+	int flags;
+	float turn, pitch;
+	int left, right;
+	Model[] leftBarrier, rightBarrier;
+	int[] trees;
+}
+
+struct TrackItem {
+	int temp;
+}
+
+struct TrackStage {
+	string name;
+	TrackCurve[] curves;
+	TrackItem[] items;
+}
+
+struct Track {
+	string name;
+	TrackStage[] stages;
+}
+
+// Routines
+
+Model[] loadBarriers(Stream stream) {
+	int count = load1(stream);
+	Model[] barrierModels = new Model[0];
+	for (int i = 0; i < count; i++) {
+		barrierModels.add(models[load1(stream) - 1]);			// Model index is 1-origin in track data
+	}
+	return barrierModels;
+}
+
+int[] loadTrees(Stream stream) {
+	int count = load1(stream);
+	int[] trees = new int[0];
+	for (int i = 0; i < count; i++) {
+		trees.add(load1s(stream));
+	}
+	return trees;
+}
+
+Track loadTrack(Stream stream, string name) {
+	Track track = new Track { 
+		name = name,
+		stages = new TrackStage[0]
+	};
+
+	// Version
+	int v = load1(stream);
+	assert(v = TRACKSTREAMVERSION, "Invalid track stream version: " + v + ", track: " + name);
+
+	// Stages
+	int stageCount = load1(stream);
+	for (int si = 0; si < stageCount; si++) {
+		TrackStage stage = new TrackStage {
+			curves = new TrackCurve[0],
+			items = new TrackItem[0]
+		};
+
+		// Name
+		stage.name = loadString(stream);
+
+		// Curves
+		int curveCount = load1(stream);
+		for (int ci = 0; ci < curveCount; ci++) {
+			TrackCurve curve = new TrackCurve;
+			curve.length = load2(stream);
+			curve.flags = load1(stream);
+			if (curve.flags & CURVEFLAG_TURN 			!= 0) curve.turn 			= load2s(stream) / 100.0;
+			if (curve.flags & CURVEFLAG_PITCH 			!= 0) curve.pitch 			= load2s(stream) / 100.0;
+			if (curve.flags & CURVEFLAG_LEFT			!= 0) curve.left 			= load1s(stream);
+			if (curve.flags & CURVEFLAG_RIGHT			!= 0) curve.right 			= load1s(stream);
+			if (curve.flags & CURVEFLAG_LEFTBARRIER		!= 0) curve.leftBarrier		= loadBarriers(stream);
+			if (curve.flags & CURVEFLAG_RIGHTBARRIER	!= 0) curve.rightBarrier	= loadBarriers(stream);
+			if (curve.flags & CURVEFLAG_TREES			!= 0) curve.trees			= loadTrees(stream);
+			stage.curves.add(curve);
+		}
+
+		// TODO
+		assert(false);
+
+		track.stages.add(stage);	
+	}
+
+}

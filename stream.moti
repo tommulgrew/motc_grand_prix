@@ -1,0 +1,35 @@
+struct Stream {
+	Data data;
+	int offset;	
+}
+
+int load1(Stream s) {
+	int v = peek(s.data, s.offset);
+	s.offset++;
+	return v;
+}
+
+int load1s(Stream s) {
+	int v = load1(s);
+	return v >= 0x80 ? v - 0x100 : v;
+}
+
+int load2(Stream s) {
+	int v = peek2(s.data, s.offset);
+	s.offset += 2;
+	return v;
+}
+
+int load2s(Stream s) {
+	int v = load2(s);
+	return v >= 0x8000 ? v - 0x10000 : v;
+}
+
+string loadString(Stream s) {
+	int namelen = load1(s);
+	string str;
+	for (int i = 0; i < namelen; i++) {
+		str += chr(load1(s));
+	}
+	return str;
+}
