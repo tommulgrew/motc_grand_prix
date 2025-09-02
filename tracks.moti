@@ -1,5 +1,6 @@
 #include "stream"
 #include "models"
+#include "trackdata"
 
 // Constants
 
@@ -24,6 +25,7 @@ struct TrackCurve {
 	Model[] leftBarrier, rightBarrier;
 	int[] trees;
 	bool dontBrake;
+	int z;					// Start distance along track (in segments)
 }
 
 struct TrackItem {
@@ -35,10 +37,12 @@ struct TrackStage {
 	string name;
 	TrackCurve[] curves;
 	TrackItem[] items;
+	int z;					// Start distance along track (in segments)
 }
 
 struct Track {
 	string name;
+	int finishLineDistance;
 	TrackStage[] stages;
 	int skyColour, groundColour;
 }
@@ -79,6 +83,30 @@ TrackCurve loadTrackCurve(Stream stream) {
 	return curve;
 }
 
+float curveTurn(TrackCurve curve, float def) {
+	return curve.flags & CURVEFLAG_TURN != 0
+		? curve.turn
+		: def;
+}
+
+float curvePitch(TrackCurve curve, float def) {
+	return curve.flags & CURVEFLAG_PITCH != 0
+		? curve.pitch
+		: def;
+}
+
+float curveLeft(TrackCurve curve, float def) {
+	return curve.flags & CURVEFLAG_LEFT != 0
+		? curve.left
+		: def;
+}
+
+float curveRight(TrackCurve curve, float def) {
+	return curve.flags & CURVEFLAG_RIGHT != 0
+		? curve.right
+		: def;
+}
+
 TrackItem loadTrackItem(Stream stream) {
 	TrackItem item = new TrackItem;
 	int modelIndex = load1(stream) - 1;		// Model index is 1-origin in track data
@@ -91,9 +119,10 @@ TrackItem loadTrackItem(Stream stream) {
 	return item;
 }
 
-Track loadTrack(Stream stream, string name) {
+Track loadTrack(Stream stream, string name, int finishLineDistance) {
 	Track track = new Track { 
 		name = name,
+		finishLineDistance = finishLineDistance,
 		stages = new TrackStage[0]
 	};
 

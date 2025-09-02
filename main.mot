@@ -4,13 +4,22 @@
 #include "tracks"
 #include "models"
 #include "trackdata"
+#include "gameplay"
+#include "world"
 
 Track[] tracks = new Track[0];
 
 // Deserialize tracks
 for (int i = 0; i < trackData.length; i++) {
-	tracks.add(loadTrack(new Stream { data = trackData[i] }, trackNames[i]));
+	Track track = loadTrack(
+		new Stream { data = trackData[i] },
+		trackNames[i],
+		trackFinishlineDistances[i]);
+	tracks.add(track);
 }
+
+// Setup for race
+initRace(tracks[0]);
 
 
 drawimg(textureImage, 0, 0);

@@ -1,0 +1,18 @@
+#include "gamedata"
+#include "world"
+
+void resetPlayer();
+
+void initRace(Track track) {
+    generateTrack(track);
+    resetPlayer();
+}
+
+void resetPlayer() {
+    player = new Car {
+        pos = new Vec { x = -1.5, y = 0, z = 0.0001 },
+        revs = 0.15,
+        wanderOffset = rnd(),
+        name = "Player"
+    };
+}

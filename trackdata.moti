@@ -7,6 +7,8 @@ string[] trackNames = new string[] {
 	"Suzuka"
 };
 
+int[] trackFinishlineDistances = new int[] { 98, 50, 150, 31, 30, 20 };
+
 Data[] trackData = new Data[] {
 [
 	0x02080366696e0328003d0200fb08010f010d320012f4010e23002200010c0d14f100640014f10058

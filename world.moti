@@ -1,0 +1,83 @@
+#include "tracks"
+
+// Structures
+
+const int REF_LEFT = 1;
+const int REF_RIGHT = 2;
+
+struct TrackItemInstance {
+	Model model;
+	Vec pos;
+	int ref;
+}
+
+struct ModelInstance {
+    Model model;
+    Vec pos;
+    int length;
+    int ref;
+}
+
+struct WorldSegment {
+    float turn, pitch;
+    float left, right;
+    TrackStage stage;
+    ModelInstance[] modelInstances;
+    float aiVelocity;
+}
+
+// Data
+
+WorldSegment[] world;
+TrackCurve[] curves;
+
+// Routines
+
+void generateTrackSegments(Track track) {
+    world = new WorldSegment[0];
+    curves = new TrackCurve[0];
+
+    // Last curve determines start state for first curve
+    TrackStage lastStage = track.stages[track.stages.length - 1];
+    TrackCurve lastCurve = lastStage.curves[lastStage.curves.length - 1];
+    float pitch = curvePitch(lastCurve, 0);
+    float left = curveLeft(lastCurve, -4);
+    float right = curveRight(lastCurve, 4);
+
+    // Iterate stages and curves
+    for (TrackStage stage : track.stages) {
+        stage.z = world.length;
+        for (TrackCurve curve : stage.curves) {
+            curve.z = world.length;
+            curves.add(curve);
+
+            // Interpolate pitches and left/right
+            float deltaPitch = 0, deltaLeft = 0, deltaRight = 0;
+            if (curve.flags & CURVEFLAG_PITCH != 0) deltaPitch = (curve.pitch - pitch) / curve.length;
+            if (curve.flags & CURVEFLAG_LEFT  != 0) deltaLeft  = (curve.left  - left)  / curve.length;
+            if (curve.flags & CURVEFLAG_RIGHT != 0) deltaRight = (curve.right - right) / curve.length;
+
+            // Generate world segments for curve
+            for (int i = 0; i < curve.length; i++) {
+                WorldSegment segment = new WorldSegment {
+                    turn = curveTurn(lastCurve, 0),
+                    pitch = pitch,
+                    left = left,
+                    right = right,
+                    stage = stage,
+                    aiVelocity = 10
+                };
+                world.add(segment);
+
+                // Apply deltas
+                pitch += deltaPitch;
+                left  += deltaLeft;
+                right += deltaRight;
+            }            
+        }
+    }
+}
+
+void generateTrack(Track track) {
+    generateTrackSegments(track);
+}

@@ -1,0 +1,19 @@
+#include "library/trig"
+
+struct AIParams {
+    int todo;
+}
+
+struct Car {
+    Vec pos;
+    float turn, pitch;
+    float vel, xd;
+    float aiXOffset;
+    float wheelTurn, wheelPrev;
+    float revs;
+    float wanderOffset;
+    int rndCounter;
+    bool isFinished;
+    AIParams aiParams, baseAIParams;
+    string name;
+}
