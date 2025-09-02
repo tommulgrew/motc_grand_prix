@@ -64,6 +64,33 @@ int[] loadTrees(Stream stream) {
 	return trees;
 }
 
+TrackCurve loadTrackCurve(Stream stream) {
+	TrackCurve curve = new TrackCurve;
+	curve.length = load2(stream);
+	curve.flags = load1(stream);
+	if (curve.flags & CURVEFLAG_TURN 			!= 0) curve.turn 			= load2s(stream) / 100.0;
+	if (curve.flags & CURVEFLAG_PITCH 			!= 0) curve.pitch 			= load1s(stream) / 100.0;
+	if (curve.flags & CURVEFLAG_LEFT			!= 0) curve.left 			= load1s(stream);
+	if (curve.flags & CURVEFLAG_RIGHT			!= 0) curve.right 			= load1s(stream);
+	if (curve.flags & CURVEFLAG_LEFTBARRIER		!= 0) curve.leftBarrier		= loadBarriers(stream);
+	if (curve.flags & CURVEFLAG_RIGHTBARRIER	!= 0) curve.rightBarrier	= loadBarriers(stream);
+	if (curve.flags & CURVEFLAG_TREES			!= 0) curve.trees			= loadTrees(stream);
+	curve.dontBrake = curve.flags & CURVEFLAG_DONTBRAKE != 0;
+	return curve;
+}
+
+TrackItem loadTrackItem(Stream stream) {
+	TrackItem item = new TrackItem;
+	int modelIndex = load1(stream) - 1;		// Model index is 1-origin in track data
+	item.model = models[modelIndex];
+	item.pos = new Vec {
+		x = load1s(stream),
+		y = load1s(stream),
+		z = load2(stream)
+	};
+	return item;
+}
+
 Track loadTrack(Stream stream, string name) {
 	Track track = new Track { 
 		name = name,
@@ -88,31 +115,14 @@ Track loadTrack(Stream stream, string name) {
 		// Curves
 		int curveCount = load1(stream);
 		for (int ci = 0; ci < curveCount; ci++) {
-			TrackCurve curve = new TrackCurve;
-			curve.length = load2(stream);
-			curve.flags = load1(stream);
-			if (curve.flags & CURVEFLAG_TURN 			!= 0) curve.turn 			= load2s(stream) / 100.0;
-			if (curve.flags & CURVEFLAG_PITCH 			!= 0) curve.pitch 			= load1s(stream) / 100.0;
-			if (curve.flags & CURVEFLAG_LEFT			!= 0) curve.left 			= load1s(stream);
-			if (curve.flags & CURVEFLAG_RIGHT			!= 0) curve.right 			= load1s(stream);
-			if (curve.flags & CURVEFLAG_LEFTBARRIER		!= 0) curve.leftBarrier		= loadBarriers(stream);
-			if (curve.flags & CURVEFLAG_RIGHTBARRIER	!= 0) curve.rightBarrier	= loadBarriers(stream);
-			if (curve.flags & CURVEFLAG_TREES			!= 0) curve.trees			= loadTrees(stream);
-			curve.dontBrake = curve.flags & CURVEFLAG_DONTBRAKE != 0;
+			TrackCurve curve = loadTrackCurve(stream);			
 			stage.curves.add(curve);
 		}
 
 		// Items
 		int itemCount = load1(stream);
 		for (int ii = 0; ii < itemCount; ii++) {
-			TrackItem item = new TrackItem;
-			int modelIndex = load1(stream) - 1;		// Model index is 1-origin in track data
-			item.model = models[modelIndex];
-			item.pos = new Vec {
-				x = load1s(stream),
-				y = load1s(stream),
-				z = load2(stream)
-			};
+			TrackItem item = loadTrackItem(stream);
 			stage.items.add(item);
 		}
 
