@@ -1,4 +1,5 @@
 #include "tracks"
+#include "models"
 
 // Structures
 
@@ -32,6 +33,10 @@ WorldSegment[] world;
 TrackCurve[] curves;
 
 // Routines
+
+void placeItem(Model model, Vec pos, int ref = 0) {
+    assert(false, "Not implemented");
+}
 
 void generateTrackSegments(Track track) {
     world = new WorldSegment[0];
@@ -80,4 +85,5 @@ void generateTrackSegments(Track track) {
 
 void generateTrack(Track track) {
     generateTrackSegments(track);
+    placeItem(roadModel, new Vec, world.length);
 }

@@ -5,15 +5,21 @@ struct ModelSegment {
     Vec size;
 }
 
-struct ModelSegments {
-    ModelSegment[] f, h, v;
-}
+struct ChildModel;
 
 struct Model {
     string name;
     bool ismodel;
     float minx, maxx;
-    ModelSegments[] seg;
+    ModelSegment[] frontSegments;
+    ModelSegment[] horizontalSegments;
+    ModelSegment[] verticalSegments;
+    ChildModel[] childModels;
+}
+
+struct ChildModel {
+    Model model;
+    Vec offset;         // Offset from main model
 }
 
 Model[] models = new Model[] {
@@ -4356,3 +4362,14 @@ Model[] models = new Model[] {
         }
     }
 };
+
+Model getModel(string name) {
+    for (Model m : models)
+        if (m.name = name)
+            return m;
+    assert(false, "Could not find model: " + name);
+}
+
+// Common models
+
+Model roadModel = getModel("road");
