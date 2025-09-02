@@ -23,6 +23,7 @@ struct TrackCurve {
 	int left, right;
 	Model[] leftBarrier, rightBarrier;
 	int[] trees;
+	bool dontBrake;
 }
 
 struct TrackItem {
@@ -46,7 +47,8 @@ Model[] loadBarriers(Stream stream) {
 	int count = load1(stream);
 	Model[] barrierModels = new Model[0];
 	for (int i = 0; i < count; i++) {
-		barrierModels.add(models[load1(stream) - 1]);			// Model index is 1-origin in track data
+		int modelIndex = load1(stream) - 1;		// Model index is 1-origin in track data
+		barrierModels.add(models[modelIndex]);			
 	}
 	return barrierModels;
 }
@@ -88,12 +90,13 @@ Track loadTrack(Stream stream, string name) {
 			curve.length = load2(stream);
 			curve.flags = load1(stream);
 			if (curve.flags & CURVEFLAG_TURN 			!= 0) curve.turn 			= load2s(stream) / 100.0;
-			if (curve.flags & CURVEFLAG_PITCH 			!= 0) curve.pitch 			= load2s(stream) / 100.0;
+			if (curve.flags & CURVEFLAG_PITCH 			!= 0) curve.pitch 			= load1s(stream) / 100.0;
 			if (curve.flags & CURVEFLAG_LEFT			!= 0) curve.left 			= load1s(stream);
 			if (curve.flags & CURVEFLAG_RIGHT			!= 0) curve.right 			= load1s(stream);
 			if (curve.flags & CURVEFLAG_LEFTBARRIER		!= 0) curve.leftBarrier		= loadBarriers(stream);
 			if (curve.flags & CURVEFLAG_RIGHTBARRIER	!= 0) curve.rightBarrier	= loadBarriers(stream);
 			if (curve.flags & CURVEFLAG_TREES			!= 0) curve.trees			= loadTrees(stream);
+			curve.dontBrake = curve.flags & CURVEFLAG_DONTBRAKE != 0;
 			stage.curves.add(curve);
 		}
 
