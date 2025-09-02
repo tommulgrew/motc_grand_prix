@@ -1,0 +1,20 @@
+bool startsWith(string main, string start) {
+    return main.length >= start.length and substring(main, 0, start.length) = start;
+}
+
+string removePrefix(string str, string prefix) {
+    return startsWith(str, prefix)
+        ? substring(str, prefix.length)
+        : str;
+}
+
+bool isDigit(string c) {
+    return c >= "0" and c <= "9";
+}
+
+bool isNumber(string str) {
+    for (int i = 0; i < str.length; i++)
+        if (!isDigit(substring(str, i, 1)))
+            return false;
+    return true;
+}

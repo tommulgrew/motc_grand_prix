@@ -88,3 +88,10 @@ Texture[] textures = new Texture[] {
     new Texture { name = "balcony", u = 44, v = 24, w = 10, h = 1, tran = 0 },
     new Texture { name = "windows4", u = 54, v = 20, w = 10, h = 4, tran = -1 }
 };
+
+Texture getTexture(string name) {
+    for (Texture t : textures) 
+        if (t.name = name)
+            return t;
+    assert(false, "Could not find texture: " + name);    
+}
