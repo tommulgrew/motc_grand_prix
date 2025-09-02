@@ -27,7 +27,8 @@ struct TrackCurve {
 }
 
 struct TrackItem {
-	int temp;
+	Model model;
+	Vec pos;
 }
 
 struct TrackStage {
@@ -39,6 +40,7 @@ struct TrackStage {
 struct Track {
 	string name;
 	TrackStage[] stages;
+	int skyColour, groundColour;
 }
 
 // Routines
@@ -100,10 +102,25 @@ Track loadTrack(Stream stream, string name) {
 			stage.curves.add(curve);
 		}
 
-		// TODO
-		assert(false);
+		// Items
+		int itemCount = load1(stream);
+		for (int ii = 0; ii < itemCount; ii++) {
+			TrackItem item = new TrackItem;
+			int modelIndex = load1(stream) - 1;		// Model index is 1-origin in track data
+			item.model = models[modelIndex];
+			item.pos = new Vec {
+				x = load1s(stream),
+				y = load1s(stream),
+				z = load2(stream)
+			};
+			stage.items.add(item);
+		}
 
 		track.stages.add(stage);	
 	}
 
+	track.skyColour = load1(stream);
+	track.groundColour = load1(stream);
+
+	return track;
 }
