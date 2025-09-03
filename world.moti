@@ -57,15 +57,29 @@ void placeItem(Model model, Vec pos, int length = 0, int ref = 0) {
             y = pos.y,
             z = z
         },
-        length = length,
+        length = length > 0 ? length : model.segments.length,
         ref = ref
     };
 
     // Attach to world segments
-    int modelLength = length > 0 ? length : model.segments.length;
-    for (int i = 0; i < modelLength; i++) {
+    for (int i = 0; i < instance.length; i++) {
         WorldSegment segment = world[(z + i) % world.length];
         segment.modelInstances.add(instance);
+    }
+}
+
+void placeItems(Track track) {
+    for (TrackStage stage : track.stages) {
+        for (TrackItem item : stage.items) {
+            // Effective position
+            Vec pos = new Vec {
+                z = stage.z
+            };
+            if (item.pos != null) pos += item.pos;
+
+            // Place track item
+            placeItem(item.model, pos);
+        }
     }
 }
 
@@ -118,4 +132,8 @@ void generateTrackSegments(Track track) {
 void generateTrack(Track track) {
     generateTrackSegments(track);
     placeItem(roadModel, new Vec, world.length);
+    // TODO: Road items
+    placeItems(track);
+    // TODO: AI X
+    // TODO: AI velocity
 }

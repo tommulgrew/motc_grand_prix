@@ -52,13 +52,12 @@ Model makeModel(string name, string data) {
 
         string assetName = p[1];
 
-        Vec pos = p.length >= 5
-            ? new Vec {
-                x = tofloat(p[2]),
-                y = tofloat(p[3]),
-                z = tofloat(p[4])
-            }
-            : new Vec;
+        // Nested models may specify just some (or none)
+        // of the offset coordinates.
+        Vec pos = new Vec;
+        if (p.length >= 3) pos.x = tofloat(p[2]);
+        if (p.length >= 4) pos.y = tofloat(p[3]);
+        if (p.length >= 5) pos.z = tofloat(p[4]);
 
         if (type = "m") {
 
