@@ -16,7 +16,8 @@ struct NestedModel;
 
 struct Model {
     string name;
-    bool isModel;
+    bool isModel;       // TODO: Is this used?
+    bool hasPolys;
     float minX, maxX;
     ModelSegment[] segments;
     NestedModel[] nestedModels;
@@ -73,6 +74,7 @@ Model makeModel(string name, string data) {
         else {
 
             // Polygon
+            model.hasPolys = true;
 
             int colour;
             Texture texture;

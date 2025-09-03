@@ -15,8 +15,8 @@ struct TrackItemInstance {
 struct ModelInstance {
     Model model;
     Vec pos;
-    int length;
     int ref;
+    int length;
 }
 
 struct WorldSegment {
@@ -34,8 +34,39 @@ TrackCurve[] curves;
 
 // Routines
 
-void placeItem(Model model, Vec pos, int ref = 0) {
-    assert(false, "Not implemented");
+void placeItem(Model model, Vec pos, int length = 0, int ref = 0) {
+    
+    // Place item for nested models
+    for (NestedModel nested : model.nestedModels) {
+        Vec nestedPos = pos;
+        if (nested.pos != null) {
+            pos += nested.pos;
+        }
+        placeItem(nested.model, nestedPos, length, ref);
+    }
+
+    if (not model.hasPolys) return;
+
+    // Create model instance and assign to world segments
+    int z = pos.z;
+    z %= world.length;
+    ModelInstance instance = new ModelInstance {
+        model = model,
+        pos = new Vec {
+            x = pos.x, 
+            y = pos.y,
+            z = z
+        },
+        length = length,
+        ref = ref
+    };
+
+    // Attach to world segments
+    int modelLength = length > 0 ? length : model.segments.length;
+    for (int i = 0; i < modelLength; i++) {
+        WorldSegment segment = world[(z + i) % world.length];
+        segment.modelInstances.add(instance);
+    }
 }
 
 void generateTrackSegments(Track track) {
@@ -70,7 +101,8 @@ void generateTrackSegments(Track track) {
                     left = left,
                     right = right,
                     stage = stage,
-                    aiVelocity = 10
+                    aiVelocity = 10,
+                    modelInstances = new ModelInstance[0]
                 };
                 world.add(segment);
 
