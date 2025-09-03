@@ -1,0 +1,43 @@
+#include "tracks"
+#include "gamedata"
+
+// Constants
+
+const int DRAW_DISTANCE = 40;
+
+// Structures
+
+struct ScreenSpaceSegment {
+    Vec pos;
+    float turn, pitch;
+    float clipY;
+    int zIndex, index;
+
+}
+
+// Data
+
+Vec playerCameraOffset = new Vec {
+    y = -0.6
+};
+
+// Routines
+
+void drawWorld(Vec pos, float turn, float pitch, int drawDistance, Track track);
+
+void drawGame(Track track) {
+    drawWorld(
+        player.pos + playerCameraOffset, 
+        player.turn, 
+        player.pitch, 
+        DRAW_DISTANCE, 
+        track);
+}
+
+ScreenSpaceSegment[] getScreenSpaceSegments(Vec pos, float turn, float pitch, int drawDistance) {
+    assert(false, "Not implemented yet");
+}
+
+void drawWorld(Vec pos, float turn, float pitch, int drawDistance, Track track) {
+    ScreenSpaceSegment[] segments = getScreenSpaceSegments(pos, turn, pitch, drawDistance);
+}
