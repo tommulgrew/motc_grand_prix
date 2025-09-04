@@ -112,6 +112,35 @@ void drawHorizon(ScreenSpaceSegment[] screenSegs, Track track, float cameraTurn,
     rectfill(0, groundY - 1, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
+void drawQuadHoriz(
+    Texture texture,
+    float width,
+    Vec nearPos,
+    Vec farPos,
+    float v0, 
+    float v1) {
+    
+}
+
+void drawQuadVert(
+    Texture texture,
+    float height,
+    Vec nearPos,
+    Vec farPos,
+    float u0,
+    float u1) {
+    
+}
+
+void drawQuadFront(
+    Texture texture,
+    float width,
+    float height,
+    Vec pos,
+    bool flipX) {
+    
+}
+
 void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
     // Draw segments in reverse order
     for (int i = screenSegs.length - 2; i >= 0; i--) {
@@ -138,9 +167,65 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
             if (polyPos0.x + model.maxX < -xLimit and polyPos1.x + model.maxX < -xLimit) continue;
             if (polyPos0.x + model.minX >  xLimit and polyPos1.x + model.minX >  xLimit) continue;
 
-
+            // Find model segment
+            int instanceZ = instance.pos.z;
+            int modelSegmentIndex = (screenSeg.zIndex - instanceZ) % world.length;
+            ModelSegment modelSegment = instance.length > 0
+                ? model.segments[0]                         // Single segment model stretched over a specified length
+                : model.segments[modelSegmentIndex];
             
+            // Draw segment polygons
+            for (ModelPoly poly : modelSegment.horizPolys) {
+
+                // Texture coordinates
+                Texture texture = poly.texture;
+                float v0 = modelSegmentIndex * 1.0 / texture.h;
+                v0 -= floor(v0);        // Repeat
+                float v1 = v0 + 1.0 / texture.h;
+
+                // Draw polygon
+                Vec polyOffset = new Vec { x = poly.pos.x, y = poly.pos.y };
+                drawQuadHoriz(
+                    texture, 
+                    poly.size.x, 
+                    polyPos0 + polyOffset,
+                    polyPos1 + polyOffset,
+                    v0, v1);
+            }
+
+            for (ModelPoly poly : modelSegment.vertPolys) {
+
+                // Texture coordinates
+                Texture texture = poly.texture;
+                float u0 = modelSegmentIndex * 1.0 / texture.w;
+                u0 -= floor(u0);
+                float u1 = u0 + 1.0 / texture.w;
+
+                // Draw polygon
+                Vec polyOffset = new Vec { x = poly.pos.x, y = poly.pos.y };
+                drawQuadVert(
+                    texture,
+                    poly.size.y,
+                    polyPos0 + polyOffset,
+                    polyPos1 + polyOffset,
+                    u0, u1);
+            }
+
+            for (ModelPoly poly : modelSegment.frontPolys) {
+                Texture texture = poly.texture;
+                Vec polyOffset = new Vec { x = poly.pos.x, y = poly.pos.y };
+                drawQuadFront(
+                    texture,
+                    poly.size.x,
+                    poly.size.y,
+                    polyPos0 + polyOffset,
+                    false);
+            }
         }
+
+        // TODO: Racing line
+
+        // TODO: Other cars
     }
 }
 

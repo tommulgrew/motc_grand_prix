@@ -57,12 +57,13 @@ void placeItem(Model model, Vec pos, int length = 0, int ref = 0) {
             y = pos.y,
             z = z
         },
-        length = length > 0 ? length : model.segments.length,
+        length = length,
         ref = ref
     };
 
     // Attach to world segments
-    for (int i = 0; i < instance.length; i++) {
+    int effectiveLength = length > 0 ? length : model.segments.length;
+    for (int i = 0; i < effectiveLength; i++) {
         WorldSegment segment = world[(z + i) % world.length];
         segment.modelInstances.add(instance);
     }
