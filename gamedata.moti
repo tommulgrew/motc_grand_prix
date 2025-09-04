@@ -1,3 +1,4 @@
 #include "gametypes"
 
 Car player;
+float horizonX;             // Used to scroll horizon horizontally when player car turns

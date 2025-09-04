@@ -1,0 +1,8 @@
+Vec skew(Vec pos, float xd, float yd) {
+    return new Vec {
+        x = pos.x + pos.z * xd,
+        y = pos.y + pos.z * yd,
+        z = pos.z
+    };
+}
+

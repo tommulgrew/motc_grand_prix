@@ -1,18 +1,24 @@
 #include "tracks"
 #include "gamedata"
+#include "routines"
 
 // Constants
 
 const int DRAW_DISTANCE = 40;
+const float CAMERA_TILT = 0.175;
+const int SCREEN_WIDTH = 320;
+const int SCREEN_HEIGHT = 240;
+const float NEAR_Z = 0.1;
+const float SCREEN_DIST = SCREEN_WIDTH / 2;      // Used for projection calculations
 
 // Structures
 
 struct ScreenSpaceSegment {
+    WorldSegment segment;
     Vec pos;
     float turn, pitch;
     float clipY;
     int zIndex, index;
-
 }
 
 // Data
@@ -23,7 +29,7 @@ Vec playerCameraOffset = new Vec {
 
 // Routines
 
-void drawWorld(Vec pos, float turn, float pitch, int drawDistance, Track track);
+void drawWorld(Vec cameraPos, float cameraTurn, float cameraPitch, int drawDistance, Track track);
 
 void drawGame(Track track) {
     drawWorld(
@@ -34,10 +40,79 @@ void drawGame(Track track) {
         track);
 }
 
-ScreenSpaceSegment[] getScreenSpaceSegments(Vec pos, float turn, float pitch, int drawDistance) {
-    assert(false, "Not implemented yet");
+Vec project(Vec pt) {
+    if (pt.z >= NEAR_Z) {
+        float scale = SCREEN_DIST / pt.z;
+        return new Vec { 
+            x = pt.x * scale + SCREEN_WIDTH / 2,
+            y = pt.y * scale + SCREEN_HEIGHT / 2,
+            z = scale
+        };
+    }
+    else {
+        return null;
+    }
 }
 
-void drawWorld(Vec pos, float turn, float pitch, int drawDistance, Track track) {
-    ScreenSpaceSegment[] segments = getScreenSpaceSegments(pos, turn, pitch, drawDistance);
+ScreenSpaceSegment[] getScreenSpaceSegments(Vec cameraPos, float cameraTurn, float cameraPitch, int drawDistance) {
+    ScreenSpaceSegment[] screenSegs = new ScreenSpaceSegment[0];
+
+    // Current world segment
+    int zIndex = floor(cameraPos.z);
+    WorldSegment cameraSegment = world[zIndex % world.length];
+
+    // Road drawing cursor
+    float turn = -cameraTurn, pitch = cameraSegment.pitch - cameraPitch - CAMERA_TILT;
+    float clipY = SCREEN_HEIGHT;
+
+    // Calculate initial position
+    Vec skewedCameraPos = skew(new Vec { 
+        x = cameraPos.x,
+        y = cameraPos.y, 
+        z = cameraPos.z - zIndex        // Distance from start of segment
+    }, turn, pitch);
+    Vec pos = -skewedCameraPos;
+
+    // Generate screen segment
+    for (int i = 0; i < drawDistance; i++) {
+        WorldSegment segment = world[(zIndex + i) % world.length];
+        pitch = segment.pitch - cameraPitch - CAMERA_TILT;
+        Vec horizonPt = project(pos);
+        if (horizonPt != null) clipY = min(horizonPt.y, clipY);
+        screenSegs.add(new ScreenSpaceSegment {
+            segment = segment,
+            pos = pos,
+            turn = turn,
+            pitch = pitch,
+            clipY = ceil(clipY),
+            zIndex = zIndex + i,
+            index = i
+        });
+
+        // Update position for next screen segment
+        pos = pos + new Vec { x = turn, y = pitch, z = 1 };
+        turn += segment.turn;
+    }
+
+    return screenSegs;
+}
+
+void drawHorizon(ScreenSpaceSegment[] screenSegs, Track track, float cameraTurn, float cameraPitch) {
+    tran(-1);
+
+    float drawHorizonX = horizonX - cameraTurn * SCREEN_DIST;
+    float drawHorizonY = SCREEN_HEIGHT / 2 - (cameraPitch * CAMERA_TILT) * SCREEN_DIST + 4;
+
+    ScreenSpaceSegment lastSegment = screenSegs[screenSegs.length - 1];
+    float groundY = min(lastSegment.clipY, drawHorizonY + 8);
+    
+    color(track.skyColour);
+    rectfill(0, 0, SCREEN_WIDTH, groundY - 1);
+    color(track.groundColour);
+    rectfill(0, groundY - 1, SCREEN_WIDTH, SCREEN_HEIGHT);
+}
+
+void drawWorld(Vec cameraPos, float cameraTurn, float cameraPitch, int drawDistance, Track track) {
+    ScreenSpaceSegment[] screenSegs = getScreenSpaceSegments(cameraPos, cameraTurn, cameraPitch, drawDistance);
+    drawHorizon(screenSegs, track, cameraTurn, cameraPitch);
 }
