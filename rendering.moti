@@ -112,7 +112,40 @@ void drawHorizon(ScreenSpaceSegment[] screenSegs, Track track, float cameraTurn,
     rectfill(0, groundY - 1, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
+void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
+    // Draw segments in reverse order
+    for (int i = screenSegs.length - 2; i >= 0; i--) {
+        ScreenSpaceSegment screenSeg = screenSegs[i];
+        ScreenSpaceSegment nextScreenSeg = screenSegs[i + 1];
+
+        // TODO: Clipping!
+
+        // Draw model instance cross sections for this segment
+        WorldSegment segment = screenSeg.segment;
+        for (ModelInstance instance : segment.modelInstances) {
+            Model model = instance.model;
+
+            // Position of start and end of polygon
+            Vec segPosOffset = new Vec;
+            if (instance.ref = REF_LEFT)  segPosOffset.x += segment.left;
+            if (instance.ref = REF_RIGHT) segPosOffset.x += segment.right;
+            Vec polyPos0 = screenSeg.pos     + instance.pos + segPosOffset;
+            Vec polyPos1 = nextScreenSeg.pos + instance.pos + segPosOffset;
+
+            // Clip if outside screen horizontal range.
+            // Note: This assumes a 90 degree horizontal FOV.
+            float xLimit = -screenSeg.pos.z;         
+            if (polyPos0.x + model.maxX < -xLimit and polyPos1.x + model.maxX < -xLimit) continue;
+            if (polyPos0.x + model.minX >  xLimit and polyPos1.x + model.minX >  xLimit) continue;
+
+
+            
+        }
+    }
+}
+
 void drawWorld(Vec cameraPos, float cameraTurn, float cameraPitch, int drawDistance, Track track) {
     ScreenSpaceSegment[] screenSegs = getScreenSpaceSegments(cameraPos, cameraTurn, cameraPitch, drawDistance);
     drawHorizon(screenSegs, track, cameraTurn, cameraPitch);
+    drawScreenSpaceSegments(screenSegs);
 }
