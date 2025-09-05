@@ -27,5 +27,7 @@ initRace(currentTrack);
 while (true) {
 	drawGame(currentTrack);
 	flip();
-	interval(1000 / 30);	
+	interval(1000 / 30);
+
+	player.pos += new Vec { z = 0.1 };
 }

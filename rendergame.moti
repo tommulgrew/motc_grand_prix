@@ -5,7 +5,7 @@
 
 // Constants
 
-const float CAMERA_TILT = 0; //0.175;
+const float CAMERA_TILT = 0.175;
 
 // Structures
 
