@@ -81,10 +81,6 @@ TrackCurve loadTrackCurve(Stream stream) {
 	if (curve.flags & CURVEFLAG_TREES			!= 0) curve.trees			= loadTrees(stream);
 	curve.dontBrake = curve.flags & CURVEFLAG_DONTBRAKE != 0;
 
-	// DEBUGGING!
-	curve.turn = 0;
-	curve.pitch = 0;
-
 	return curve;
 }
 

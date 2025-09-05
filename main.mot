@@ -29,5 +29,10 @@ while (true) {
 	flip();
 	interval(1000 / 30);
 
-	player.pos += new Vec { z = 0.1 };
+	player.pos += new Vec { z = 0.5 };
+	int segi = floor(player.pos.z);
+	WorldSegment seg = world[segi % world.length];
+	float zOffset = player.pos.z - floor(player.pos.z);
+	player.turn = seg.turn * zOffset;
+	//player.pitch = seg.pitch * zOffset;
 }
