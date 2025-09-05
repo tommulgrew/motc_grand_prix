@@ -1,0 +1,110 @@
+// Constants
+
+const int DRAW_DISTANCE = 40;
+const int SCREEN_WIDTH = 320;
+const int SCREEN_HEIGHT = 240;
+const int CLIP_BOTTOM = 240;
+const float NEAR_Z = 0.1;
+const float SCREEN_DIST = SCREEN_WIDTH / 2;      // Used for projection calculations
+const int TEXTURE_SCALE_FACTOR = 2;
+
+// Routines
+
+// Project a 3D point to the screen
+Vec project(Vec pt) {
+    assert(pt.z >= NEAR_Z);
+
+    float scale = SCREEN_DIST / pt.z;
+    return new Vec { 
+        x = pt.x * scale + SCREEN_WIDTH / 2,
+        y = pt.y * scale + SCREEN_HEIGHT / 2,
+        z = scale
+    };
+}
+
+// Draw a textured quad, aligned such that constant z lines are horizontal
+void drawQuadHoriz(
+    Texture texture,
+    float width,
+    Vec nearPos,
+    Vec farPos,
+    float v0, 
+    float v1) {
+
+    if (farPos.z <= NEAR_Z or farPos.z <= nearPos.z) return;
+
+    // Texture coordinates for near and far points
+    Vec nearT = new Vec {
+        x = texture.u,
+        y = texture.v
+    };    
+    Vec farT = new Vec {
+        x = texture.u,
+        y = texture.v + texture.h
+    };
+    nearT *= TEXTURE_SCALE_FACTOR;
+    farT  *= TEXTURE_SCALE_FACTOR;
+
+    // Clip to near plane
+    if (nearPos.z < NEAR_Z) {
+        float deltaZ = farPos.z - nearPos.z;
+        Vec deltaPos = (farPos - nearPos) / deltaZ;
+        Vec deltaT = (farT - nearT) / deltaZ;
+        float offset = NEAR_Z - nearPos.z;
+        nearPos += deltaPos * offset;
+        nearT   += deltaT   * offset;
+        nearPos.z = NEAR_Z;     // Would be redundant if not for floating point error
+    }
+
+    // Project near and far points
+    Vec nearPt = project(nearPos);
+    Vec farPt  = project(farPos);
+
+    // Divide texture coords by z (actually z/SCREEN_DIST, but this is fine)
+    nearT *= nearPt.z;        // (Projected z stores SCREEN_DIST/z)
+    farT  *= farPt.z;
+
+    Vec p0, p1, t0, t1;
+    if (nearPt.y < farPt.y) {
+        p0 = nearPt;
+        p1 = farPt;
+        t0 = nearT;
+        t1 = farT;
+    }
+    else {
+        p0 = farPt;
+        p1 = nearPt;
+        t0 = farT;
+        t1 = nearT;
+    }
+
+    // Clip vertical range
+    float y0 = max(ceil(p0.y), 0);
+    float y1 = min(ceil(p1.y), CLIP_BOTTOM);
+    if (y1 <= y0) return;
+
+    // p and t delta, per raster line
+    float ph = p1.y - p0.y;
+    Vec dp = (p1 - p0) / ph;
+    Vec dt = (t1 - t0) / ph;
+
+    // Adjust p0 and t0 for clipped y0
+    float yAdj = y0 - p0.y;
+    p0 += yAdj * dp;
+    t0 += yAdj * dt;
+
+    // Draw raster lines
+    color(1);
+    while (y0 < y1) {
+        float pw = width * p0.z;        // Projected width
+        line(p0.x - pw / 2, y0, p0.x + pw / 2, y0);
+
+        // Next line
+        y0++;
+        p0 += dp;
+        t0 += dt;
+
+        color(2);
+    }
+}
+

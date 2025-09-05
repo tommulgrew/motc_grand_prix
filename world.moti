@@ -134,7 +134,7 @@ void generateTrack(Track track) {
     generateTrackSegments(track);
     placeItem(roadModel, new Vec, world.length);
     // TODO: Road items
-    placeItems(track);
+//    placeItems(track);
     // TODO: AI X
     // TODO: AI velocity
 }

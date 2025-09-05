@@ -1,15 +1,11 @@
 #include "tracks"
 #include "gamedata"
 #include "routines"
+#include "render"
 
 // Constants
 
-const int DRAW_DISTANCE = 40;
-const float CAMERA_TILT = 0.175;
-const int SCREEN_WIDTH = 320;
-const int SCREEN_HEIGHT = 240;
-const float NEAR_Z = 0.1;
-const float SCREEN_DIST = SCREEN_WIDTH / 2;      // Used for projection calculations
+const float CAMERA_TILT = 0; //0.175;
 
 // Structures
 
@@ -40,20 +36,6 @@ void drawGame(Track track) {
         track);
 }
 
-Vec project(Vec pt) {
-    if (pt.z >= NEAR_Z) {
-        float scale = SCREEN_DIST / pt.z;
-        return new Vec { 
-            x = pt.x * scale + SCREEN_WIDTH / 2,
-            y = pt.y * scale + SCREEN_HEIGHT / 2,
-            z = scale
-        };
-    }
-    else {
-        return null;
-    }
-}
-
 ScreenSpaceSegment[] getScreenSpaceSegments(Vec cameraPos, float cameraTurn, float cameraPitch, int drawDistance) {
     ScreenSpaceSegment[] screenSegs = new ScreenSpaceSegment[0];
 
@@ -77,8 +59,10 @@ ScreenSpaceSegment[] getScreenSpaceSegments(Vec cameraPos, float cameraTurn, flo
     for (int i = 0; i < drawDistance; i++) {
         WorldSegment segment = world[(zIndex + i) % world.length];
         pitch = segment.pitch - cameraPitch - CAMERA_TILT;
-        Vec horizonPt = project(pos);
-        if (horizonPt != null) clipY = min(horizonPt.y, clipY);
+        if (pos.z >= NEAR_Z) {
+            Vec horizonPt = project(pos);
+            clipY = min(horizonPt.y, clipY);
+        }
         screenSegs.add(new ScreenSpaceSegment {
             segment = segment,
             pos = pos,
@@ -110,16 +94,6 @@ void drawHorizon(ScreenSpaceSegment[] screenSegs, Track track, float cameraTurn,
     rectfill(0, 0, SCREEN_WIDTH, groundY - 1);
     color(track.groundColour);
     rectfill(0, groundY - 1, SCREEN_WIDTH, SCREEN_HEIGHT);
-}
-
-void drawQuadHoriz(
-    Texture texture,
-    float width,
-    Vec nearPos,
-    Vec farPos,
-    float v0, 
-    float v1) {
-    
 }
 
 void drawQuadVert(
@@ -163,7 +137,7 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
 
             // Clip if outside screen horizontal range.
             // Note: This assumes a 90 degree horizontal FOV.
-            float xLimit = -screenSeg.pos.z;         
+            float xLimit = screenSeg.pos.z;         
             if (polyPos0.x + model.maxX < -xLimit and polyPos1.x + model.maxX < -xLimit) continue;
             if (polyPos0.x + model.minX >  xLimit and polyPos1.x + model.minX >  xLimit) continue;
 

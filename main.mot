@@ -6,7 +6,7 @@
 #include "trackdata"
 #include "gameplay"
 #include "world"
-#include "rendering"
+#include "rendergame"
 
 Track[] tracks = new Track[0];
 
