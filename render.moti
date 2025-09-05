@@ -5,8 +5,8 @@ const int SCREEN_WIDTH = 320;
 const int SCREEN_HEIGHT = 240;
 const int CLIP_BOTTOM = 240;
 const float NEAR_Z = 0.1;
-const float SCREEN_DIST = SCREEN_WIDTH / 2;      // Used for projection calculations
-const int TEXTURE_SCALE_FACTOR = 2;
+const float SCREEN_DIST = SCREEN_WIDTH / 2;     // Used for projection calculations
+const int TEXTURE_SCALE_FACTOR = 16;            // x8 and then x2 as resolution has been doubled
 
 // Routines
 
@@ -26,83 +26,81 @@ Vec project(Vec pt) {
 void drawQuadHoriz(
     Texture texture,
     float width,
-    Vec nearPos,
-    Vec farPos,
+    Vec pos0,
+    Vec pos1,
     float v0, 
     float v1) {
 
-    if (farPos.z <= NEAR_Z or farPos.z <= nearPos.z) return;
+    if (pos1.z <= NEAR_Z or pos1.z <= pos0.z) return;
 
-    // Texture coordinates for near and far points
-    Vec nearT = new Vec {
-        x = texture.u,
-        y = texture.v
-    };    
-    Vec farT = new Vec {
-        x = texture.u,
-        y = texture.v + texture.h
-    };
-    nearT *= TEXTURE_SCALE_FACTOR;
-    farT  *= TEXTURE_SCALE_FACTOR;
+    // Convert texture coords
+    v0 = texture.v + texture.h * v0;        // TODO: Flip?
+    v1 = texture.v + texture.h * v1;
+    float u0 = texture.u;
+    float u1 = texture.u + texture.w;
+    v0 *= TEXTURE_SCALE_FACTOR;
+    v1 *= TEXTURE_SCALE_FACTOR;
+    u0 *= TEXTURE_SCALE_FACTOR;
+    u1 *= TEXTURE_SCALE_FACTOR;
 
     // Clip to near plane
-    if (nearPos.z < NEAR_Z) {
-        float deltaZ = farPos.z - nearPos.z;
-        Vec deltaPos = (farPos - nearPos) / deltaZ;
-        Vec deltaT = (farT - nearT) / deltaZ;
-        float offset = NEAR_Z - nearPos.z;
-        nearPos += deltaPos * offset;
-        nearT   += deltaT   * offset;
-        nearPos.z = NEAR_Z;     // Would be redundant if not for floating point error
+    if (pos0.z < NEAR_Z) {
+        float deltaZ = pos1.z - pos0.z;
+        Vec deltaPos = (pos1 - pos0) / deltaZ;
+        float deltaV = (v1 - v0) / deltaZ;
+        float offset = NEAR_Z - pos0.z;
+        pos0  += deltaPos * offset;
+        v0 += deltaV   * offset;
+        pos0.z = NEAR_Z;     // Would be redundant if not for floating point error
     }
 
-    // Project near and far points
-    Vec nearPt = project(nearPos);
-    Vec farPt  = project(farPos);
+    // Project points to screen
+    Vec pt0 = project(pos0);
+    Vec pt1 = project(pos1);
 
-    // Divide texture coords by z (actually z/SCREEN_DIST, but this is fine)
-    nearT *= nearPt.z;        // (Projected z stores SCREEN_DIST/z)
-    farT  *= farPt.z;
+    // Divide texture v by z (actually z/SCREEN_DIST, but this is fine)
+    v0 *= pt0.z;        // (Projected z stores SCREEN_DIST/z)
+    v1 *= pt1.z;
 
-    Vec p0, p1, t0, t1;
-    if (nearPt.y < farPt.y) {
-        p0 = nearPt;
-        p1 = farPt;
-        t0 = nearT;
-        t1 = farT;
-    }
-    else {
-        p0 = farPt;
-        p1 = nearPt;
-        t0 = farT;
-        t1 = nearT;
+    // Swap ends if necessary to ensure pt0 is above pt1
+    if (pt0.y > pt1.y) {
+        Vec tempP = pt0;
+        pt0 = pt1;
+        pt1 = tempP;
+        float tempv = v0;
+        v0 = v1;
+        v1 = tempv;
     }
 
     // Clip vertical range
-    float y0 = max(ceil(p0.y), 0);
-    float y1 = min(ceil(p1.y), CLIP_BOTTOM);
+    float y0 = max(ceil(pt0.y), 0);
+    float y1 = min(ceil(pt1.y), CLIP_BOTTOM);
     if (y1 <= y0) return;
 
     // p and t delta, per raster line
-    float ph = p1.y - p0.y;
-    Vec dp = (p1 - p0) / ph;
-    Vec dt = (t1 - t0) / ph;
+    float ph = pt1.y - pt0.y;
+    Vec dp = (pt1 - pt0) / ph;
+    float dv = (v1 - v0) / ph;
 
     // Adjust p0 and t0 for clipped y0
-    float yAdj = y0 - p0.y;
-    p0 += yAdj * dp;
-    t0 += yAdj * dt;
+    float yAdj = y0 - pt0.y;
+    pt0 += yAdj * dp;
+    v0 += yAdj * dv;
 
     // Draw raster lines
     color(1);
     while (y0 < y1) {
-        float pw = width * p0.z;        // Projected width
-        line(p0.x - pw / 2, y0, p0.x + pw / 2, y0);
+        float pw = width * pt0.z;        // Projected width
+        float v = v0 / pt0.z;            // Multiply z back into texture coord
+
+        // Draw textured line
+        texlineh(textureImage, pt0.x - pw / 2, y0, pw, u0, v, (u1 - u0) / pw, 0);
+//        line(p0.x - pw / 2, y0, p0.x + pw / 2, y0);
 
         // Next line
         y0++;
-        p0 += dp;
-        t0 += dt;
+        pt0 += dp;
+        v0 += dv;
 
         color(2);
     }
