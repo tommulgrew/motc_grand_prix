@@ -222,6 +222,9 @@ void drawQuadFront(
         // Adjust v for clipped y0
         float yAdj = y0 - prevY0;
         v += yAdj * dv;
+
+        // Render
+        tran(texture.tran);
         while (y0 < y1) {
             texlineh(textureImage, x0, y0, x1 - x0, u, v, du, 0);    
             y0++;
@@ -229,6 +232,7 @@ void drawQuadFront(
         }
     }
     else {
+        tran(-1);
         color(colour);
         rectfill(x0, y0, x1, y1);
     }
