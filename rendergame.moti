@@ -10,11 +10,11 @@ const float CAMERA_TILT = 0.175;
 // Structures
 
 struct ScreenSpaceSegment {
-    WorldSegment segment;
-    Vec pos;
-    float turn, pitch;
+    WorldSegment segment;       // Corresponding world segment
+    Vec pos;                    // Screen space position
+    float turn, pitch;          // Screen space turn and pitch
     float clipY;
-    int zIndex, index;
+    int zIndex;                 // Index of segment in world array
 }
 
 // Data
@@ -40,8 +40,8 @@ ScreenSpaceSegment[] getScreenSpaceSegments(Vec cameraPos, float cameraTurn, flo
     ScreenSpaceSegment[] screenSegs = new ScreenSpaceSegment[0];
 
     // Current world segment
-    int zIndex = floor(cameraPos.z);
-    WorldSegment cameraSegment = world[zIndex % world.length];
+    int cameraZIndex = floor(cameraPos.z);
+    WorldSegment cameraSegment = world[cameraZIndex % world.length];
 
     // Road drawing cursor
     float turn = -cameraTurn, pitch = cameraSegment.pitch - cameraPitch - CAMERA_TILT;
@@ -51,13 +51,14 @@ ScreenSpaceSegment[] getScreenSpaceSegments(Vec cameraPos, float cameraTurn, flo
     Vec skewedCameraPos = skew(new Vec { 
         x = cameraPos.x,
         y = cameraPos.y, 
-        z = cameraPos.z - zIndex        // Distance from start of segment
+        z = cameraPos.z - cameraZIndex        // Distance from start of segment
     }, turn, pitch);
     Vec pos = -skewedCameraPos;
 
     // Generate screen segment
     for (int i = 0; i < drawDistance; i++) {
-        WorldSegment segment = world[(zIndex + i) % world.length];
+        int segmentZIndex = (cameraZIndex + i) % world.length;
+        WorldSegment segment = world[segmentZIndex];
         pitch = segment.pitch - cameraPitch - CAMERA_TILT;
         if (pos.z >= NEAR_Z) {
             Vec horizonPt = project(pos);
@@ -69,8 +70,7 @@ ScreenSpaceSegment[] getScreenSpaceSegments(Vec cameraPos, float cameraTurn, flo
             turn = turn,
             pitch = pitch,
             clipY = ceil(clipY),
-            zIndex = zIndex + i,
-            index = i
+            zIndex = segmentZIndex
         });
 
         // Update position for next screen segment
@@ -84,35 +84,16 @@ ScreenSpaceSegment[] getScreenSpaceSegments(Vec cameraPos, float cameraTurn, flo
 void drawHorizon(ScreenSpaceSegment[] screenSegs, Track track, float cameraTurn, float cameraPitch) {
     tran(-1);
 
-    float drawHorizonX = horizonX - cameraTurn * SCREEN_DIST;
-    float drawHorizonY = SCREEN_HEIGHT / 2 - (cameraPitch * CAMERA_TILT) * SCREEN_DIST + 4;
+    float horizonXCoord = horizonX - cameraTurn * SCREEN_DIST;
+    float horizonYCoord = SCREEN_HEIGHT / 2 - (cameraPitch * CAMERA_TILT) * SCREEN_DIST + 4;
 
     ScreenSpaceSegment lastSegment = screenSegs[screenSegs.length - 1];
-    float groundY = min(lastSegment.clipY, drawHorizonY + 8);
+    float groundY = min(lastSegment.clipY, horizonYCoord + 8);
     
     color(track.skyColour);
-    rectfill(0, 0, SCREEN_WIDTH, groundY - 1);
+    rectfill(0, 0, SCREEN_WIDTH, groundY);
     color(track.groundColour);
-    rectfill(0, groundY - 1, SCREEN_WIDTH, SCREEN_HEIGHT);
-}
-
-void drawQuadVert(
-    Texture texture,
-    float height,
-    Vec nearPos,
-    Vec farPos,
-    float u0,
-    float u1) {
-    
-}
-
-void drawQuadFront(
-    Texture texture,
-    float width,
-    float height,
-    Vec pos,
-    bool flipX) {
-    
+    rectfill(0, groundY, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
 void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
@@ -129,11 +110,15 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
             Model model = instance.model;
 
             // Position of start and end of polygon
-            Vec segPosOffset = new Vec;
-            if (instance.ref = REF_LEFT)  segPosOffset.x += segment.left;
-            if (instance.ref = REF_RIGHT) segPosOffset.x += segment.right;
-            Vec polyPos0 = screenSeg.pos     + instance.pos + segPosOffset;
-            Vec polyPos1 = nextScreenSeg.pos + instance.pos + segPosOffset;
+            Vec instanceOffsFromSeg = new Vec { 
+                x = instance.pos.x, 
+                y = instance.pos.y 
+            };
+            Vec polyOffsFromSeg = instanceOffsFromSeg;
+            if (instance.ref = REF_LEFT)  polyOffsFromSeg += new Vec { x = segment.left };
+            if (instance.ref = REF_RIGHT) polyOffsFromSeg += new Vec { x = segment.right };
+            Vec polyPos0 = screenSeg.pos     + polyOffsFromSeg;
+            Vec polyPos1 = nextScreenSeg.pos + polyOffsFromSeg;
 
             // Clip if outside screen horizontal range.
             // Note: This assumes a 90 degree horizontal FOV.
@@ -142,8 +127,8 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
             if (polyPos0.x + model.minX >  xLimit and polyPos1.x + model.minX >  xLimit) continue;
 
             // Find model segment
-            int instanceZ = instance.pos.z;
-            int modelSegmentIndex = (screenSeg.zIndex - instanceZ) % world.length;
+            int instanceZIndex = instance.pos.z;
+            int modelSegmentIndex = (screenSeg.zIndex - instanceZIndex) % world.length;
             ModelSegment modelSegment = instance.length > 0
                 ? model.segments[0]                         // Single segment model stretched over a specified length
                 : model.segments[modelSegmentIndex];
@@ -186,10 +171,10 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
             }
 
             for (ModelPoly poly : modelSegment.frontPolys) {
-                Texture texture = poly.texture;
                 Vec polyOffset = new Vec { x = poly.pos.x, y = poly.pos.y };
                 drawQuadFront(
-                    texture,
+                    poly.texture,
+                    poly.colour,
                     poly.size.x,
                     poly.size.y,
                     polyPos0 + polyOffset,

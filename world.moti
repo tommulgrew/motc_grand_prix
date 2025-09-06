@@ -14,7 +14,7 @@ struct TrackItemInstance {
 
 struct ModelInstance {
     Model model;
-    Vec pos;
+    Vec pos;                // World space position
     int ref;
     int length;
 }
@@ -134,7 +134,7 @@ void generateTrack(Track track) {
     generateTrackSegments(track);
     placeItem(roadModel, new Vec, world.length);
     // TODO: Road items
-//    placeItems(track);
+    placeItems(track);
     // TODO: AI X
     // TODO: AI velocity
 }

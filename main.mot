@@ -32,7 +32,8 @@ while (true) {
 	player.pos += new Vec { z = 0.5 };
 	int segi = floor(player.pos.z);
 	WorldSegment seg = world[segi % world.length];
+	WorldSegment nextSeg = world[(segi + 1) % world.length];
 	float zOffset = player.pos.z - floor(player.pos.z);
-	player.turn = seg.turn * zOffset;
-	//player.pitch = seg.pitch * zOffset;
+	player.turn = lerp(0, seg.turn, zOffset);
+	player.pitch = lerp(seg.pitch, nextSeg.pitch, zOffset);
 }

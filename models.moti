@@ -105,6 +105,7 @@ Model makeModel(string name, string data) {
             float maxZ = minZ;
             if (type = "h") maxZ += size.y;
             if (type = "v") maxZ += size.x;
+            if (type = "f") maxZ++;
             
             // Add poly to segments
             for (int z = minZ; z < maxZ; z++) {
@@ -121,9 +122,18 @@ Model makeModel(string name, string data) {
                 // Get segment for Z
                 ModelSegment segment = model.segments[z];
 
-                if (type = "f") segment.frontPolys.add(poly);
-                if (type = "h") segment.horizPolys.add(poly);
-                if (type = "v") segment.vertPolys.add(poly);
+                if (type = "f") {
+                    segment.frontPolys.add(poly);
+                }
+                else if (type = "h") {
+                    segment.horizPolys.add(poly);
+                }
+                else if (type = "v") {
+                    segment.vertPolys.add(poly);
+                }
+                else {
+                    assert(false);
+                }
             }
 
             // Adjust X range

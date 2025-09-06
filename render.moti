@@ -82,7 +82,7 @@ void drawQuadHoriz(
     Vec dp = (pt1 - pt0) / ph;
     float dv = (v1 - v0) / ph;
 
-    // Adjust p0 and t0 for clipped y0
+    // Adjust p0 and v0 for clipped y0
     float yAdj = y0 - pt0.y;
     pt0 += yAdj * dp;
     v0 += yAdj * dv;
@@ -103,3 +103,63 @@ void drawQuadHoriz(
     }
 }
 
+void drawQuadVert(
+    Texture texture,
+    float height,
+    Vec nearPos,
+    Vec farPos,
+    float u0,
+    float u1) {
+    
+}
+
+void drawQuadFront(
+    Texture texture,
+    int colour,
+    float width,
+    float height,
+    Vec pos,
+    bool flipX) {
+
+    if (pos.z < NEAR_Z) return;
+
+    // Project
+    Vec pt = project(pos);
+    width *= pt.z;
+    height *= pt.z;
+
+    float x0 = pt.x - width / 2,
+        x1 = pt.x + width / 2,
+        y0 = pt.y - height / 2,
+        y1 = pt.y + height / 2;
+
+    if (texture != null) {
+
+        float u = texture.u * TEXTURE_SCALE_FACTOR;
+        float v = texture.v * TEXTURE_SCALE_FACTOR;
+        float tw = texture.w * TEXTURE_SCALE_FACTOR;
+        float th = texture.h * TEXTURE_SCALE_FACTOR;
+
+        float du = tw / width;
+        float dv = th / height;
+
+        // Clip vertically
+        float prevY0 = y0;
+        y0 = max(ceil(y0), 0);
+        y1 = min(ceil(y1), CLIP_BOTTOM);
+        if (y1 <= y0) return;
+
+        // Adjust v for clipped y0
+        float yAdj = y0 - prevY0;
+        v += yAdj * dv;
+        while (y0 < y1) {
+            texlineh(textureImage, x0, y0, x1 - x0, u, v, du, 0);    
+            y0++;
+            v += dv;
+        }
+    }
+    else {
+        color(colour);
+        rectfill(x0, y0, x1, y1);
+    }
+}

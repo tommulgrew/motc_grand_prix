@@ -6,3 +6,6 @@ Vec skew(Vec pos, float xd, float yd) {
     };
 }
 
+float lerp(float a, float b, float f) {
+    return (1 - a) * b;
+}
