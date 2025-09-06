@@ -77,7 +77,7 @@ void drawQuadHoriz(
     float y1 = min(ceil(pt1.y), CLIP_BOTTOM);
     if (y1 <= y0) return;
 
-    // p and t delta, per raster line
+    // p and v delta, per raster line
     float ph = pt1.y - pt0.y;
     Vec dp = (pt1 - pt0) / ph;
     float dv = (v1 - v0) / ph;
@@ -106,11 +106,81 @@ void drawQuadHoriz(
 void drawQuadVert(
     Texture texture,
     float height,
-    Vec nearPos,
-    Vec farPos,
+    Vec pos0,
+    Vec pos1,
     float u0,
     float u1) {
-    
+
+    if (pos1.z <= NEAR_Z or pos1.z <= pos0.z) return;
+
+    // Convert texture coords
+    u0 = texture.u + texture.w * u0;
+    u1 = texture.u + texture.w * u1;
+    float v0 = texture.v;
+    float v1 = texture.v + texture.h;
+    v0 *= TEXTURE_SCALE_FACTOR;
+    v1 *= TEXTURE_SCALE_FACTOR;
+    u0 *= TEXTURE_SCALE_FACTOR;
+    u1 *= TEXTURE_SCALE_FACTOR;
+
+    // Clip to near plane
+    if (pos0.z < NEAR_Z) {
+        float deltaZ = pos1.z - pos0.z;
+        Vec deltaPos = (pos1 - pos0) / deltaZ;
+        float deltaU = (u1 - u0) / deltaZ;
+        float offset = NEAR_Z - pos0.z;
+        pos0  += deltaPos * offset;
+        u0    += deltaU   * offset;
+        pos0.z = NEAR_Z;     // Would be redundant if not for floating point error
+    }
+
+    // Project points to screen
+    Vec pt0 = project(pos0);
+    Vec pt1 = project(pos1);
+
+    // Divide texture u by z (actually z/SCREEN_DIST, but this is fine)
+    u0 *= pt0.z;        // (Projected z stores SCREEN_DIST/z)
+    u1 *= pt1.z;
+
+    // Swap ends if necessary to ensure pt0 is left of pt1
+    if (pt0.x > pt1.x) {
+        Vec tempP = pt0;
+        pt0 = pt1;
+        pt1 = tempP;
+        float tempu = u0;
+        u0 = u1;
+        u1 = tempu;
+    }
+
+    // Clip horizontal range
+    float x0 = max(ceil(pt0.x), 0);
+    float x1 = min(ceil(pt1.x), SCREEN_WIDTH);
+    if (x1 <= x0) return;
+
+    // p and u delta, per vertical raster line
+    float pw = pt1.x - pt0.x;       // Projected width
+    Vec dp = (pt1 - pt0) / pw;
+    float du = (u1 - u0) / pw;
+
+    // Adjust p0 and v0 for clipped x0
+    float xAdj = x0 - pt0.x;
+    pt0 += xAdj * dp;
+    u0 += xAdj * du;
+
+    // Draw raster lines
+    tran(texture.tran);
+    while (x0 < x1) {
+        float ph = height * pt0.z;       // Projected height
+        float u = u0 / pt0.z;            // Multiply z back into texture coord
+
+        // Draw textured line
+        texlinev(textureImage, x0, pt0.y - ph / 2, ph, u, v0, 0, (v1 - v0) / ph);
+
+        // Next line
+        x0++;
+        pt0 += dp;
+        u0 += du;
+    }
 }
 
 void drawQuadFront(
