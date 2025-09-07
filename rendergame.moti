@@ -5,6 +5,7 @@
 
 // Constants
 
+const int DRAW_DISTANCE = 40;
 const float CAMERA_TILT = 0.175;
 
 // Structures
@@ -114,17 +115,16 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
                 x = instance.pos.x, 
                 y = instance.pos.y 
             };
-            Vec polyOffsFromSeg = instanceOffsFromSeg;
-            if (instance.ref = REF_LEFT)  polyOffsFromSeg += new Vec { x = segment.left };
-            if (instance.ref = REF_RIGHT) polyOffsFromSeg += new Vec { x = segment.right };
-            Vec polyPos0 = screenSeg.pos     + polyOffsFromSeg;
-            Vec polyPos1 = nextScreenSeg.pos + polyOffsFromSeg;
+            if (instance.ref = REF_LEFT)  instanceOffsFromSeg += new Vec { x = segment.left };
+            if (instance.ref = REF_RIGHT) instanceOffsFromSeg += new Vec { x = segment.right };
+            Vec instancePos0 = screenSeg.pos     + instanceOffsFromSeg;
+            Vec instancePos1 = nextScreenSeg.pos + instanceOffsFromSeg;
 
             // Clip if outside screen horizontal range.
             // Note: This assumes a 90 degree horizontal FOV.
             float xLimit = screenSeg.pos.z;         
-            if (polyPos0.x + model.maxX < -xLimit and polyPos1.x + model.maxX < -xLimit) continue;
-            if (polyPos0.x + model.minX >  xLimit and polyPos1.x + model.minX >  xLimit) continue;
+            // if (instancePos0.x + model.maxX < -xLimit and instancePos1.x + model.maxX < -xLimit) continue;
+            // if (instancePos0.x + model.minX >  xLimit and instancePos1.x + model.minX >  xLimit) continue;
 
             // Find model segment
             int instanceZIndex = instance.pos.z;
@@ -147,8 +147,8 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
                 drawQuadHoriz(
                     texture, 
                     poly.size.x, 
-                    polyPos0 + polyOffset,
-                    polyPos1 + polyOffset,
+                    instancePos0 + polyOffset,
+                    instancePos1 + polyOffset,
                     v0, v1);
             }
 
@@ -165,8 +165,8 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
                 drawQuadVert(
                     texture,
                     poly.size.y,
-                    polyPos0 + polyOffset,
-                    polyPos1 + polyOffset,
+                    instancePos0 + polyOffset,
+                    instancePos1 + polyOffset,
                     u0, u1);
             }
 
@@ -177,7 +177,7 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
                     poly.colour,
                     poly.size.x,
                     poly.size.y,
-                    polyPos0 + polyOffset,
+                    instancePos0 + polyOffset,
                     false);
             }
         }
