@@ -107,6 +107,7 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
 
         // Draw model instance cross sections for this segment
         WorldSegment segment = screenSeg.segment;
+        WorldSegment nextSegment = nextScreenSeg.segment;
         for (ModelInstance instance : segment.modelInstances) {
             Model model = instance.model;
 
@@ -115,10 +116,12 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
                 x = instance.pos.x, 
                 y = instance.pos.y 
             };
-            if (instance.ref = REF_LEFT)  instanceOffsFromSeg += new Vec { x = segment.left };
-            if (instance.ref = REF_RIGHT) instanceOffsFromSeg += new Vec { x = segment.right };
-            Vec instancePos0 = screenSeg.pos     + instanceOffsFromSeg;
+            Vec instancePos0 = screenSeg.pos + instanceOffsFromSeg;
+            if (instance.ref = REF_LEFT)  instancePos0 += new Vec { x = segment.left };
+            if (instance.ref = REF_RIGHT) instancePos0 += new Vec { x = segment.right };
             Vec instancePos1 = nextScreenSeg.pos + instanceOffsFromSeg;
+            if (instance.ref = REF_LEFT)  instancePos1 += new Vec { x = nextSegment.left };
+            if (instance.ref = REF_RIGHT) instancePos1 += new Vec { x = nextSegment.right };
 
             // Clip if outside screen horizontal range.
             // Note: This assumes a 90 degree horizontal FOV.
