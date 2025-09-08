@@ -296,6 +296,8 @@ resolveNestedModelReferences();
 // Common models
 
 Model roadModel = getModel("road");
+Model distSignModel = getModel("dist");
+Model shoulderModel = getModel("shoulder");
 Model[] treeModels = new Model[] {
     getModel("tree1"),
     getModel("tree2")

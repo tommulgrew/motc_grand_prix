@@ -165,11 +165,17 @@ void generateRoadItems(Track track) {
         TrackCurve p = curves[(i - 1 + curves.length) % curves.length];     // Must ensure index is non negative, due to % behaviour
         TrackCurve c = curves[i];
         TrackCurve n = curves[(i + 1) % curves.length];
+        
+        // Generate barriers
         if (c.leftBarrier != null) leftBarrier = c.leftBarrier;
         if (c.rightBarrier != null) rightBarrier = c.rightBarrier;
-
         placeBarrier(c, leftBarrier, REF_LEFT);
         placeBarrier(c, rightBarrier, REF_RIGHT);
+
+        // Generate approaching corner signs
+        if (abs(curveTurn(c, 0)) >= 0.1 and abs(curveTurn(p, 0)) < 0.01) {
+            placeItem(distSignModel, new Vec { x = sgn(c.turn) * -5.5, z = c.z - 30 });
+        }
 
         // TODO: Approaching corner signs
 

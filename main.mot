@@ -33,8 +33,10 @@ while (true) {
 	interval(1000 / 30);
 
 	float speed = keydn(KEY_LSHIFT) ? 0.5 : 0.1;
-	if (keydn(KEY_UP)) 		player.pos += new Vec { z = speed };
-	if (keydn(KEY_DOWN))	player.pos -= new Vec { z = speed };
+	if (keydn(KEY_UP)) 		player.pos.z += speed;
+	if (keydn(KEY_DOWN))	player.pos.z -= speed;
+	if (keydn(KEY_LEFT))	player.pos.x -= 0.1;
+	if (keydn(KEY_RIGHT))	player.pos.x += 0.1;
 	player.pos.z = max(player.pos.z, 0);
 	int segi = floor(player.pos.z);
 	WorldSegment seg = world[segi % world.length];
