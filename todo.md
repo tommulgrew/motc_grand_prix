@@ -13,3 +13,13 @@ To fix
 ======
 
 - Shoulder things not generating correctly. Seems to miss out the middle of the curve?!
+- Windsheild circle has gaps. Are lines not joining up?
+
+To do
+=====
+
+- Add horizon
+- Draw cockpit
+- Draw steering wheel
+- Update texture image. Make use of 2x resolution
+- Implement driving code
