@@ -23,6 +23,8 @@ for (int i = 0; i < trackData.length; i++) {
 Track currentTrack = tracks[2];
 initRace(currentTrack);
 
+screen(makeimg(SCREEN_WIDTH, SCREEN_HEIGHT));
+
 // Main loop
 while (true) {
 	drawGame(currentTrack);

@@ -1,8 +1,8 @@
 // Constants
 
-const int SCREEN_WIDTH = 320;
-const int SCREEN_HEIGHT = 240;
-const int CLIP_BOTTOM = 240;
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 480;
+const int CLIP_BOTTOM = SCREEN_HEIGHT;
 const float NEAR_Z = 0.1;
 const float SCREEN_DIST = SCREEN_WIDTH / 2;     // Used for projection calculations
 const int TEXTURE_SCALE_FACTOR = 16;            // x8 and then x2 as resolution has been doubled
