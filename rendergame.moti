@@ -132,6 +132,9 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
             // Find model segment
             int instanceZIndex = instance.pos.z;
             int modelSegmentIndex = (screenSeg.zIndex - instanceZIndex) % world.length;
+            if (modelSegmentIndex < 0) {
+                modelSegmentIndex += world.length;
+            }
             ModelSegment modelSegment = instance.length > 0
                 ? model.segments[0]                         // Single segment model stretched over a specified length
                 : model.segments[modelSegmentIndex];
