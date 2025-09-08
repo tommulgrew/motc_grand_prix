@@ -70,7 +70,7 @@ Texture[] textures = new Texture[] {
     new Texture { name = "car_tail_side", u = 56, v = 4, w = 1, h = 1, tran = -1 },
     new Texture { name = "car_contour", u = 60, v = 5, w = 2, h = 1, tran = 0 },
     new Texture { name = "marker", u = 60, v = 8, w = 1, h = 1, tran = 0 },
-    new Texture { name = "towerwide", u = 44, v = 6, w = 2, h = 1, tran = -1 },
+    new Texture { name = "towerwide", u = 44, v = 6, w = 2, h = 10, tran = 12 },
     new Texture { name = "tower", u = 44, v = 6, w = 1, h = 5, tran = 12 },
     new Texture { name = "s_pico_sm", u = 9, v = 19, w = 4, h = 1, tran = -1 },
     new Texture { name = "balcony", u = 44, v = 24, w = 10, h = 1, tran = 0 },
