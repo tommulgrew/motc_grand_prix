@@ -54,7 +54,7 @@ Texture[] textures = new Texture[] {
     new Texture { name = "rroof", u = 26, v = 8, w = 4, h = 2, tran = 0 },
     new Texture { name = "broof", u = 38, v = 8, w = 4, h = 2, tran = 0 },
     new Texture { name = "shoulder", u = 8, v = 16, w = 1, h = 2, tran = 99 },
-    new Texture { name = "crane", u = 80, v = 0, w = 7, h = 1, tran = -1 },
+    new Texture { name = "crane", u = 80, v = 0, w = 7, h = 17, tran = 0 },
     new Texture { name = "d1", u = 9, v = 18, w = 4, h = 1, tran = 10 },
     new Texture { name = "d2", u = 9, v = 17, w = 4, h = 1, tran = 10 },
     new Texture { name = "d3", u = 9, v = 16, w = 4, h = 1, tran = 10 },
