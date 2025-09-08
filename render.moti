@@ -33,14 +33,16 @@ void drawQuadHoriz(
     if (pos1.z <= NEAR_Z or pos1.z <= pos0.z) return;
 
     // Convert texture coords
-    v0 = texture.v + texture.h * v0;        // TODO: Flip?
-    v1 = texture.v + texture.h * v1;
+    v0 = texture.v + texture.h * (1 - v0);
+    v1 = texture.v + texture.h * (1 - v1);
     float u0 = texture.u;
     float u1 = texture.u + texture.w;
     v0 *= TEXTURE_SCALE_FACTOR;
     v1 *= TEXTURE_SCALE_FACTOR;
     u0 *= TEXTURE_SCALE_FACTOR;
     u1 *= TEXTURE_SCALE_FACTOR;
+    v0 -= 0.001;
+    v1 += 0.001;
 
     // Clip to near plane
     if (pos0.z < NEAR_Z) {
@@ -113,14 +115,16 @@ void drawQuadVert(
     if (pos1.z <= NEAR_Z or pos1.z <= pos0.z) return;
 
     // Convert texture coords
-    u0 = texture.u + texture.w * u0;
-    u1 = texture.u + texture.w * u1;
+    u0 = texture.u + texture.w * (1 - u0);
+    u1 = texture.u + texture.w * (1 - u1);
     float v0 = texture.v;
     float v1 = texture.v + texture.h;
     v0 *= TEXTURE_SCALE_FACTOR;
     v1 *= TEXTURE_SCALE_FACTOR;
     u0 *= TEXTURE_SCALE_FACTOR;
     u1 *= TEXTURE_SCALE_FACTOR;
+    u0 -= 0.001;
+    u1 += 0.001;
 
     // Clip to near plane
     if (pos0.z < NEAR_Z) {
