@@ -103,7 +103,7 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
         ScreenSpaceSegment screenSeg = screenSegs[i];
         ScreenSpaceSegment nextScreenSeg = screenSegs[i + 1];
 
-        // TODO: Clipping!
+        clipregion(0, 0, SCREEN_WIDTH, screenSeg.clipY);
 
         // Draw model instance cross sections for this segment
         WorldSegment segment = screenSeg.segment;
@@ -192,4 +192,6 @@ void drawWorld(Vec cameraPos, float cameraTurn, float cameraPitch, int drawDista
     ScreenSpaceSegment[] screenSegs = getScreenSpaceSegments(cameraPos, cameraTurn, cameraPitch, drawDistance);
     drawHorizon(screenSegs, track, cameraTurn, cameraPitch);
     drawScreenSpaceSegments(screenSegs);
+    
+    clipregion();       // Clear clip region
 }
