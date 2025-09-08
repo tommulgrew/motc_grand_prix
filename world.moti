@@ -162,26 +162,40 @@ void generateTrees(TrackCurve curve, int[] treeXOffsets) {
 void generateRoadItems(Track track) {
     Model[] leftBarrier, rightBarrier;
     for (int i = 0; i < curves.length; i++) {
-        TrackCurve p = curves[(i - 1 + curves.length) % curves.length];     // Must ensure index is non negative, due to % behaviour
-        TrackCurve c = curves[i];
-        TrackCurve n = curves[(i + 1) % curves.length];
+        TrackCurve prevCurve = curves[(i - 1 + curves.length) % curves.length];     // Must ensure index is non negative, due to % behaviour
+        TrackCurve currentCurve = curves[i];
+        TrackCurve nextCurve = curves[(i + 1) % curves.length];
         
         // Generate barriers
-        if (c.leftBarrier != null) leftBarrier = c.leftBarrier;
-        if (c.rightBarrier != null) rightBarrier = c.rightBarrier;
-        placeBarrier(c, leftBarrier, REF_LEFT);
-        placeBarrier(c, rightBarrier, REF_RIGHT);
+        if (currentCurve.leftBarrier != null) leftBarrier = currentCurve.leftBarrier;
+        if (currentCurve.rightBarrier != null) rightBarrier = currentCurve.rightBarrier;
+        placeBarrier(currentCurve, leftBarrier, REF_LEFT);
+        placeBarrier(currentCurve, rightBarrier, REF_RIGHT);
 
         // Generate approaching corner signs
-        if (abs(curveTurn(c, 0)) >= 0.1 and abs(curveTurn(p, 0)) < 0.01) {
-            placeItem(distSignModel, new Vec { x = sgn(c.turn) * -5.5, z = c.z - 30 });
+        if (abs(curveTurn(currentCurve, 0)) >= 0.1 and abs(curveTurn(prevCurve, 0)) < 0.01) {
+            placeItem(distSignModel, new Vec { x = sgn(currentCurve.turn) * -5.5, z = currentCurve.z - 30 });
         }
 
-        // TODO: Approaching corner signs
+        // Shoulder cover things
+        if (currentCurve.length <= 12) {
+            bool addLeft, addRight;
+            for (TrackCurve curve : new TrackCurve[] { prevCurve, currentCurve, nextCurve }) {
+                if (abs(curveTurn(curve, 0)) > 0.05) {
+                    addLeft  = addLeft  or sgn(curve.turn) < 0;
+                    addRight = addRight or sgn(curve.turn) > 0;
+                }            
+            }
+            if (addLeft) {
+                placeItem(shoulderModel, new Vec { x = -4, z = currentCurve.z }, currentCurve.length);
+            }
+            if (addRight) {
+                placeItem(shoulderModel, new Vec { x =  4, z = currentCurve.z }, currentCurve.length);
+            }
+        }
 
-        // TODO: Shoulder padding things
-
-        generateTrees(c, c.trees);
+        // Trees
+        generateTrees(currentCurve, currentCurve.trees);
     }
 }
 
