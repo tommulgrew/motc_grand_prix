@@ -296,3 +296,7 @@ resolveNestedModelReferences();
 // Common models
 
 Model roadModel = getModel("road");
+Model[] treeModels = new Model[] {
+    getModel("tree1"),
+    getModel("tree2")
+};
