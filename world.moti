@@ -38,9 +38,9 @@ void placeItem(Model model, Vec pos, int length = 0, int ref = 0) {
     
     // Place item for nested models
     for (NestedModel nested : model.nestedModels) {
-        Vec nestedPos = pos;
+        Vec nestedPos = new Vec { x = pos.x, y = pos.y, z = pos.z };
         if (nested.pos != null) {
-            pos += nested.pos;
+            nestedPos += nested.pos;
         }
         placeItem(nested.model, nestedPos, length, ref);
     }
