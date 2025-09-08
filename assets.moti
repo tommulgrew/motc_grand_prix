@@ -9,7 +9,7 @@ int[] colourPalette = new int[] {
 pal(colourPalette);
 
 // Textures
-Image textureImage = loadimg("assets/textures.png");
+Image textureImage = loadimg("assets/textures.png", false);
 
 struct Texture {
     string name;
