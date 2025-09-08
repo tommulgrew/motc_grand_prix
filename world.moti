@@ -130,9 +130,42 @@ void generateTrackSegments(Track track) {
     }
 }
 
+void placeBarrier(TrackCurve curve, Model[] barrier, int ref) {
+    if (barrier != null) {
+        for (Model barrierModel : barrier) {
+            placeItem(
+                barrierModel,
+                new Vec { z = curve.z },
+                curve.length,
+                ref);
+        }
+    }
+}
+
+void generateRoadItems(Track track) {
+    Model[] leftBarrier, rightBarrier;
+    for (int i = 0; i < curves.length; i++) {
+        TrackCurve p = curves[(i - 1 + curves.length) % curves.length];     // Must ensure index is non negative, due to % behaviour
+        TrackCurve c = curves[i];
+        TrackCurve n = curves[(i + 1) % curves.length];
+        if (c.leftBarrier != null) leftBarrier = c.leftBarrier;
+        if (c.rightBarrier != null) rightBarrier = c.rightBarrier;
+
+        placeBarrier(c, leftBarrier, REF_LEFT);
+        placeBarrier(c, rightBarrier, REF_RIGHT);
+
+        // TODO: Approaching corner signs
+
+        // TODO: Shoulder padding things
+
+        // TODO: Trees
+    }
+}
+
 void generateTrack(Track track) {
     generateTrackSegments(track);
     placeItem(roadModel, new Vec, world.length);
+    generateRoadItems(track);
     // TODO: Road items
     placeItems(track);
     // TODO: AI X
