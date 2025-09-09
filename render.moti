@@ -2,6 +2,7 @@
 
 const int SCREEN_WIDTH = 320;
 const int SCREEN_HEIGHT = 240;
+const float pratio = SCREEN_WIDTH / 320.0;      // Pixel ratio compared to 320x240 view
 const int CLIP_BOTTOM = SCREEN_HEIGHT;
 const float NEAR_Z = 0.1;
 const float SCREEN_DIST = SCREEN_WIDTH / 2;     // Used for projection calculations

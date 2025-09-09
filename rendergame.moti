@@ -204,13 +204,71 @@ void drawWorld(Vec cameraPos, float cameraTurn, float cameraPitch, int drawDista
     clipregion();       // Clear clip region
 }
 
+void drawWheels(float steering, int wheelRotation, float scale) {
+
+    Texture sideTex = gameTextures.wheelSide;
+    Texture tireTex = gameTextures.wheelTire;
+
+    // Wheels
+    float w = steering * 16;
+    float lw = 28 + w;
+    float rw = 28 - w;
+    float h = tireTex.h * scale;
+    float lx = SCREEN_WIDTH / 2 - 120 * pratio;
+    float rx = SCREEN_WIDTH / 2 + 120 * pratio;
+    float y = SCREEN_HEIGHT - h - 32 * pratio;
+
+    float l0 = ceil(lx - lw / 2), l1 = ceil(lx + lw / 2);
+    float r0 = ceil(rx - rw / 2), r1 = ceil(rx + rw / 2);
+
+    // Use palette cycling to animate wheel turning
+    int[] wheelTurnCols = new int[16];
+    for (int i = 0; i < 8; i++) {
+        wheelTurnCols[i] = i;
+    }
+    for (int i = 0; i < 8; i++) {
+        wheelTurnCols[i + 8] = wheelPalette[(wheelRotation + i) % wheelPalette.length];
+    }
+
+    colmap(wheelTurnCols);
+    tran(sideTex.tran);
+    scaleimg(textureImage, 0, y, l0, h,
+        tireTex.u * TEXTURE_SCALE_FACTOR, 
+        tireTex.v * TEXTURE_SCALE_FACTOR, 
+        tireTex.w * TEXTURE_SCALE_FACTOR,
+        tireTex.h * TEXTURE_SCALE_FACTOR);
+    scaleimg(textureImage, l0, y, lw, h,
+        sideTex.u * TEXTURE_SCALE_FACTOR, 
+        sideTex.v * TEXTURE_SCALE_FACTOR, 
+        sideTex.w * TEXTURE_SCALE_FACTOR,
+        sideTex.h * TEXTURE_SCALE_FACTOR);
+
+    scaleimg(textureImage, r1 - 1, y, SCREEN_WIDTH - r1 + 1, h,
+        tireTex.u * TEXTURE_SCALE_FACTOR, 
+        tireTex.v * TEXTURE_SCALE_FACTOR, 
+        tireTex.w * TEXTURE_SCALE_FACTOR,
+        tireTex.h * TEXTURE_SCALE_FACTOR);
+    scaleimg(textureImage, r0, y, rw, h,
+        (sideTex.u + sideTex.w) * TEXTURE_SCALE_FACTOR - 0.001, 
+        sideTex.v * TEXTURE_SCALE_FACTOR, 
+        -sideTex.w * TEXTURE_SCALE_FACTOR,
+        sideTex.h * TEXTURE_SCALE_FACTOR);    
+    tran(-1);
+    colmap(null);
+}
+
 void drawCockpit() {
+
+    float steering = sin(frame * 0.1);      // TODO: Hook up to player controls
 
     // Calculate scale so that cockpit texture fits width of screen
     Texture cptex = gameTextures.cockpit;
     float scale = SCREEN_WIDTH * 1.0 / cptex.w;
     float cockpitWidth = SCREEN_WIDTH;
     float cockpitHeight = cptex.h * scale;
+
+    // Wheels
+    drawWheels(steering, frame * 3.3, scale);
 
     // Windshield circle
     color(7);
@@ -239,7 +297,7 @@ void drawCockpit() {
     //     swtex.v * TEXTURE_SCALE_FACTOR,
     //     swtex.w * TEXTURE_SCALE_FACTOR,
     //     swtex.h * TEXTURE_SCALE_FACTOR);
-    float ang = sin(frame * 0.1) * MATH_PI / 2;
+    float ang = steering * MATH_PI / 2;
     float sa = sin(ang), ca = cos(ang);
     tran(swtex.tran);
     for (int y = floor(steery - steerHeight / 2); y < SCREEN_HEIGHT; y++) {
