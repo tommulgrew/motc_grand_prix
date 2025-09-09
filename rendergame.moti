@@ -206,22 +206,69 @@ void drawWorld(Vec cameraPos, float cameraTurn, float cameraPitch, int drawDista
 
 void drawCockpit() {
 
-    // Layout
-    Texture tex = cockpitTexture;
-    float width = SCREEN_WIDTH;
-    float scale = SCREEN_WIDTH * 1.0 / tex.w;
-    float height = tex.h * scale;
+    // Calculate scale so that cockpit texture fits width of screen
+    Texture cptex = gameTextures.cockpit;
+    float scale = SCREEN_WIDTH * 1.0 / cptex.w;
+    float cockpitWidth = SCREEN_WIDTH;
+    float cockpitHeight = cptex.h * scale;
 
-    // Windsheild circle
-    color(6);
-    circ(SCREEN_WIDTH / 2, SCREEN_HEIGHT - height * 0.6, SCREEN_WIDTH * 0.3);
+    // Windshield circle
+    color(7);
+    circ(SCREEN_WIDTH / 2, SCREEN_HEIGHT - cockpitHeight * 0.6, SCREEN_WIDTH * 0.3);
 
     // Cockpit base image
-    tran(tex.tran);
-    scaleimg(textureImage, 0, SCREEN_HEIGHT - height, width, height, 
-        tex.u * TEXTURE_SCALE_FACTOR,
-        tex.v * TEXTURE_SCALE_FACTOR,
-        tex.w * TEXTURE_SCALE_FACTOR,
-        tex.h * TEXTURE_SCALE_FACTOR);
+    tran(cptex.tran);
+    scaleimg(textureImage, 0, SCREEN_HEIGHT - cockpitHeight, cockpitWidth, cockpitHeight, 
+        cptex.u * TEXTURE_SCALE_FACTOR,
+        cptex.v * TEXTURE_SCALE_FACTOR,
+        cptex.w * TEXTURE_SCALE_FACTOR,
+        cptex.h * TEXTURE_SCALE_FACTOR);
     tran(-1);
+
+    // Steering wheel
+    Texture swtex = gameTextures.steeringWheel;
+    float steerWidth = swtex.w * scale;
+    float steerHeight = swtex.h * scale;
+    float steerx = SCREEN_WIDTH / 2;
+    float steery = SCREEN_HEIGHT - steerHeight * 24.0 / 256;
+
+    // TODO: Rotate!
+    // scaleimg(textureImage, steerx - steerWidth / 2, steery - steerHeight / 2, 
+    //     steerWidth, steerHeight,
+    //     swtex.u * TEXTURE_SCALE_FACTOR,
+    //     swtex.v * TEXTURE_SCALE_FACTOR,
+    //     swtex.w * TEXTURE_SCALE_FACTOR,
+    //     swtex.h * TEXTURE_SCALE_FACTOR);
+    float ang = sin(frame * 0.1) * MATH_PI / 2;
+    float sa = sin(ang), ca = cos(ang);
+    tran(swtex.tran);
+    for (int y = floor(steery - steerHeight / 2); y < SCREEN_HEIGHT; y++) {
+        
+        // Texture coordinates
+        float tx = (-steerWidth / 2) / scale;
+        float ty = (y - steery) / scale;
+
+        // Rotate by angle
+        float rx = ca * tx + sa * ty + swtex.u + swtex.w / 2;
+        float ry =-sa * tx + ca * ty + swtex.v + swtex.h / 2;
+
+        // Adjust texture coords
+        rx *= TEXTURE_SCALE_FACTOR;
+        ry *= TEXTURE_SCALE_FACTOR;
+
+        // Draw textured line
+        texlineh(textureImage, steerx - steerWidth / 2, y, steerWidth, rx, ry, 
+             ca * swtex.w / steerWidth * TEXTURE_SCALE_FACTOR,
+            -sa * swtex.h / steerWidth * TEXTURE_SCALE_FACTOR);
+    }
+
+    Texture ctex = gameTextures.steeringCenter;
+    float centerWidth = ctex.w * scale;
+    float centerHeight = ctex.h * scale;
+    scaleimg(textureImage, steerx - centerWidth / 2, steery - centerHeight / 2,
+        centerWidth, centerHeight,
+        ctex.u * TEXTURE_SCALE_FACTOR,
+        ctex.v * TEXTURE_SCALE_FACTOR,
+        ctex.w * TEXTURE_SCALE_FACTOR,
+        ctex.h * TEXTURE_SCALE_FACTOR);
 }

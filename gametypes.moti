@@ -16,4 +16,5 @@ struct Car {
     bool isFinished;
     AIParams aiParams, baseAIParams;
     string name;
+    float steering;
 }

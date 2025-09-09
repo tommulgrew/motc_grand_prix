@@ -45,4 +45,6 @@ while (true) {
 	float zOffset = player.pos.z - floor(player.pos.z);
 	player.turn = lerp(0, seg.turn, zOffset);
 	player.pitch = lerp(seg.pitch, nextSeg.pitch, zOffset);
+
+	frame++;
 }

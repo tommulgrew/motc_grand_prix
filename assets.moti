@@ -84,4 +84,13 @@ Texture getTexture(string name) {
     assert(false, "Could not find texture: " + name);    
 }
 
-Texture cockpitTexture = new Texture { name = "cockpit", u = 108, v = 0, w = 20, h = 6, tran = 10 };
+struct GameTextures {
+    Texture cockpit, wheel, steeringWheel, steeringCenter;
+}
+
+GameTextures gameTextures = new GameTextures {
+    cockpit = new Texture { name = "cockpit", u = 108, v = 0, w = 20, h = 6, tran = 10 },
+    steeringWheel = new Texture { name = "steering", u = 96, v = 2, w = 8, h = 8, tran = 12 },
+    steeringCenter = new Texture { name = "steeringCenter", u = 8, v = 18, w = 1, h = 1, tran = 12 },
+    wheel = new Texture { name = "wheel", u = 13, v = 16, w = 3, h = 4, tran = 1 }
+};
