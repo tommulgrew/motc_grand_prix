@@ -7,7 +7,6 @@
 
 const int DRAW_DISTANCE = 60;
 const float CAMERA_TILT = 0.175;
-const int TILE_SIZE = 16;
 
 // Structures
 
@@ -148,9 +147,9 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
                 // Texture coordinates
                 // One segment = 1 tile
                 Texture texture = poly.texture;
-                float v0 = modelSegmentIndex * TILE_SIZE * 1.0 / texture.h;
+                float v0 = modelSegmentIndex * TILE_SIZE_PIXELS * 1.0 / texture.h;
                 v0 -= floor(v0);        // Repeat
-                float v1 = v0 + TILE_SIZE * 1.0 / texture.h;
+                float v1 = v0 + TILE_SIZE_PIXELS * 1.0 / texture.h;
 
                 // Draw polygon
                 Vec polyOffset = new Vec { x = poly.pos.x, y = poly.pos.y };
@@ -167,9 +166,9 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
                 // Texture coordinates
                 // One segment = 1 tile
                 Texture texture = poly.texture;
-                float u0 = modelSegmentIndex * TILE_SIZE * 1.0 / texture.w;
+                float u0 = modelSegmentIndex * TILE_SIZE_PIXELS * 1.0 / texture.w;
                 u0 -= floor(u0);
-                float u1 = u0 + TILE_SIZE * 1.0 / texture.w;
+                float u1 = u0 + TILE_SIZE_PIXELS * 1.0 / texture.w;
 
                 // Draw polygon
                 Vec polyOffset = new Vec { x = poly.pos.x, y = poly.pos.y };
@@ -235,27 +234,15 @@ void drawWheels(float steering, int wheelRotation, float scale) {
 
     colmap(wheelTurnCols);
     tran(sideTex.tran);
-    scaleimg(textureImage, 0, y, l0, h,
-        tireTex.u, 
-        tireTex.v, 
-        tireTex.w,
-        tireTex.h);
-    scaleimg(textureImage, l0, y, lw, h,
-        sideTex.u, 
-        sideTex.v, 
-        sideTex.w,
-        sideTex.h);
 
-    scaleimg(textureImage, r1 - 1, y, SCREEN_WIDTH - r1 + 1, h,
-        tireTex.u, 
-        tireTex.v, 
-        tireTex.w,
-        tireTex.h);
-    scaleimg(textureImage, r0, y, rw, h,
-        sideTex.u + sideTex.w - 0.001, 
-        sideTex.v, 
-       -sideTex.w,
-        sideTex.h);    
+    // Draw left wheel
+    scaleTexture(tireTex, 0, y, l0, h);
+    scaleTexture(sideTex, l0, y, lw, h);
+
+    // Draw right wheel
+    scaleTexture(tireTex, r1 - 1, y, SCREEN_WIDTH - r1 + 1, h);
+    scaleTexture(sideTex, r0, y, rw, h, true);
+
     tran(-1);
     colmap(null);
 }
@@ -279,11 +266,7 @@ void drawCockpit() {
 
     // Cockpit base image
     tran(cptex.tran);
-    scaleimg(textureImage, 0, SCREEN_HEIGHT - cockpitHeight, cockpitWidth, cockpitHeight, 
-        cptex.u,
-        cptex.v,
-        cptex.w,
-        cptex.h);
+    scaleTexture(cptex, 0, SCREEN_HEIGHT - cockpitHeight, cockpitWidth, cockpitHeight);
     tran(-1);
 
     // Steering wheel
@@ -292,14 +275,6 @@ void drawCockpit() {
     float steerHeight = swtex.h * scale;
     float steerx = SCREEN_WIDTH / 2;
     float steery = SCREEN_HEIGHT - steerHeight * 24.0 / 256;
-
-    // TODO: Rotate!
-    // scaleimg(textureImage, steerx - steerWidth / 2, steery - steerHeight / 2, 
-    //     steerWidth, steerHeight,
-    //     swtex.u * TEXTURE_SCALE_FACTOR,
-    //     swtex.v * TEXTURE_SCALE_FACTOR,
-    //     swtex.w * TEXTURE_SCALE_FACTOR,
-    //     swtex.h * TEXTURE_SCALE_FACTOR);
     float ang = steering * MATH_PI / 2;
     float sa = sin(ang), ca = cos(ang);
     tran(swtex.tran);
@@ -322,10 +297,6 @@ void drawCockpit() {
     Texture ctex = gameTextures.steeringCenter;
     float centerWidth = ctex.w * scale;
     float centerHeight = ctex.h * scale;
-    scaleimg(textureImage, steerx - centerWidth / 2, steery - centerHeight / 2,
-        centerWidth, centerHeight,
-        ctex.u,
-        ctex.v,
-        ctex.w,
-        ctex.h);
+    scaleTexture(ctex, steerx - centerWidth / 2, steery - centerHeight / 2,
+        centerWidth, centerHeight);
 }

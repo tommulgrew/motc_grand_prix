@@ -1,3 +1,7 @@
+// Constants
+
+const int TILE_SIZE_PIXELS = 16;
+
 // Palette
 int[] colourPalette = new int[] {
     0x000000, 0x1c2a51, 0x125359, 0x0659b3,
@@ -81,11 +85,10 @@ Texture[] textures = new Texture[] {
 
 Texture fixTexture(Texture tex) {
     // Original texture coordinates are in tiles
-    // Multiply by 16 to get pixel coordinates
-    tex.u *= 16;
-    tex.v *= 16;
-    tex.w *= 16;
-    tex.h *= 16;
+    tex.u *= TILE_SIZE_PIXELS;
+    tex.v *= TILE_SIZE_PIXELS;
+    tex.w *= TILE_SIZE_PIXELS;
+    tex.h *= TILE_SIZE_PIXELS;
     return tex;
 }
 

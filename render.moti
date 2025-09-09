@@ -21,6 +21,18 @@ Vec project(Vec pt) {
     };
 }
 
+// Shorthand to scale a texture with scaleimg
+void scaleTexture(Texture tex, float x, float y, float w, float h, bool flipx = false) {
+    tran(tex.tran);
+    if (flipx) {
+        scaleimg(textureImage, x, y, w, h, tex.u + tex.w - 0.001, tex.v, -tex.w, tex.h);
+    }
+    else {
+        scaleimg(textureImage, x, y, w, h, tex.u, tex.v, tex.w, tex.h);    
+    }
+    tran(-1);
+}
+
 // Draw a textured quad, aligned such that constant z lines are horizontal
 void drawQuadHoriz(
     Texture texture,
@@ -199,27 +211,7 @@ void drawQuadFront(
         y1 = pt.y + height / 2;
 
     if (texture != null) {
-        float v = texture.v;
-        float du = texture.w / width;
-        float dv = texture.h / height;
-
-        // Clip vertically
-        float prevY0 = y0;
-        y0 = max(ceil(y0), 0);
-        y1 = min(ceil(y1), CLIP_BOTTOM);
-        if (y1 <= y0) return;
-
-        // Adjust v for clipped y0
-        float yAdj = y0 - prevY0;
-        v += yAdj * dv;
-
-        // Render
-        tran(texture.tran);
-        while (y0 < y1) {
-            texlineh(textureImage, x0, y0, x1 - x0, texture.u, v, du, 0);    
-            y0++;
-            v += dv;
-        }
+        scaleTexture(texture, x0, y0, width, height, flipX);
     }
     else {
         tran(-1);
