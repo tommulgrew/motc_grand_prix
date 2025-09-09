@@ -7,6 +7,7 @@
 
 const int DRAW_DISTANCE = 60;
 const float CAMERA_TILT = 0.175;
+const int TILE_SIZE = 16;
 
 // Structures
 
@@ -145,10 +146,11 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
             for (ModelPoly poly : modelSegment.horizPolys) {
 
                 // Texture coordinates
+                // One segment = 1 tile
                 Texture texture = poly.texture;
-                float v0 = modelSegmentIndex * 1.0 / texture.h;
+                float v0 = modelSegmentIndex * TILE_SIZE * 1.0 / texture.h;
                 v0 -= floor(v0);        // Repeat
-                float v1 = v0 + 1.0 / texture.h;
+                float v1 = v0 + TILE_SIZE * 1.0 / texture.h;
 
                 // Draw polygon
                 Vec polyOffset = new Vec { x = poly.pos.x, y = poly.pos.y };
@@ -163,10 +165,11 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
             for (ModelPoly poly : modelSegment.vertPolys) {
 
                 // Texture coordinates
+                // One segment = 1 tile
                 Texture texture = poly.texture;
-                float u0 = modelSegmentIndex * 1.0 / texture.w;
+                float u0 = modelSegmentIndex * TILE_SIZE * 1.0 / texture.w;
                 u0 -= floor(u0);
-                float u1 = u0 + 1.0 / texture.w;
+                float u1 = u0 + TILE_SIZE * 1.0 / texture.w;
 
                 // Draw polygon
                 Vec polyOffset = new Vec { x = poly.pos.x, y = poly.pos.y };
@@ -233,26 +236,26 @@ void drawWheels(float steering, int wheelRotation, float scale) {
     colmap(wheelTurnCols);
     tran(sideTex.tran);
     scaleimg(textureImage, 0, y, l0, h,
-        tireTex.u * TEXTURE_SCALE_FACTOR, 
-        tireTex.v * TEXTURE_SCALE_FACTOR, 
-        tireTex.w * TEXTURE_SCALE_FACTOR,
-        tireTex.h * TEXTURE_SCALE_FACTOR);
+        tireTex.u, 
+        tireTex.v, 
+        tireTex.w,
+        tireTex.h);
     scaleimg(textureImage, l0, y, lw, h,
-        sideTex.u * TEXTURE_SCALE_FACTOR, 
-        sideTex.v * TEXTURE_SCALE_FACTOR, 
-        sideTex.w * TEXTURE_SCALE_FACTOR,
-        sideTex.h * TEXTURE_SCALE_FACTOR);
+        sideTex.u, 
+        sideTex.v, 
+        sideTex.w,
+        sideTex.h);
 
     scaleimg(textureImage, r1 - 1, y, SCREEN_WIDTH - r1 + 1, h,
-        tireTex.u * TEXTURE_SCALE_FACTOR, 
-        tireTex.v * TEXTURE_SCALE_FACTOR, 
-        tireTex.w * TEXTURE_SCALE_FACTOR,
-        tireTex.h * TEXTURE_SCALE_FACTOR);
+        tireTex.u, 
+        tireTex.v, 
+        tireTex.w,
+        tireTex.h);
     scaleimg(textureImage, r0, y, rw, h,
-        (sideTex.u + sideTex.w) * TEXTURE_SCALE_FACTOR - 0.001, 
-        sideTex.v * TEXTURE_SCALE_FACTOR, 
-        -sideTex.w * TEXTURE_SCALE_FACTOR,
-        sideTex.h * TEXTURE_SCALE_FACTOR);    
+        sideTex.u + sideTex.w - 0.001, 
+        sideTex.v, 
+       -sideTex.w,
+        sideTex.h);    
     tran(-1);
     colmap(null);
 }
@@ -277,10 +280,10 @@ void drawCockpit() {
     // Cockpit base image
     tran(cptex.tran);
     scaleimg(textureImage, 0, SCREEN_HEIGHT - cockpitHeight, cockpitWidth, cockpitHeight, 
-        cptex.u * TEXTURE_SCALE_FACTOR,
-        cptex.v * TEXTURE_SCALE_FACTOR,
-        cptex.w * TEXTURE_SCALE_FACTOR,
-        cptex.h * TEXTURE_SCALE_FACTOR);
+        cptex.u,
+        cptex.v,
+        cptex.w,
+        cptex.h);
     tran(-1);
 
     // Steering wheel
@@ -310,14 +313,10 @@ void drawCockpit() {
         float rx = ca * tx + sa * ty + swtex.u + swtex.w / 2;
         float ry =-sa * tx + ca * ty + swtex.v + swtex.h / 2;
 
-        // Adjust texture coords
-        rx *= TEXTURE_SCALE_FACTOR;
-        ry *= TEXTURE_SCALE_FACTOR;
-
         // Draw textured line
         texlineh(textureImage, steerx - steerWidth / 2, y, steerWidth, rx, ry, 
-             ca * swtex.w / steerWidth * TEXTURE_SCALE_FACTOR,
-            -sa * swtex.h / steerWidth * TEXTURE_SCALE_FACTOR);
+             ca * swtex.w / steerWidth,
+            -sa * swtex.h / steerWidth);
     }
 
     Texture ctex = gameTextures.steeringCenter;
@@ -325,8 +324,8 @@ void drawCockpit() {
     float centerHeight = ctex.h * scale;
     scaleimg(textureImage, steerx - centerWidth / 2, steery - centerHeight / 2,
         centerWidth, centerHeight,
-        ctex.u * TEXTURE_SCALE_FACTOR,
-        ctex.v * TEXTURE_SCALE_FACTOR,
-        ctex.w * TEXTURE_SCALE_FACTOR,
-        ctex.h * TEXTURE_SCALE_FACTOR);
+        ctex.u,
+        ctex.v,
+        ctex.w,
+        ctex.h);
 }

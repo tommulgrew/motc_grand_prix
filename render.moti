@@ -6,7 +6,6 @@ const float pratio = SCREEN_WIDTH / 320.0;      // Pixel ratio compared to 320x2
 const int CLIP_BOTTOM = SCREEN_HEIGHT;
 const float NEAR_Z = 0.1;
 const float SCREEN_DIST = SCREEN_WIDTH / 2;     // Used for projection calculations
-const int TEXTURE_SCALE_FACTOR = 16;            // x8 and then x2 as resolution has been doubled
 
 // Routines
 
@@ -38,10 +37,6 @@ void drawQuadHoriz(
     v1 = texture.v + texture.h * (1 - v1);
     float u0 = texture.u;
     float u1 = texture.u + texture.w;
-    v0 *= TEXTURE_SCALE_FACTOR;
-    v1 *= TEXTURE_SCALE_FACTOR;
-    u0 *= TEXTURE_SCALE_FACTOR;
-    u1 *= TEXTURE_SCALE_FACTOR;
     v0 -= 0.001;
     v1 += 0.001;
 
@@ -120,10 +115,6 @@ void drawQuadVert(
     u1 = texture.u + texture.w * (1 - u1);
     float v0 = texture.v;
     float v1 = texture.v + texture.h;
-    v0 *= TEXTURE_SCALE_FACTOR;
-    v1 *= TEXTURE_SCALE_FACTOR;
-    u0 *= TEXTURE_SCALE_FACTOR;
-    u1 *= TEXTURE_SCALE_FACTOR;
     u0 -= 0.001;
     u1 += 0.001;
 
@@ -208,14 +199,9 @@ void drawQuadFront(
         y1 = pt.y + height / 2;
 
     if (texture != null) {
-
-        float u = texture.u * TEXTURE_SCALE_FACTOR;
-        float v = texture.v * TEXTURE_SCALE_FACTOR;
-        float tw = texture.w * TEXTURE_SCALE_FACTOR;
-        float th = texture.h * TEXTURE_SCALE_FACTOR;
-
-        float du = tw / width;
-        float dv = th / height;
+        float v = texture.v;
+        float du = texture.w / width;
+        float dv = texture.h / height;
 
         // Clip vertically
         float prevY0 = y0;
@@ -230,7 +216,7 @@ void drawQuadFront(
         // Render
         tran(texture.tran);
         while (y0 < y1) {
-            texlineh(textureImage, x0, y0, x1 - x0, u, v, du, 0);    
+            texlineh(textureImage, x0, y0, x1 - x0, texture.u, v, du, 0);    
             y0++;
             v += dv;
         }

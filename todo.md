@@ -17,8 +17,9 @@ To fix
 
 Done
 ====
-- DONE - Draw cockpit
-- DONE - Draw steering wheel
+- DONE Draw cockpit
+- DONE Draw steering wheel
+- DONE Pre-multiply in texture scale factor
 
 To do
 =====
@@ -26,4 +27,4 @@ To do
 - Add horizon
 - Update texture image. Make use of 2x resolution
 - Implement driving code
-- Pre-multiply in texture scale factor
+- Check memory usage

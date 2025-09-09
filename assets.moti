@@ -79,6 +79,20 @@ Texture[] textures = new Texture[] {
     new Texture { name = "windows4", u = 54, v = 20, w = 10, h = 4, tran = -1 }
 };
 
+Texture fixTexture(Texture tex) {
+    // Original texture coordinates are in tiles
+    // Multiply by 16 to get pixel coordinates
+    tex.u *= 16;
+    tex.v *= 16;
+    tex.w *= 16;
+    tex.h *= 16;
+    return tex;
+}
+
+for (Texture tex : textures) {
+    fixTexture(tex);
+}
+
 Texture getTexture(string name) {
     for (Texture t : textures) 
         if (t.name = name)
@@ -91,9 +105,9 @@ struct GameTextures {
 }
 
 GameTextures gameTextures = new GameTextures {
-    cockpit = new Texture { name = "cockpit", u = 108, v = 0, w = 20, h = 6, tran = 10 },
-    steeringWheel = new Texture { name = "steering", u = 96, v = 2, w = 8, h = 8, tran = 12 },
-    steeringCenter = new Texture { name = "steeringCenter", u = 8, v = 18, w = 1, h = 1, tran = 12 },
-    wheelSide = new Texture { name = "wheel", u = 14, v = 16, w = 2, h = 4, tran = 1 },
-    wheelTire = new Texture { name = "wheel", u = 13, v = 16, w = 1, h = 4, tran = 1 }
+    cockpit = fixTexture(new Texture { name = "cockpit", u = 108, v = 0, w = 20, h = 6, tran = 10 }),
+    steeringWheel = fixTexture(new Texture { name = "steering", u = 96, v = 2, w = 8, h = 8, tran = 12 }),
+    steeringCenter = fixTexture(new Texture { name = "steeringCenter", u = 8, v = 18, w = 1, h = 1, tran = 12 }),
+    wheelSide = fixTexture(new Texture { name = "wheel", u = 14, v = 16, w = 2, h = 4, tran = 1 }),
+    wheelTire = fixTexture(new Texture { name = "wheel", u = 13, v = 16, w = 1, h = 4, tran = 1 })
 };
