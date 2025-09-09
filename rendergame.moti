@@ -85,8 +85,6 @@ ScreenSpaceSegment[] getScreenSpaceSegments(Vec cameraPos, float cameraTurn, flo
 }
 
 void drawHorizon(ScreenSpaceSegment[] screenSegs, Track track, float cameraTurn, float cameraPitch) {
-    tran(-1);
-
     float horizonXCoord = horizonX - cameraTurn * SCREEN_DIST;
     float horizonYCoord = SCREEN_HEIGHT / 2 - (cameraPitch * CAMERA_TILT) * SCREEN_DIST + 4;
 
@@ -233,7 +231,6 @@ void drawWheels(float steering, int wheelRotation, float scale) {
     }
 
     colmap(wheelTurnCols);
-    tran(sideTex.tran);
 
     // Draw left wheel
     scaleTexture(tireTex, 0, y, l0, h);
@@ -243,7 +240,6 @@ void drawWheels(float steering, int wheelRotation, float scale) {
     scaleTexture(tireTex, r1 - 1, y, SCREEN_WIDTH - r1 + 1, h);
     scaleTexture(sideTex, r0, y, rw, h, true);
 
-    tran(-1);
     colmap(null);
 }
 
@@ -265,9 +261,7 @@ void drawCockpit() {
     circ(SCREEN_WIDTH / 2, SCREEN_HEIGHT - cockpitHeight * 0.6, SCREEN_WIDTH * 0.3);
 
     // Cockpit base image
-    tran(cptex.tran);
     scaleTexture(cptex, 0, SCREEN_HEIGHT - cockpitHeight, cockpitWidth, cockpitHeight);
-    tran(-1);
 
     // Steering wheel
     Texture swtex = gameTextures.steeringWheel;
@@ -293,6 +287,7 @@ void drawCockpit() {
              ca * swtex.w / steerWidth,
             -sa * swtex.h / steerWidth);
     }
+    tran(-1);
 
     Texture ctex = gameTextures.steeringCenter;
     float centerWidth = ctex.w * scale;

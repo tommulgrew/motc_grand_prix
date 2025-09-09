@@ -104,10 +104,11 @@ Texture getTexture(string name) {
 }
 
 struct GameTextures {
-    Texture cockpit, steeringWheel, steeringCenter, wheelSide, wheelTire;
+    Texture horizon, cockpit, steeringWheel, steeringCenter, wheelSide, wheelTire;
 }
 
 GameTextures gameTextures = new GameTextures {
+    horizon = fixTexture(new Texture { name = "horizon", u = 0, v = 25, w = 16, h = 7, tran = 0}),
     cockpit = fixTexture(new Texture { name = "cockpit", u = 108, v = 0, w = 20, h = 6, tran = 10 }),
     steeringWheel = fixTexture(new Texture { name = "steering", u = 96, v = 2, w = 8, h = 8, tran = 12 }),
     steeringCenter = fixTexture(new Texture { name = "steeringCenter", u = 8, v = 18, w = 1, h = 1, tran = 12 }),

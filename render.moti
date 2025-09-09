@@ -110,6 +110,7 @@ void drawQuadHoriz(
         pt0 += dp;
         v0 += dv;
     }
+    tran(-1);
 }
 
 void drawQuadVert(
@@ -188,6 +189,7 @@ void drawQuadVert(
         pt0 += dp;
         u0 += du;
     }
+    tran(-1);
 }
 
 void drawQuadFront(
@@ -214,7 +216,6 @@ void drawQuadFront(
         scaleTexture(texture, x0, y0, width, height, flipX);
     }
     else {
-        tran(-1);
         color(colour);
         rectfill(x0, y0, x1, y1);
     }
