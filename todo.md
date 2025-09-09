@@ -12,19 +12,19 @@ Fixed
 To fix
 ======
 
-- Shoulder things not generating correctly. Seems to miss out the middle of the curve?!
-- Windsheild circle has gaps. Are lines not joining up?
+- Shoulder things not generating correctly. Seems to miss out the middle curve?!
+- Windshield circle has gaps. Are lines not joining up?
 
 Done
 ====
 - DONE Draw cockpit
 - DONE Draw steering wheel
 - DONE Pre-multiply in texture scale factor
+- DONE Add horizon
 
 To do
 =====
 
-- Add horizon
 - Update texture image. Make use of 2x resolution
 - Implement driving code
 - Check memory usage
