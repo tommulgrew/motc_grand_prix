@@ -1,20 +1,37 @@
 #include "library/trig"
 
-struct AIParams {
+struct CarAIParams {
     int todo;
+}
+
+struct CarAIState {
+    float aiXOffset;
+    float wanderOffset;
+    int rndCounter;
+    CarAIParams aiParams, baseAIParams;
+}
+
+struct CarInput {
+    float accel;        // -1 to 1. +ve = accel, -ve = brake
+    float steering;     // -1 to 1.
+}
+
+struct CarAnimation {
+    float wheelTurn, wheelPrev;
+    float revs;
+}
+
+struct CarRaceState {
+    bool isFinished;
 }
 
 struct Car {
     Vec pos;
     float turn, pitch;
     float vel, xd;
-    float aiXOffset;
-    float wheelTurn, wheelPrev;
-    float revs;
-    float wanderOffset;
-    int rndCounter;
-    bool isFinished;
-    AIParams aiParams, baseAIParams;
     string name;
-    float steering;
+    CarInput input;
+    CarAnimation anim;
+    CarRaceState race;
+    CarAIState ai;
 }

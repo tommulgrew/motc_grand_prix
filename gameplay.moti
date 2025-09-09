@@ -2,21 +2,33 @@
 #include "world"
 
 void resetPlayer();
+void updatePlayer();
 
 void initRace(Track track) {
     generateTrack(track);
     resetPlayer();
 }
 
+void updateGame() {
+    updatePlayer();
+}
+
 void resetPlayer() {
     player = new Car {
+        name = "Player",
         pos = new Vec { 
-            // x = -1.5, 
+            x = 1.5, 
             y = 0, 
             z = 0.0001 
         },
-        revs = 0.15,
-        wanderOffset = rnd(),
-        name = "Player"
+        anim = new CarAnimation {
+            revs = 0.15
+        },
+        input = new CarInput,
+        race = new CarRaceState
     };
+}
+
+void updatePlayer() {
+
 }
