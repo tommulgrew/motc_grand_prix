@@ -14,7 +14,8 @@ struct CarAIState {
 struct CarInput {
     float accel;                // -1 to 1. +ve = accel, -ve = brake
     float steering;             // -1 to 1.
-    float keyboardSteering;     // Keyboard steering.
+    float keyboardSteering;
+    float gamepadSteering;
 }
 
 struct CarAnimation {

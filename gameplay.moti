@@ -59,8 +59,11 @@ void updatePlayerInput() {
     }
     input.keyboardSteering = clamp(input.keyboardSteering, -1, 1);
 
+    // Gamepad
+    input.gamepadSteering = input.gamepadSteering * 0.9 + axis(AX_X) * 0.1;
+
     // Steering
-    input.steering = input.keyboardSteering + axis(AX_X);
+    input.steering = input.keyboardSteering + input.gamepadSteering;
     input.steering = clamp(input.steering, -1, 1);
 }
 
