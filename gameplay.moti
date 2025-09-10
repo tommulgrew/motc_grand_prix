@@ -1,6 +1,7 @@
 #include "gamedata"
 #include "world"
 #include "render"
+#include "routines"
 
 // Constants
 
@@ -173,5 +174,10 @@ void moveCar(Car car) {
 
     // TODO: Laps, game rules
 
-    
+    // TODO: Collisions
+
+    // Calculate pitch
+    WorldSegment pseg = world[toint(zIndex) % world.length];
+    WorldSegment nseg = world[toint(zIndex + 1) % world.length];
+    car.pitch = lerp(pseg.pitch, nseg.pitch, car.pos.z - floor(car.pos.z));
 }
