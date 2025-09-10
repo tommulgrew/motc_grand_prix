@@ -5,7 +5,7 @@
 #include "assets"
 #include "tracks"
 #include "models"
-#include "trackdata"
+#include "gameconfig"
 #include "gameplay"
 #include "world"
 #include "rendergame"
@@ -30,19 +30,10 @@ screen(makeimg(SCREEN_WIDTH, SCREEN_HEIGHT));
 // Main loop
 while (true) {
 	drawGame(currentTrack);
-	print(player.pos.z, 1, 1);
 	flip();
 
 	interval(1000 / 30);
 	updateGame();
-
-	// player.pos.z += 0.5;
-	// int segi = floor(player.pos.z);
-	// WorldSegment seg = world[segi % world.length];
-	// WorldSegment nextSeg = world[(segi + 1) % world.length];
-	// float zOffset = player.pos.z - floor(player.pos.z);
-	// player.turn = lerp(0, seg.turn, zOffset);
-	// player.pitch = lerp(seg.pitch, nextSeg.pitch, zOffset);
 
 	frame++;
 }

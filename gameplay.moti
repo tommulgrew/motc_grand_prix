@@ -38,10 +38,10 @@ void updatePlayerInput() {
     input.accel -= axis(AX_LTRIG);
     input.accel = clamp(input.accel, -1, 1);
 
-    // Keyboard steering
+    // Keyboard (or dpad) steering
     float sx = 0;
-    if (keydn(KEY_LEFT))  sx -= 1;
-    if (keydn(KEY_RIGHT)) sx += 1;
+    if (keydn(KEY_LEFT)  or btn(BTN_LEFT))  sx -= 1;
+    if (keydn(KEY_RIGHT) or btn(BTN_RIGHT)) sx += 1;
     if (sx != 0 and (input.keyboardSteering = 0 or sgn(sx) = sgn(input.keyboardSteering))) {
         // Turning wheel away from center
         sx *= 0.045;
@@ -59,8 +59,17 @@ void updatePlayerInput() {
     }
     input.keyboardSteering = clamp(input.keyboardSteering, -1, 1);
 
-    // Gamepad
-    input.gamepadSteering = input.gamepadSteering * 0.9 + axis(AX_X) * 0.1;
+    // Gamepad steering.
+    // Apply deadzone, and smoothing.
+    float axisx = axis(AX_X);
+    if (abs(axisx) < gameConfig.controllerDeadzone) {
+        axisx = 0;
+    }
+    else {
+        axisx = sgn(axisx) * (abs(axisx) - gameConfig.controllerDeadzone) / (1 - gameConfig.controllerDeadzone);
+    }
+    input.gamepadSteering = input.gamepadSteering * gameConfig.controllerSmoothing + axisx * (1 - gameConfig.controllerSmoothing);
+    if (abs(input.gamepadSteering) < 0.01) input.gamepadSteering = 0;
 
     // Steering
     input.steering = input.keyboardSteering + input.gamepadSteering;

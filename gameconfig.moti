@@ -1,0 +1,13 @@
+// Structures
+
+struct GameConfig {
+    float controllerDeadzone;
+    float controllerSmoothing;
+}
+
+// Data
+
+GameConfig gameConfig = new GameConfig {
+    controllerDeadzone = 0.075,
+    controllerSmoothing = 0.9
+};
