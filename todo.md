@@ -27,4 +27,10 @@ To do
 
 - Update texture image. Make use of 2x resolution
 - Implement driving code
+    - DONE Basic code
+    - Collisions
 - Check memory usage
+- Sound effects
+    - Export from Pico-8
+    - Load on startup
+    - Trigger
