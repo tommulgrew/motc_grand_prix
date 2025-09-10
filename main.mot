@@ -1,4 +1,6 @@
 #title Mot Grand Prix
+#file assets/textures.png
+
 #include "library/trig"
 #include "assets"
 #include "tracks"

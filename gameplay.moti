@@ -1,8 +1,25 @@
 #include "gamedata"
 #include "world"
+#include "render"
+
+// Constants
+
+const float VELOCITY_FACTOR = 2.2;
+const float ROAD_WIDTH = 7.5;
+const float CAR_WIDTH = 0.8, CAR_LENGTH = 1.3;
+const float ACCEL_RATE = 0.00275, BRAKE_RATE = 0.002;
+const float FRICTION_AIR = 0.003;
+const float FRICTION_ROLL_ROAD = 0.007;
+const float FRICTION_ROLL_GROUND = 0.03;
+const float FRICTION_SIDE = 0.0165;
+const float FRICTION_SIDE_SLIDE = FRICTION_SIDE * 0.85;
+const float FRICTION_SIDE_GROUND = FRICTION_SIDE * 0.9;
+
+// Routines
 
 void resetPlayer();
 void updatePlayer();
+void moveCar(Car car);
 
 void initRace(Track track) {
     generateTrack(track);
@@ -67,5 +84,94 @@ void resetPlayer() {
 }
 
 void updatePlayer() {
+
+    // Update input
     updatePlayerInput();
+
+    // Update car
+    moveCar(player);
+
+    // Animate wheels
+    player.anim.wheelPrev = player.anim.wheelTurn;
+    player.anim.wheelTurn += player.vel * VELOCITY_FACTOR * 18;
+}
+
+void moveCar(Car car) {
+    bool isOnRoad = abs(car.pos.x) <= (ROAD_WIDTH - CAR_WIDTH) / 2;
+
+    // Accelerate/brake
+    if (car.input.accel < 0) {
+        car.vel -= BRAKE_RATE;
+    }
+    else if (car.input.accel > 0) {
+        car.vel += ACCEL_RATE;
+    }
+    else if (car.vel >= 0.0815) {
+        car.vel += ACCEL_RATE * 0.2;    //?
+    }
+
+    // Rolling friction
+    float frictionRoll = isOnRoad 
+        ? FRICTION_ROLL_ROAD
+        : FRICTION_ROLL_GROUND;
+
+    frictionRoll *= car.vel;
+
+    // Air friction
+    float frictionAir = FRICTION_AIR;
+    frictionAir *= pow(car.vel, 2);
+
+    // Apply friction
+    float friction = frictionRoll + frictionAir;
+    car.vel -= friction;
+    if (car.vel < 0) car.vel = 0;
+
+    // Steer
+    car.turn += car.input.steering * car.vel * 0.85;
+    car.turn = clamp(car.turn, -1.5, 1.5);
+    
+    // Sideways friction
+    float frictionGrip = isOnRoad ? FRICTION_SIDE : FRICTION_SIDE_GROUND;
+    float frictionSlide = isOnRoad ? FRICTION_SIDE_SLIDE : FRICTION_SIDE_GROUND;
+    float targetxd = car.turn * car.vel;
+    float xddif = targetxd - car.xd;
+    if (abs(xddif) < frictionGrip) {
+        car.xd = targetxd;
+        if (car = player) {
+            // TODO: Stop slide sfx
+        }
+    }
+    else {
+        car.xd += sgn(xddif) * frictionSlide;
+        if (car = player) {
+            // TODO: Play slide sfx
+        }
+    }
+
+    // Move car forwards
+    float zIndex = floor(car.pos.z);
+    car.pos += new Vec { 
+        x = car.xd  * VELOCITY_FACTOR,
+        z = car.vel * VELOCITY_FACTOR
+    };
+
+    // Account for moving onto new segments
+    while (floor(car.pos.z) > zIndex) {
+
+        // Get turn for current segment
+        float turn = world[toint(zIndex) % world.length].turn;
+
+        // Adjust car turn and xd
+        car.turn -= turn;
+        car.xd -= turn * car.vel;
+
+        // Adjust horizon
+        if (car = player) horizonX += turn * SCREEN_DIST;
+
+        zIndex++;
+    }
+
+    // TODO: Laps, game rules
+
+    
 }

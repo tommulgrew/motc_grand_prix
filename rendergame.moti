@@ -85,12 +85,10 @@ ScreenSpaceSegment[] getScreenSpaceSegments(Vec cameraPos, float cameraTurn, flo
 }
 
 void drawHorizon(ScreenSpaceSegment[] screenSegs, Track track, float cameraTurn, float cameraPitch) {
-    float horizonXCoord = horizonX - cameraTurn * SCREEN_DIST;
-    float horizonYCoord = SCREEN_HEIGHT / 2 - (cameraPitch * CAMERA_TILT) * SCREEN_DIST + 4;
-
     ScreenSpaceSegment lastSegment = screenSegs[screenSegs.length - 1];
-    float hx = horizonX - cameraTurn * SCREEN_DIST;
-    float groundY = min(lastSegment.clipY, horizonYCoord + 8);
+    float hx = horizonX + cameraTurn * SCREEN_DIST;
+    float hy = SCREEN_HEIGHT / 2 - (cameraPitch * CAMERA_TILT) * SCREEN_DIST + 4;
+    float groundY = min(lastSegment.clipY, hy + 8);
     
     Texture tex = gameTextures.horizon;
     float scale = PRATIO;
@@ -266,7 +264,11 @@ void drawCockpit() {
     float cockpitHeight = cptex.h * scale;
 
     // Wheels
-    drawWheels(steering, frame * 3.3, scale);
+
+    // Prevent wheels from turning more than a half turn per frame. Otherwise they
+    // can appear to be stationary or rotating backwards at certain speeds.
+    player.anim.wheelTurn = min(player.anim.wheelPrev + wheelPalette.length * 0.4, player.anim.wheelTurn);
+    drawWheels(steering, player.anim.wheelTurn, scale);
 
     // Windshield circle
     color(7);
