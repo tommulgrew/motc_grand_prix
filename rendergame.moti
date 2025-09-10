@@ -48,7 +48,7 @@ ScreenSpaceSegment[] getScreenSpaceSegments(Vec cameraPos, float cameraTurn, flo
 
     // Road drawing cursor
     float turn = -cameraTurn, pitch = cameraSegment.pitch - cameraPitch - CAMERA_TILT;
-    float clipY = SCREEN_HEIGHT;
+    float clipY = CLIP_BOTTOM;
 
     // Calculate initial position
     Vec skewedCameraPos = skew(new Vec { 
