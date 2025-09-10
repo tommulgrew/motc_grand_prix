@@ -257,7 +257,7 @@ void drawWheels(float steering, int wheelRotation, float scale) {
 
 void drawCockpit() {
 
-    float steering = sin(frame * 0.1);      // TODO: Hook up to player controls
+    float steering = player.input.steering;
 
     // Calculate scale so that cockpit texture fits width of screen
     Texture cptex = gameTextures.cockpit;

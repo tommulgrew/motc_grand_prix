@@ -9,6 +9,43 @@ void initRace(Track track) {
     resetPlayer();
 }
 
+void updatePlayerInput() {
+    CarInput input = player.input;
+
+    // Acceleration
+    input.accel = 0;
+    if (keydn(KEY_UP) or keydn("z") or btn(BTN_A))   input.accel += 1;
+    if (keydn(KEY_DOWN) or keydn("x") or btn(BTN_B)) input.accel -= 1;
+    input.accel += axis(AX_RTRIG);
+    input.accel -= axis(AX_LTRIG);
+    input.accel = clamp(input.accel, -1, 1);
+
+    // Keyboard steering
+    float sx = 0;
+    if (keydn(KEY_LEFT))  sx -= 1;
+    if (keydn(KEY_RIGHT)) sx += 1;
+    if (sx != 0 and (input.keyboardSteering = 0 or sgn(sx) = sgn(input.keyboardSteering))) {
+        // Turning wheel away from center
+        sx *= 0.045;
+        input.keyboardSteering += sx;
+    }
+    else {
+        // Recentering
+        float recenter = sx != 0 ? 0.08 : 0.02;
+        if (abs(input.keyboardSteering) < recenter) {
+            input.keyboardSteering = 0;
+        }
+        else {
+            input.keyboardSteering -= sgn(input.keyboardSteering) * recenter;
+        }
+    }
+    input.keyboardSteering = clamp(input.keyboardSteering, -1, 1);
+
+    // Steering
+    input.steering = input.keyboardSteering + axis(AX_X);
+    input.steering = clamp(input.steering, -1, 1);
+}
+
 void updateGame() {
     updatePlayer();
 }
@@ -30,5 +67,5 @@ void resetPlayer() {
 }
 
 void updatePlayer() {
-
+    updatePlayerInput();
 }
