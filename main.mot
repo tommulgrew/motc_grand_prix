@@ -1,5 +1,13 @@
 #title Mot Grand Prix
 #file assets/textures.png
+#file assets/sfx/getready.wav
+#file assets/sfx/go.wav
+#file assets/sfx/lapbell.wav
+#file assets/sfx/crash1.wav
+#file assets/sfx/crash2.wav
+#file assets/sfx/crash3.wav
+#file assets/sfx/groundslide.wav
+#file assets/sfx/roadslide.wav
 
 #include "library/trig"
 #include "assets"

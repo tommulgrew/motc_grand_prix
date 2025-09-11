@@ -78,6 +78,14 @@ void updatePlayerInput() {
 
 void updateGame() {
     updatePlayer();
+
+    // Collision sfx timer
+    if (collideSfxTimer > 0) {
+        collideSfxTimer--;
+    }
+    else {
+        collideSfxIndex = -1;
+    }    
 }
 
 void resetPlayer() {
@@ -109,8 +117,13 @@ void updatePlayer() {
     player.anim.wheelTurn += player.vel * VELOCITY_FACTOR * 18;
 }
 
-void collideSfx(int n) {
-    // TODO
+void collideSfx(int sfxIndex) {
+    sfxIndex = min(sfxIndex, gameSfx.collision.length - 1);
+    if (sfxIndex > collideSfxIndex) {
+        playsfx(gameSfx.collision[sfxIndex], 3);
+        collideSfxIndex = sfxIndex;
+        collideSfxTimer = 15;
+    }
 }
 
 void collide(Car car, float barrierX, float barrierXd) {
@@ -138,7 +151,7 @@ void collide(Car car, float barrierX, float barrierXd) {
         // Play collision sound effect, based on collision intensity
         if (intensity > 0.25)       collideSfx(3);
         else if (intensity > 0.1)   collideSfx(2);
-        else                collideSfx(1);        
+        else                        collideSfx(1);        
     }
 }
 

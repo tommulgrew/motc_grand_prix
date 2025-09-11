@@ -2,6 +2,20 @@
 
 const int TILE_SIZE_PIXELS = 16;
 
+// Structures
+
+struct Texture {
+    string name;
+    int u, v;           // Coordinates in textureImage
+    int w, h;           // Size in textureImage
+    int tran;           // Transparent colour
+}
+
+struct GameSfx {
+    Sfx getReady, go, lapBell, roadSlide, groundSlide;
+    Sfx[] collision;    
+}
+
 // Palette
 int[] colourPalette = new int[] {
     0x000000, 0x1c2a51, 0x125359, 0x0659b3,
@@ -16,13 +30,6 @@ int[] wheelPalette = new int[] { 1,5,1,1,0,0,0,0 };
 
 // Textures
 Image textureImage = loadimg("assets/textures.png", false);
-
-struct Texture {
-    string name;
-    int u, v;           // Coordinates in textureImage
-    int w, h;           // Size in textureImage
-    int tran;           // Transparent colour
-}
 
 Texture[] textures = new Texture[] {
     new Texture { name = "road00", u = 32, v = 0, w = 8, h = 4, tran = 14 },
@@ -114,4 +121,19 @@ GameTextures gameTextures = new GameTextures {
     steeringCenter = fixTexture(new Texture { name = "steeringCenter", u = 8, v = 18, w = 1, h = 1, tran = 12 }),
     wheelSide = fixTexture(new Texture { name = "wheel", u = 14, v = 16, w = 2, h = 4, tran = 1 }),
     wheelTire = fixTexture(new Texture { name = "wheel", u = 13, v = 16, w = 1, h = 4, tran = 1 })
+};
+
+// Sound effects
+
+GameSfx gameSfx = new GameSfx {
+    getReady = loadsfx("assets/sfx/getready.wav"),
+    go = loadsfx("assets/sfx/go.wav"),
+    lapBell = loadsfx("assets/sfx/lapbell.wav"),
+    collision = new Sfx[] {
+        loadsfx("assets/sfx/crash1.wav"),
+        loadsfx("assets/sfx/crash2.wav"),
+        loadsfx("assets/sfx/crash3.wav")
+    },
+    groundSlide = loadsfx("assets/sfx/groundslide.wav"),
+    roadSlide = loadsfx("assets/sfx/roadslide.wav")
 };
