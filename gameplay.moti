@@ -65,7 +65,7 @@ void updatePlayerInput() {
     }
     input.keyboardSteering = clamp(input.keyboardSteering, -1, 1);
 
-    // Gamepad steering.
+    // Game controller analogue steering.
     // Apply deadzone, and smoothing.
     float axisx = axis(AX_X) * gameConfig.controllerFactor;
     if (abs(axisx) < gameConfig.controllerDeadzone) {
@@ -74,12 +74,12 @@ void updatePlayerInput() {
     else {
         axisx = sgn(axisx) * (abs(axisx) - gameConfig.controllerDeadzone) / (1 - gameConfig.controllerDeadzone);
     }
-    input.gamepadSteering = input.gamepadSteering * gameConfig.controllerSmoothing + axisx * (1 - gameConfig.controllerSmoothing);
-    input.gamepadSteering = clamp(input.gamepadSteering, -1, 1);
-    if (abs(input.gamepadSteering) < 0.01) input.gamepadSteering = 0;
+    input.controllerSteering = input.controllerSteering * gameConfig.controllerSmoothing + axisx * (1 - gameConfig.controllerSmoothing);
+    input.controllerSteering = clamp(input.controllerSteering, -1, 1);
+    if (abs(input.controllerSteering) < 0.01) input.controllerSteering = 0;
 
     // Steering
-    input.steering = input.keyboardSteering + input.gamepadSteering;
+    input.steering = input.keyboardSteering + input.controllerSteering;
     input.steering = clamp(input.steering, -1, 1);
 }
 
