@@ -126,7 +126,19 @@ void collideSfx(int sfxIndex) {
     }
 }
 
-void collide(Car car, float barrierX, float barrierXd) {
+void slideSfx(Sfx sfx) {
+    if (currentSlideSfx != sfx) {
+        currentSlideSfx = sfx;
+        if (sfx != null) {
+            playsfx(sfx, 2, true);
+        }
+        else {
+            stopsfx(2);
+        }
+    }
+}
+
+void carBarrierCollision(Car car, float barrierX, float barrierXd) {
 
     // Prevent car from penetrating barrier
     car.pos = new Vec {
@@ -197,13 +209,13 @@ void moveCar(Car car) {
     if (abs(xddif) < frictionGrip) {
         car.xd = targetxd;
         if (car = player) {
-            // TODO: Stop slide sfx
+            slideSfx(null);         // Stop sliding sfx
         }
     }
     else {
         car.xd += sgn(xddif) * frictionSlide;
         if (car = player) {
-            // TODO: Play slide sfx
+            slideSfx(isOnRoad ? gameSfx.roadSlide : gameSfx.groundSlide);
         }
     }
 
@@ -242,10 +254,10 @@ void moveCar(Car car) {
         float leftxd  = (nextSeg.left - seg.left)   * car.vel;
         float rightxd = (nextSeg.right - seg.right) * car.vel;
         if (car.pos.x > right and car.xd > rightxd) {
-            collide(car, right, rightxd);
+            carBarrierCollision(car, right, rightxd);
         }
         else if (car.pos.x < left and car.xd < leftxd) {
-            collide(car, left, leftxd);
+            carBarrierCollision(car, left, leftxd);
         }
     }
 
