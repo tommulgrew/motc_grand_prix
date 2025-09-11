@@ -225,7 +225,7 @@ void drawWheels(float steering, int wheelRotation, float scale) {
     float h = tireTex.h * scale;
     float lx = SCREEN_WIDTH / 2 - 120 * PRATIO;
     float rx = SCREEN_WIDTH / 2 + 120 * PRATIO;
-    float y = SCREEN_HEIGHT - h - 32 * PRATIO;
+    float y = SCREEN_HEIGHT - h - 32 * PRATIO + player.anim.suspension * PRATIO;
 
     float l0 = ceil(lx - lw / 2), l1 = ceil(lx + lw / 2);
     float r0 = ceil(rx - rw / 2), r1 = ceil(rx + rw / 2);

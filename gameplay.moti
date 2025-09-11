@@ -21,11 +21,16 @@ const float FRICTION_SIDE_GROUND = FRICTION_SIDE * 0.9;
 void resetPlayer();
 void updatePlayer();
 void updatePlayerRevs();
+void updatePlayerSuspension();
 void moveCar(Car car);
 
 void initRace(Track track) {
     generateTrack(track);
     resetPlayer();
+
+    // Start looped engine soundeffects
+    playsfx(gameSfx.engine1, 0, true);
+    playsfx(gameSfx.engine2, 1, true, 0.4);
 }
 
 void updatePlayerInput() {
@@ -79,7 +84,6 @@ void updatePlayerInput() {
 
 void updateGame() {
     updatePlayer();
-    updatePlayerRevs();
 
     // Collision sfx timer
     if (collideSfxTimer > 0) {
@@ -117,6 +121,10 @@ void updatePlayer() {
     // Animate wheels
     player.anim.wheelPrev = player.anim.wheelTurn;
     player.anim.wheelTurn += player.vel * VELOCITY_FACTOR * 18;
+
+    updatePlayerRevs();
+
+    updatePlayerSuspension();
 }
 
 void updatePlayerRevs() {
@@ -131,8 +139,18 @@ void updatePlayerRevs() {
         revs += gear * 0.1 + 0.15;
         player.anim.revs = lerp(player.anim.revs, revs, 0.125);
     }
-    playsfx(gameSfx.engine1, 0, true, 1, player.anim.revs * 35);
-    playsfx(gameSfx.engine2, 1, true, 1, player.anim.revs * 35);
+    setpitch(0, player.anim.revs * 35);
+    setpitch(1, player.anim.revs * 35);
+}
+
+void updatePlayerSuspension() {
+    float suspension = (player.vel - player.anim.prevVel) * 1500.0;
+    suspension = clamp(suspension, -10, 10);
+    player.anim.suspension = lerp(player.anim.suspension, suspension, 0.15);
+    player.anim.prevVel = player.vel;
+
+    // Move screen up/down based on suspension
+    vanishY = SCREEN_HEIGHT / 2 + player.anim.suspension * PRATIO;
 }
 
 void collideSfx(int sfxIndex) {

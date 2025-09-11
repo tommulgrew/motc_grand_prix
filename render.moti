@@ -7,6 +7,10 @@ const int CLIP_BOTTOM = SCREEN_HEIGHT - 64 * PRATIO;
 const float NEAR_Z = 0.1;
 const float SCREEN_DIST = SCREEN_WIDTH / 2;     // Used for projection calculations
 
+// Data
+
+float vanishY = SCREEN_HEIGHT / 2;
+
 // Routines
 
 // Project a 3D point to the screen
@@ -16,7 +20,7 @@ Vec project(Vec pt) {
     float scale = SCREEN_DIST / pt.z;
     return new Vec { 
         x = pt.x * scale + SCREEN_WIDTH / 2,
-        y = pt.y * scale + SCREEN_HEIGHT / 2,
+        y = pt.y * scale + vanishY,
         z = scale
     };
 }

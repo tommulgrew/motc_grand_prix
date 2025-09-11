@@ -21,6 +21,7 @@ struct CarInput {
 struct CarAnimation {
     float wheelTurn, wheelPrev;
     float revs;
+    float prevVel, suspension;
 }
 
 struct CarRaceState {
