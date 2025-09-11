@@ -276,6 +276,16 @@ void drawCockpit() {
     // Cockpit base image
     scaleTexture(cptex, 0, SCREEN_HEIGHT - cockpitHeight, cockpitWidth, cockpitHeight);
 
+    // Revs needle
+    {
+        float ra = MATH_PI * 2;
+        float sr = sin(player.anim.revs * ra), cr = cos(player.anim.revs * ra);
+        float rx = SCREEN_WIDTH / 2;
+        float ry = SCREEN_HEIGHT - 41 * PRATIO;
+        color(9);
+        line(rx, ry, rx - sr * 20 * PRATIO, ry + cr * 16 * PRATIO);
+    }
+
     // Steering wheel
     Texture swtex = gameTextures.steeringWheel;
     float steerWidth = swtex.w * scale;
