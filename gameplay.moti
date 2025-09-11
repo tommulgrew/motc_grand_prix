@@ -20,6 +20,7 @@ const float FRICTION_SIDE_GROUND = FRICTION_SIDE * 0.9;
 
 void resetPlayer();
 void updatePlayer();
+void updatePlayerRevs();
 void moveCar(Car car);
 
 void initRace(Track track) {
@@ -78,6 +79,7 @@ void updatePlayerInput() {
 
 void updateGame() {
     updatePlayer();
+    updatePlayerRevs();
 
     // Collision sfx timer
     if (collideSfxTimer > 0) {
@@ -115,6 +117,22 @@ void updatePlayer() {
     // Animate wheels
     player.anim.wheelPrev = player.anim.wheelTurn;
     player.anim.wheelTurn += player.vel * VELOCITY_FACTOR * 18;
+}
+
+void updatePlayerRevs() {
+    bool isPreRace = false;     // TODO: Pre-race mode
+    if (isPreRace) {
+    }
+    else {
+        float r = 0.069;
+        float gear = floor(player.vel / r);
+        float revs = player.vel - gear * r;
+        revs *= (0.7 - gear * 0.1)/r;
+        revs += gear * 0.1 + 0.15;
+        player.anim.revs = lerp(player.anim.revs, revs, 0.125);
+    }
+    playsfx(gameSfx.engine1, 0, true, 1, player.anim.revs * 35);
+    playsfx(gameSfx.engine2, 1, true, 1, player.anim.revs * 35);
 }
 
 void collideSfx(int sfxIndex) {
