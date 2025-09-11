@@ -109,6 +109,39 @@ void updatePlayer() {
     player.anim.wheelTurn += player.vel * VELOCITY_FACTOR * 18;
 }
 
+void collideSfx(int n) {
+    // TODO
+}
+
+void collide(Car car, float barrierX, float barrierXd) {
+
+    // Prevent car from penetrating barrier
+    car.pos = new Vec {
+        x = barrierX,
+        y = car.pos.y,
+        z = car.pos.z
+    };
+
+    // Update XD and calculate collision intensity
+    float deltaXd = barrierXd - car.xd;
+    float intensity = abs(deltaXd);                        
+    car.xd += deltaXd * 1.05;                               // 5% bounce
+
+    // Apply collision friction
+    float frictionFactor = max(0.25, 1 - intensity * 2);
+    car.vel *= frictionFactor;
+
+    // Turn car to align with barrier
+    car.turn = lerp(car.turn, barrierXd, 0.1);
+
+    if (car = player) {
+        // Play collision sound effect, based on collision intensity
+        if (intensity > 0.25)       collideSfx(3);
+        else if (intensity > 0.1)   collideSfx(2);
+        else                collideSfx(1);        
+    }
+}
+
 void moveCar(Car car) {
     bool isOnRoad = abs(car.pos.x) <= (ROAD_WIDTH - CAR_WIDTH) / 2;
 
@@ -186,10 +219,23 @@ void moveCar(Car car) {
 
     // TODO: Laps, game rules
 
-    // TODO: Collisions
+    // Barrier collisions
+    WorldSegment seg = world[toint(zIndex) % world.length];
+    WorldSegment nextSeg = world[toint(zIndex + 1) % world.length];
+    float zOffset = car.pos.z - floor(car.pos.z);
+    if (car.vel > 0) {
+        float left  = lerp(seg.left, nextSeg.left, zOffset)   + CAR_WIDTH;
+        float right = lerp(seg.right, nextSeg.right, zOffset) - CAR_WIDTH;
+        float leftxd  = (nextSeg.left - seg.left)   * car.vel;
+        float rightxd = (nextSeg.right - seg.right) * car.vel;
+        if (car.pos.x > right and car.xd > rightxd) {
+            collide(car, right, rightxd);
+        }
+        else if (car.pos.x < left and car.xd < leftxd) {
+            collide(car, left, leftxd);
+        }
+    }
 
     // Calculate pitch
-    WorldSegment pseg = world[toint(zIndex) % world.length];
-    WorldSegment nseg = world[toint(zIndex + 1) % world.length];
-    car.pitch = lerp(pseg.pitch, nseg.pitch, car.pos.z - floor(car.pos.z));
+    car.pitch = lerp(seg.pitch, nextSeg.pitch, zOffset);
 }
