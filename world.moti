@@ -293,7 +293,7 @@ void generateAIVelocity(Track track) {
 
     // Set all segments to "no limit"
     for (WorldSegment segment : world) {
-        segment.aiVelocity = 100000;
+        segment.aiVelocity = 1000;
     }
 
     // Lower speeds for curves
@@ -332,8 +332,14 @@ void generateAIVelocity(Track track) {
         // Solve quadratic formula to get maximum speed for previous segment
         // based on friction and braking rate.
         float a = -FRICTION_AIR, b = 1 - FRICTION_ROLL_ROAD, c = -BRAKE_RATE - v;
-        v = (-b + sqrt(b*b - 4*a*c))/(2*a);
-        i -= v * VELOCITY_FACTOR;
+        float sqrtTerm = b*b - 4*a*c;
+        if (sqrtTerm > 0) {
+            v = (-b + sqrt(b*b - 4*a*c))/(2*a);
+            i -= v * VELOCITY_FACTOR;
+        }
+        else {
+            i--;
+        }
     }
 }
 
