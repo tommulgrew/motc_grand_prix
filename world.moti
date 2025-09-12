@@ -260,7 +260,7 @@ void generateAIX(Track track) {
         Vec vert = verts[i];
         Vec nextVert = verts[(i + 1) % verts.length];
         int deltaZ = nextVert.z - vert.z;
-        if (deltaZ < 0) deltaZ += world.length;
+        if (i == verts.length - 1) deltaZ += world.length;
         float x = vert.x;
         float xd = (nextVert.x - vert.x) / deltaZ;
         for (int j = 0; j < deltaZ; j++) {
