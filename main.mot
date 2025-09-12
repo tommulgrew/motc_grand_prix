@@ -32,7 +32,7 @@ for (int i = 0; i < trackData.length; i++) {
 }
 
 // Setup for race
-Track currentTrack = tracks[5];
+Track currentTrack = tracks[1];
 initRace(currentTrack);
 
 screen(makeimg(SCREEN_WIDTH, SCREEN_HEIGHT));
