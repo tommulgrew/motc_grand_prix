@@ -276,6 +276,22 @@ void drawCockpit() {
     // Cockpit base image
     scaleTexture(cptex, 0, SCREEN_HEIGHT - cockpitHeight, cockpitWidth, cockpitHeight);
 
+    // Speed readout
+    { 
+        float sx = SCREEN_WIDTH / 2 - 54 * PRATIO;
+        float sy = SCREEN_HEIGHT - 92 * PRATIO;
+        float sw = 21 * PRATIO;
+        float sh = 10 * PRATIO;
+        color(0);
+        rectfill(sx, sy, sx + sw, sy + sh);
+        color(5);
+        rect(sx, sy, sx + sw, sy + sh);
+        string txt = toint(player.vel * 600);
+        while (txt.length < 3) txt = "0" + txt;
+        color(8);
+        print(txt, sx + 1 * PRATIO, sy + 2 * PRATIO);
+    }
+
     // Revs needle
     {
         float ra = MATH_PI * 2;

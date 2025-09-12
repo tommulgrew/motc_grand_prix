@@ -11,7 +11,7 @@ struct GameConfig {
 
 GameConfig gameConfig = new GameConfig {
     controllerDeadzone = 0.06,
-    controllerSmoothing = 0.85,
+    controllerSmoothing = 0.9,
     controllerFactor = 1.1,
     drawDistance = 80
 };
