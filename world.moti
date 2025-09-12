@@ -23,8 +23,16 @@ struct WorldSegment {
     float turn, pitch;
     float left, right;
     TrackStage stage;
-    ModelInstance[] modelInstances;
-    float aiVelocity;
+    ModelInstance[] modelInstances;    
+    float aiX, aiVelocity;
+    bool hasAiX;
+}
+
+struct AICorner {       // A potential corner for AI X calculations
+    int dir;
+    int z;              // Start segment Z index
+    int length;         // Total length (in segments)
+    float turn;         // Total distance turned
 }
 
 // Data
@@ -199,11 +207,92 @@ void generateRoadItems(Track track) {
     }
 }
 
+void addAIXVerts(Vec[] verts, AICorner corner) {
+    // Check if corner turns enough to warrant a driving line
+    if (corner != null and corner.turn >= 0.15) {
+        float x = corner.dir * 2.5;
+
+        // Place the apex in the center of the corner
+        // Place the entry and exit points on the opposite side
+        verts.add(new Vec { x = -x, z = corner.z - 10 });
+        verts.add(new Vec { x =  x, z = corner.z + floor(corner.length / 2) });
+        verts.add(new Vec { x = -x, z = corner.z + corner.length + 4 });
+    }
+}
+
+void generateAIX(Track track) {
+    Vec[] verts = new Vec[0];
+    AICorner cornerCurve, currentCorner;
+    for (TrackCurve c : curves) {
+
+        // Potential corner?
+        if (abs(c.turn) > 0.05) {
+            cornerCurve = new AICorner {
+                dir = sgn(c.turn),
+                z = c.z,
+                length = c.length,
+                turn = abs(c.turn) * c.length
+            };
+        }
+        else {
+            cornerCurve = null;
+        }
+
+        // Add curve to current corner?
+        if (currentCorner != null and cornerCurve != null and currentCorner.dir = cornerCurve.dir) {
+            currentCorner.length += cornerCurve.length;
+            currentCorner.turn += cornerCurve.turn;
+        }
+        else {
+            // Add vertices for current corner (if any)
+            addAIXVerts(verts, currentCorner);
+
+            // Start new corner from curve
+            currentCorner = cornerCurve;
+        }
+    }
+
+    // Add vertices for last corner
+    addAIXVerts(verts, currentCorner);
+
+    // Write AI X values to road segments
+    for (int i = 0; i < verts.length; i++) {
+        Vec vert = verts[i];
+        Vec nextVert = verts[(i + 1) % verts.length];
+        int deltaZ = nextVert.z - vert.z;
+        if (deltaZ < 0) deltaZ += world.length;
+        float x = vert.x;
+        float xd = (nextVert.x - vert.x) / deltaZ;
+        for (int j = 0; j < deltaZ; j++) {
+            WorldSegment w = world[(toint(vert.z) + j) % world.length];
+            if (w.hasAiX) {
+                // Sometimes cornering lines can overlap.
+                // Average them out when they do.
+                w.aiX = (w.aiX + x) / 2;
+            }
+            else {
+                w.aiX = x;
+                w.hasAiX = true;
+            }
+            x += xd;
+        }
+    }
+
+    // Smoothing pass
+    float smoothedX = verts[verts.length - 1].x;
+    for (WorldSegment w : world) {
+        if (w.hasAiX) {
+            smoothedX = smoothedX * 0.75 + w.aiX * 0.25;            
+        }
+        w.aiX = smoothedX;
+    }
+}
+
 void generateTrack(Track track) {
     generateTrackSegments(track);
     placeItem(roadModel, new Vec, world.length);
     generateRoadItems(track);
     placeItems(track);
-    // TODO: AI X
+    generateAIX(track);
     // TODO: AI velocity
 }

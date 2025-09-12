@@ -197,9 +197,21 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
                     instancePos0 + polyOffset,
                     false);
             }
-        }
 
-        // TODO: Racing line
+            if (gameConfig.showRacingLine) {
+                if (screenSeg.zIndex % 2 = 0 and screenSeg.segment.hasAiX) {
+                    colmap(aiMarkerCols[0]);
+                    Vec markerOffset = new Vec { x = screenSeg.segment.aiX };
+                    drawQuadHoriz(
+                        gameTextures.marker,
+                        1,
+                        screenSeg.pos + markerOffset,
+                        nextScreenSeg.pos + markerOffset,
+                        0, 1);
+                    colmap();
+                }                
+            }
+        }
 
         // TODO: Other cars
     }

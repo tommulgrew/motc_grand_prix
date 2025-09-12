@@ -111,7 +111,7 @@ Texture getTexture(string name) {
 }
 
 struct GameTextures {
-    Texture horizon, cockpit, steeringWheel, steeringCenter, wheelSide, wheelTire;
+    Texture horizon, cockpit, steeringWheel, steeringCenter, wheelSide, wheelTire, marker;
 }
 
 GameTextures gameTextures = new GameTextures {
@@ -120,7 +120,16 @@ GameTextures gameTextures = new GameTextures {
     steeringWheel = fixTexture(new Texture { name = "steering", u = 96, v = 2, w = 8, h = 8, tran = 12 }),
     steeringCenter = fixTexture(new Texture { name = "steeringCenter", u = 8, v = 18, w = 1, h = 1, tran = 12 }),
     wheelSide = fixTexture(new Texture { name = "wheel", u = 14, v = 16, w = 2, h = 4, tran = 1 }),
-    wheelTire = fixTexture(new Texture { name = "wheel", u = 13, v = 16, w = 1, h = 4, tran = 1 })
+    wheelTire = fixTexture(new Texture { name = "wheel", u = 13, v = 16, w = 1, h = 4, tran = 1 }),
+    marker = getTexture("marker")
+};
+
+// Colour substitution maps
+
+int[][] aiMarkerCols = new int[][] {
+    new int[] { 0, 1, 2, 3, 4, 5, 6, 11, 8, 9, 10, 11, 12, 13, 14, 15 },
+    new int[] { 0, 1, 2, 3, 4, 5, 6, 9, 8, 9, 10, 11, 12, 13, 14, 15 },
+    new int[] { 0, 1, 2, 3, 4, 5, 6, 8, 8, 9, 10, 11, 12, 13, 14, 15 }
 };
 
 // Sound effects
