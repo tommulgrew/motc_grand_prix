@@ -1,5 +1,6 @@
 #include "tracks"
 #include "models"
+#include "gameconstants"
 
 // Structures
 
@@ -282,9 +283,57 @@ void generateAIX(Track track) {
     float smoothedX = verts[verts.length - 1].x;
     for (WorldSegment w : world) {
         if (w.hasAiX) {
-            smoothedX = smoothedX * 0.75 + w.aiX * 0.25;            
+            smoothedX = smoothedX * 0.75 + w.aiX * 0.25;
         }
         w.aiX = smoothedX;
+    }
+}
+
+void generateAIVelocity(Track track) {
+
+    // Set all segments to "no limit"
+    for (WorldSegment segment : world) {
+        segment.aiVelocity = 100000;
+    }
+
+    // Lower speeds for curves
+    for (TrackCurve c : curves) {
+        float turn = abs(c.turn);
+        if (turn > 0.01 and (not c.dontBrake or difficulty < 3)) {
+
+            // Calculate maximum velocity based on curvature.
+            // Basically maximum speed before car will slide off the road.
+            float maxv = sqrt(FRICTION_SIDE_SLIDE / (turn * VELOCITY_FACTOR)) * 0.9;
+            for (int z = c.z - 3; z < c.z + c.length + 5; z++) {
+
+                // Allow slightly faster speed limit when exiting curve
+                float v = z < c.length / 2 ? maxv : maxv * 1.1;
+
+                // Record against segment
+                WorldSegment segment = world[(z + world.length) % world.length];
+                segment.aiVelocity = min(segment.aiVelocity, v);
+            }
+        }
+    }
+
+    // Propagate speed limits backwards
+    float i = world.length * 2;
+    int prevIndex = 0;
+    float v = 1000;
+    while (i >= 0) {
+        int segmentIndex = floor(i);
+        WorldSegment segment = world[segmentIndex % world.length];
+        if (segmentIndex != prevIndex) {
+            v = min(segment.aiVelocity, v);
+            segment.aiVelocity = v;
+            prevIndex = segmentIndex;
+        }
+
+        // Solve quadratic formula to get maximum speed for previous segment
+        // based on friction and braking rate.
+        float a = -FRICTION_AIR, b = 1 - FRICTION_ROLL_ROAD, c = -BRAKE_RATE - v;
+        v = (-b + sqrt(b*b - 4*a*c))/(2*a);
+        i -= v * VELOCITY_FACTOR;
     }
 }
 
@@ -294,5 +343,5 @@ void generateTrack(Track track) {
     generateRoadItems(track);
     placeItems(track);
     generateAIX(track);
-    // TODO: AI velocity
+    generateAIVelocity(track);
 }

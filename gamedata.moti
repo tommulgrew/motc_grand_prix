@@ -6,3 +6,4 @@ int frame;
 int collideSfxIndex = -1;
 int collideSfxTimer;
 Sfx currentSlideSfx;        // Currently playing slide sound effect
+int difficulty = 3;
