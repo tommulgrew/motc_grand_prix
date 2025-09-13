@@ -26,9 +26,11 @@ struct CarAnimation {
 
 struct CarRaceState {
     bool isFinished;
+    int lap;
 }
 
 struct Car {
+    int carIndex;
     Vec pos;
     float turn, pitch;
     float vel, xd;
@@ -36,5 +38,5 @@ struct Car {
     CarInput input;
     CarAnimation anim;
     CarRaceState race;
-    CarAIState ai;
+    CarAIState aiState;
 }

@@ -199,8 +199,8 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
             }
 
             if (gameConfig.showRacingLine) {
-                if (screenSeg.zIndex % 2 = 0 and screenSeg.segment.hasAiX) {
-                    float c = (player.vel - screenSeg.segment.aiVelocity) * 25 + 1.99;
+                if (screenSeg.zIndex % 3 = 0 and screenSeg.segment.hasAiX) {
+                    float c = (player.vel - screenSeg.segment.aiVelocity * 1.1) * 25 + 1.99;
                     c = clamp(c, 0, aiMarkerCols.length - 1);
                     colmap(aiMarkerCols[c]);
                     Vec markerOffset = new Vec { x = screenSeg.segment.aiX };

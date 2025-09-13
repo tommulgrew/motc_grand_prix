@@ -4,7 +4,7 @@
 
 // Structures
 
-const int REF_LEFT = 1;
+const int REF_LEFT  = 1;
 const int REF_RIGHT = 2;
 
 struct TrackItemInstance {
