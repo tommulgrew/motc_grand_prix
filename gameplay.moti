@@ -75,6 +75,7 @@ void updatePlayerInput() {
 }
 
 void updateGame() {
+    sortCars(player.pos.z);
     updatePlayer();
 
     // Collision sfx timer
@@ -158,13 +159,14 @@ void initAICars() {
 }
 
 void sortCars(float z) {
-    // Store relative Z position
+    // Calculate relative Z position and screen segment index
     for (Car car : allCars) {
-        car.relZ = toint(car.pos.z - z + 4) % world.length;
-        if (car.relZ < 0) car.relZ += world.length;
+        float relZ = car.pos.z - z + 4;
+        relZ -= floor(relZ / world.length) * world.length;
+        car.relZ = relZ;
     }
 
-    // Sort into descending order
+    // Sort into descending order of relZ
     for (int i = 1; i < sortedCars.length; i++) {
         Car car = sortedCars[i];
         int j = i;

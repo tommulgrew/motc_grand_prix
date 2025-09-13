@@ -116,7 +116,7 @@ void drawModelEx(ModelEx model, Transform T) {
 
     for (ModelPoly poly : model.polys.horizPolys) {
         Vec n = T * poly.pos, f = T * poly.farPos;
-        int side = sgn(n.x / n.z - (f.x - n.x) / (f.z - n.z));
+        int side = -sgn(n.y / n.z - (f.y - n.y) / (f.z - n.z));
         if (poly.side = 0 or poly.side = side) {
             drawQuadHoriz(
                 poly.material.texture, 
@@ -126,25 +126,93 @@ void drawModelEx(ModelEx model, Transform T) {
                 0, 1);
         }
     }
+
+    for (ModelPoly poly : model.polys.vertPolys) {
+        Vec n = T * poly.pos, f = T * poly.farPos;
+        int side = -sgn(n.x / n.z - (f.x - n.x) / (f.z - n.z));
+        if (poly.side = 0 or poly.side = side) {
+            drawQuadVert(
+                poly.material.texture,
+                poly.size.y,
+                n,
+                f,
+                0, 1);
+        }
+    }
+
+    for (ModelPoly poly : model.polys.frontPolys) {
+        drawQuadFront(
+            poly.material,
+            poly.size.x,
+            poly.size.y,
+            T * poly.pos,
+            false);
+    }
 }
 
-void drawCar(Transform t) {
+void drawCarTail(Transform T) {
+    // Camera relative position
+    Vec c = new Vec {
+        x = -T.translate.x + T.skewX * T.translate.z,
+        y = -T.translate.y + T.skewY * T.translate.z,
+        z = -T.translate.z
+    };
+
+    if (c.x < 1.5) drawModelEx(carModels.tailRight, T);
+    if (c.x >-1.5) drawModelEx(carModels.tailLeft, T);
+    drawModelEx(carModels.contour, T);
+    drawModelEx(carModels.tailTop, T);
+    if (c.x>= 1.5) drawModelEx(carModels.tailRight, T);
+    if (c.x<=-1.5) drawModelEx(carModels.tailLeft, T);
+}
+
+void drawCarMiddle(Transform T) {
+    // Camera relative position
+    Vec c = new Vec {
+        x = -T.translate.x + T.skewX * T.translate.z,
+        y = -T.translate.y + T.skewY * T.translate.z,
+        z = -T.translate.z
+    };
+
+    if (c.y < -0.7) {
+        drawModelEx(carModels.body, T);
+        drawCarTail(T);
+    }
+    else {
+        drawCarTail(T);    
+        drawModelEx(carModels.body, T);
+    }
+}
+
+void drawCar(Transform T) {
 
     // Adjust position.
     // Essentially we push the car away to scale it down.
-    t = new Transform {
-        translate = t.translate * 4 + new Vec { y = -0.1 },
-        skewX = t.skewX,
-        skewY = t.skewY        
+    T = new Transform {
+        translate = T.translate * 4 + new Vec { y = -0.1 },
+        skewX = T.skewX,
+        skewY = T.skewY        
     };
 
     // Camera relative position
     Vec c = new Vec {
-        x = -t.translate.x + t.skewX * t.translate.z,
-        y = -t.translate.y + t.skewY * t.translate.z,
-        z = -t.translate.z
+        x = -T.translate.x + T.skewX * T.translate.z,
+        y = -T.translate.y + T.skewY * T.translate.z,
+        z = -T.translate.z
     };
-    drawModelEx(carModels.wing, childTransform(t, new Vec { y = -0.4, z = 5 }));
+    drawModelEx(carModels.wing, childTransform(T, new Vec { y = -0.4, z = 5 }));
+    if (c.x < 1.5) drawModelEx(carModels.wheel, childTransform(T, new Vec { x = 2.25, y =-1, z = 3 }));
+    if (c.x >-1.5) drawModelEx(carModels.wheel, childTransform(T, new Vec { x =-2.25, y =-1, z = 3 }));
+    drawModelEx(carModels.nose, childTransform(T, new Vec { y = -1.3, z = -2 }));
+    if (c.x>= 1.5) drawModelEx(carModels.wheel, childTransform(T, new Vec { x = 2.25, y =-1, z = 3 }));
+    if (c.x<=-1.5) drawModelEx(carModels.wheel, childTransform(T, new Vec { x =-2.25, y =-1, z = 3 }));
+
+    if (c.x < 1.5) drawModelEx(carModels.wheel, childTransform(T, new Vec { x = 2.25, y =-1, z = -1.5 }));
+    if (c.x >-1.5) drawModelEx(carModels.wheel, childTransform(T, new Vec { x =-2.25, y =-1, z = -1.5 }));
+    drawCarMiddle(childTransform(T, new Vec { y = -0.7, z = -1 }));
+    if (c.x>= 1.5) drawModelEx(carModels.wheel, childTransform(T, new Vec { x = 2.25, y =-1, z = -1.5 }));
+    if (c.x<=-1.5) drawModelEx(carModels.wheel, childTransform(T, new Vec { x =-2.25, y =-1, z = -1.5 }));
+
 }
 
 void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
@@ -258,9 +326,11 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
                 }                
             }
 
-            while (carIndex < sortedCars.length and sortedCars[carIndex].relZ >= screenSeg.index) {
+            float segRelZ = screenSeg.zIndex - player.pos.z;
+            segRelZ -= floor(segRelZ / world.length) * world.length;
+            while (carIndex < sortedCars.length and sortedCars[carIndex].relZ >= segRelZ) {
                 Car car = sortedCars[carIndex];
-                if (floor(car.relZ) = screenSeg.index && car != player) {
+                if (car.relZ < segRelZ + 1 && car != player) {
                     // TODO: Car colour                    
                     drawCar(
                         new Transform {
