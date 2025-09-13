@@ -156,7 +156,7 @@ void generateTrees(TrackCurve curve, int[] treeXOffsets) {
         for (int xOffset : treeXOffsets) {
             for (int z = 0; z < curve.length; z += 3) {
                 float treeX = xOffset + rnd() * 4 - 2;
-                Model model = treeModels[rnd() * treeModels.length];
+                Model model = gameModels.treeModels[rnd() * gameModels.treeModels.length];
                 placeItem(
                     model,
                     new Vec {
@@ -183,7 +183,7 @@ void generateRoadItems(Track track) {
 
         // Generate approaching corner signs
         if (abs(curveTurn(currentCurve, 0)) >= 0.1 and abs(curveTurn(prevCurve, 0)) < 0.01) {
-            placeItem(distSignModel, new Vec { x = sgn(currentCurve.turn) * -5.5, z = currentCurve.z - 30 });
+            placeItem(gameModels.distSignModel, new Vec { x = sgn(currentCurve.turn) * -5.5, z = currentCurve.z - 30 });
         }
 
         // Shoulder cover things
@@ -196,10 +196,10 @@ void generateRoadItems(Track track) {
                 }            
             }
             if (addLeft) {
-                placeItem(shoulderModel, new Vec { x = -4, z = currentCurve.z }, currentCurve.length);
+                placeItem(gameModels.shoulderModel, new Vec { x = -4, z = currentCurve.z }, currentCurve.length);
             }
             if (addRight) {
-                placeItem(shoulderModel, new Vec { x =  4, z = currentCurve.z }, currentCurve.length);
+                placeItem(gameModels.shoulderModel, new Vec { x =  4, z = currentCurve.z }, currentCurve.length);
             }
         }
 
@@ -345,7 +345,7 @@ void generateAIVelocity(Track track) {
 
 void generateTrack(Track track) {
     generateTrackSegments(track);
-    placeItem(roadModel, new Vec, world.length);
+    placeItem(gameModels.roadModel, new Vec, world.length);
     generateRoadItems(track);
     placeItems(track);
     generateAIX(track);

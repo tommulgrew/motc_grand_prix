@@ -7,11 +7,13 @@ int frame;
 int collideSfxIndex = -1;
 int collideSfxTimer;
 Sfx currentSlideSfx;        // Currently playing slide sound effect
+int raceType = RACETYPE_SINGLE;
 int difficulty = DIFFICULTY_HARD;
 
 Car[] aiCarPool;            // Pool of all possible AI cars, from which the current race's AI cars will be selected.
 Car[] aiCars;               // AI controlled cars only
 Car[] allCars;              // All cars including AI controlled and player
+Car[] sortedCars;           // All cars, sorted by z order
 
 string[] aiCarNames = new string[] {
     "S. Hudson",

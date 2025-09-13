@@ -1,11 +1,19 @@
 #include "library/trig"
 #include "library/util"
 
-struct ModelPoly {
-    Texture texture;
+struct Material {
     int colour;
+    Texture texture;
+}
+
+struct ModelPoly {
+    Material material;
     Vec pos;
     Vec size;
+
+    // Extended model poly properties
+    Vec farPos;
+    int side;
 }
 
 struct ModelSegment {
@@ -29,6 +37,34 @@ struct NestedModel {
     string modelName;
     Model model;
     Vec pos;
+}
+
+struct NestedModelEx;
+
+struct ModelEx {
+    string name;
+    ModelSegment polys;
+    NestedModelEx[] nestedModels;
+}
+
+struct NestedModelEx {
+    string modelName;
+    ModelEx model;
+    Vec pos;
+}
+
+Material parseMaterial(string assetName) {
+    Material material = new Material;
+    if (isNumber(assetName)) {
+        // Numbers reference solid colours
+        material.colour = toint(assetName);
+    }
+    else {
+        // Otherwise is texture name reference
+        string textureName = removePrefix(assetName, "tex.");
+        material.texture = getTexture(textureName);
+    }
+    return material;
 }
 
 Model makeModel(string name, string data) {
@@ -75,18 +111,6 @@ Model makeModel(string name, string data) {
             // Polygon
             model.hasPolys = true;
 
-            int colour;
-            Texture texture;
-            if (isNumber(assetName)) {
-                // Numbers reference solid colours
-                colour = toint(assetName);
-            }
-            else {
-                // Otherwise is texture name reference
-                string textureName = removePrefix(assetName, "tex.");
-                texture = getTexture(textureName);
-            }
-
             Vec size = new Vec {
                 x = tofloat(p[5]),
                 y = tofloat(p[6])
@@ -94,8 +118,7 @@ Model makeModel(string name, string data) {
 
             // Create model poly
             ModelPoly poly = new ModelPoly {
-                colour = colour,
-                texture = texture,
+                material = parseMaterial(assetName),
                 pos = pos,
                 size = size
             };
@@ -283,10 +306,151 @@ Model getModel(string name) {
     assert(false, "Could not find model: " + name);
 }
 
+ModelEx makeModelEx(string name, string data) {
+    ModelEx model = new ModelEx {
+        name = name,
+        polys = new ModelSegment {
+            frontPolys = new ModelPoly[0],
+            horizPolys = new ModelPoly[0],
+            vertPolys = new ModelPoly[0]
+        },
+        nestedModels = new NestedModelEx[0]
+    };
+
+    // Parse data
+    string[] dataLines = split(data, "\n");
+    for (string l : dataLines) {
+        // Split line 
+        string[] p = split(l, ",");
+
+        // Defaults
+        Vec size = new Vec { x = 1, y = 1 };
+
+        // Extract data
+        string type = p[0];
+
+        string assetName = p[1];
+
+        if (p[2] != "") size.x = tofloat(p[2]);
+        if (p[3] != "") size.y = tofloat(p[3]);
+
+        Vec pos = new Vec {
+            x = tofloat(p[4]),
+            y = tofloat(p[5]),
+            z = tofloat(p[6])
+        };
+
+        Vec farPos;
+        
+        if (p.length > 9) {
+            farPos = new Vec {
+                x = tofloat(p[7]),
+                y = tofloat(p[8]),
+                z = tofloat(p[9])
+            };
+        }
+
+        int side;
+        if (p.length > 10) {
+            side = p[10] = "true"  ?  1
+                 : p[10] = "false" ? -1
+                 :                    0;
+        }
+
+        if (type = "m") {
+            // Add nested extended model.
+            // Reference by name for now. Model reference will be resolved 
+            // later, after all models have been parsed.
+            NestedModelEx nestedModel = new NestedModelEx {
+                modelName = removePrefix(assetName, "mdlx."),
+                pos = pos
+            };
+            model.nestedModels.add(nestedModel);
+        }
+        else {
+            // Polygon
+
+            // Create model poly
+            ModelPoly poly = new ModelPoly {
+                material = parseMaterial(assetName),
+                pos = pos,
+                farPos = farPos,
+                size = size,
+                side = side
+            };
+
+            // Add to polys
+            if (type = "f") {
+                model.polys.frontPolys.add(poly);
+            }
+            else if (type = "h") {
+                model.polys.horizPolys.add(poly);                
+            }
+            else if (type = "v") {
+                model.polys.vertPolys.add(poly);
+            }
+            else {
+                assert(false);
+            }
+        }
+    }
+
+    return model;
+}
+
+ModelEx[] extendedModels = new ModelEx[] {
+makeModelEx("car_wing",
+"h,tex.car_wing_green,5,,0,0,0,0,0,1.8"),
+makeModelEx("car_w",
+"v,tex.car_w,,2,-0.5,0,-1,-0.5,0,1,false\
+h,tex.car_w_vert,1,,0,-0.5,-0.8,0,-1,0\
+h,tex.car_w_vert,1,,0,0.5,-0.8,0,1,0\
+f,tex.car_w_vert,1,1,0,0,-0.8\
+v,tex.car_w,,2,0.5,0,-1,0.5,0,1,true"),
+makeModelEx("car_nose",
+"v,tex.car_bd,,2,0,0,0,0,0.4,8"),
+makeModelEx("car_bd",
+"v,tex.car_bd_side,,1,-1.5,0,-1,-1.5,0,3,false\
+v,tex.car_bd_side,,1,1.5,0,-1,1.5,0,3,true\
+h,tex.car_bd_top,3,,0,-0.5,-1,0,-0.5,3,false\
+f,tex.car_rear,3,1,0,0,-1"),
+makeModelEx("car_contour",
+"f,tex.car_contour,1.4,1,0,-1,-0.5"),
+makeModelEx("car_tail_l",
+"v,tex.car_tail_side,,1.5,-1.5,-1.25,-1,-1.5,-1.25,-0.5"),
+makeModelEx("car_tail_r",
+"v,tex.car_tail_side,,1.5,1.5,-1.25,-1,1.5,-1.25,-0.5"),
+makeModelEx("car_tail_t",
+"h,tex.car_wing_white,3,,0,-2,-1,0,-1.75,-0.5"),
+makeModelEx("car",
+"m,mdlx.car_wing,,,0,0.5,4\
+m,mdlx.car_w,,,-2.25,0,3\
+m,mdlx.car_w,,,2.25,0,3\
+m,mdlx.car_nose,,,0,0,0\
+m,mdlx.car_w,,,-2.25,0,0\
+m,mdlx.car_w,,,2.25,0,0\
+m,mdlx.car_bd,,,0,0,0\
+m,mdlx.car_tail_l,,,0,0,0\
+m,mdlx.car_tail_t,,,0,0,0\
+m,mdlx.car_tail_r,,,0,0,0")
+};
+
+ModelEx getExtendedModel(string name) {
+    for (ModelEx model : extendedModels)
+        if (model.name = name)
+            return model;
+    assert(false, "Could not find extended model: " + name);
+}
+
 void resolveNestedModelReferences() {
     for (Model model : models) {
         for (NestedModel nested : model.nestedModels) {
             nested.model = getModel(nested.modelName);
+        }
+    }
+    for (ModelEx model : extendedModels) {
+        for (NestedModelEx nested : model.nestedModels) {
+            nested.model = getExtendedModel(nested.modelName);
         }
     }
 }
@@ -295,10 +459,18 @@ resolveNestedModelReferences();
 
 // Common models
 
-Model roadModel = getModel("road");
-Model distSignModel = getModel("dist");
-Model shoulderModel = getModel("shoulder");
-Model[] treeModels = new Model[] {
-    getModel("tree1"),
-    getModel("tree2")
+struct GameModels {
+    Model roadModel, distSignModel, shoulderModel;
+    Model[] treeModels;
+}
+
+GameModels gameModels = new GameModels {
+    roadModel = getModel("road"),
+    distSignModel = getModel("dist"),
+    shoulderModel = getModel("shoulder"),
+    treeModels = new Model[] {
+        getModel("tree1"),
+        getModel("tree2")
+    }
 };
+

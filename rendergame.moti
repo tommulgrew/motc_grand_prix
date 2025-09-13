@@ -15,6 +15,7 @@ struct ScreenSpaceSegment {
     float turn, pitch;          // Screen space turn and pitch
     float clipY;
     int zIndex;                 // Index of segment in world array
+    int index;                  // Index of segment in screen segment array
 }
 
 // Data
@@ -72,7 +73,8 @@ ScreenSpaceSegment[] getScreenSpaceSegments(Vec cameraPos, float cameraTurn, flo
             turn = turn,
             pitch = pitch,
             clipY = ceil(clipY),
-            zIndex = segmentZIndex
+            zIndex = segmentZIndex,
+            index = i
         });
 
         // Update position for next screen segment
@@ -106,7 +108,15 @@ void drawHorizon(ScreenSpaceSegment[] screenSegs, Track track, float cameraTurn,
     rectfill(0, groundY, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
+void drawCar(Vec pos, float sx, float sy) {
+
+}
+
 void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
+
+    // Next car from sortedCars to draw
+    int carIndex = 0;
+
     // Draw segments in reverse order
     for (int i = screenSegs.length - 2; i >= 0; i--) {
         ScreenSpaceSegment screenSeg = screenSegs[i];
@@ -153,7 +163,7 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
 
                 // Texture coordinates
                 // One segment = 1 tile
-                Texture texture = poly.texture;
+                Texture texture = poly.material.texture;
                 float v0 = modelSegmentIndex * TILE_SIZE_PIXELS * 1.0 / texture.h;
                 v0 -= floor(v0);        // Repeat
                 float v1 = v0 + TILE_SIZE_PIXELS * 1.0 / texture.h;
@@ -172,7 +182,7 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
 
                 // Texture coordinates
                 // One segment = 1 tile
-                Texture texture = poly.texture;
+                Texture texture = poly.material.texture;
                 float u0 = modelSegmentIndex * TILE_SIZE_PIXELS * 1.0 / texture.w;
                 u0 -= floor(u0);
                 float u1 = u0 + TILE_SIZE_PIXELS * 1.0 / texture.w;
@@ -190,8 +200,7 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
             for (ModelPoly poly : modelSegment.frontPolys) {
                 Vec polyOffset = new Vec { x = poly.pos.x, y = poly.pos.y };
                 drawQuadFront(
-                    poly.texture,
-                    poly.colour,
+                    poly.material,
                     poly.size.x,
                     poly.size.y,
                     instancePos0 + polyOffset,
@@ -213,9 +222,24 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
                     colmap();
                 }                
             }
-        }
 
-        // TODO: Other cars
+            while (carIndex < sortedCars.length and sortedCars[carIndex].relZ > screenSeg.index) {
+                Car car = sortedCars[carIndex];
+                if (floor(car.relZ) = screenSeg.index && car != player) {
+                    float zOffset = car.pos.z - floor(car.pos.z);
+                    // TODO: Car colour
+                    drawCar(
+                        new Vec { 
+                            x = screenSeg.pos.x + car.pos.x + zOffset * screenSeg.turn,
+                            y = screenSeg.pos.y + car.pos.y + zOffset * screenSeg.pitch,
+                            z = screenSeg.pos.z + zOffset
+                        },
+                        screenSeg.turn + car.turn,
+                        screenSeg.pitch + car.pitch);
+                }
+                carIndex++;
+            }
+        }
     }
 }
 

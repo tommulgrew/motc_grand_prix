@@ -34,6 +34,7 @@ struct Car {
     Vec pos;
     float turn, pitch;
     float vel, xd;
+    float relZ;
     string name;
     CarInput input;
     CarAnimation anim;

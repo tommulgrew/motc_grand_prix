@@ -197,8 +197,7 @@ void drawQuadVert(
 }
 
 void drawQuadFront(
-    Texture texture,
-    int colour,
+    Material material,
     float width,
     float height,
     Vec pos,
@@ -216,11 +215,11 @@ void drawQuadFront(
         y0 = pt.y - height / 2,
         y1 = pt.y + height / 2;
 
-    if (texture != null) {
-        scaleTexture(texture, x0, y0, width, height, flipX);
+    if (material.texture != null) {
+        scaleTexture(material.texture, x0, y0, width, height, flipX);
     }
     else {
-        color(colour);
+        color(material.colour);
         rectfill(x0, y0, x1, y1);
     }
 }

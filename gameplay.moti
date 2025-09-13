@@ -8,6 +8,7 @@
 
 void resetPlayer();
 void initAICars();
+void sortCars(float z);
 void updatePlayer();
 void updatePlayerRevs();
 void updatePlayerSuspension();
@@ -114,7 +115,6 @@ void initAICars() {
         Car car = new Car {
             carIndex = i,
             name = aiCarNames[i],
-            pos = new Vec { x = -1.5, y = 0, z = 0.0001 },
             race = new CarRaceState {
                 lap = 0
             },
@@ -125,7 +125,55 @@ void initAICars() {
             }
         };
         aiCarPool.add(car);
-    }    
+    }
+
+    allCars = new Car[] { player };
+    sortedCars = new Car[] { player };
+    if (raceType != RACETYPE_PRACTICE) {
+
+        // Add 7 AI cars to the race
+        aiCars = new Car[0];
+        for (int i = 0; i < 7; i++) {
+            int poolIndex = rnd() * aiCarPool.length;
+            Car car = aiCarPool[poolIndex];
+            aiCarPool.remove(poolIndex);
+            aiCars.add(car);
+            // TODO: Rear view cars
+            allCars.add(car);
+            sortedCars.add(car);
+            // TODO: Leaderboard
+        }
+    }
+
+    // Layout cars in grid
+    for (int i = 0; i < allCars.length; i++) {
+        Car car = allCars[i];
+        car.pos = new Vec {
+            x = (i%2 - 0.5) * 3,
+            z = i * 6
+        };
+    }
+
+    sortCars(player.pos.z);
+}
+
+void sortCars(float z) {
+    // Store relative Z position
+    for (Car car : allCars) {
+        car.relZ = toint(car.pos.z - z + 4) % world.length;
+        if (car.relZ < 0) car.relZ += world.length;
+    }
+
+    // Sort into descending order
+    for (int i = 1; i < sortedCars.length; i++) {
+        Car car = sortedCars[i];
+        int j = i;
+        while (j > 0 and sortedCars[j - 1].relZ < car.relZ) {
+            sortedCars[j] = sortedCars[j - 1];
+            j--;
+        }
+        sortedCars[j] = car;
+    }
 }
 
 void updatePlayer() {
