@@ -331,13 +331,14 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
             while (carIndex < sortedCars.length and sortedCars[carIndex].relZ >= segRelZ) {
                 Car car = sortedCars[carIndex];
                 if (car.relZ < segRelZ + 1 && car != player) {
-                    // TODO: Car colour                    
+                    colmap(aiCarPalettes[car.carIndex]);
                     drawCar(
                         new Transform {
                             translate = screenSeg.T * segmentRelativePos(car.pos),
                             skewX = screenSeg.T.skewX + car.turn,
                             skewY = screenSeg.T.skewY + car.turn
                         });
+                    colmap();
                 }
                 carIndex++;
             }
@@ -414,7 +415,9 @@ void drawCockpit() {
     circ(SCREEN_WIDTH / 2, SCREEN_HEIGHT - cockpitHeight * 0.6, SCREEN_WIDTH * 0.3);
 
     // Cockpit base image
+    colmap(playerCarPalettes[gameConfig.playerColour]);
     scaleTexture(cptex, 0, SCREEN_HEIGHT - cockpitHeight, cockpitWidth, cockpitHeight);
+    colmap();
 
     { 
         // Speed readout

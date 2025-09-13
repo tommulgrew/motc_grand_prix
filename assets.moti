@@ -1,3 +1,5 @@
+#include "routines"
+
 // Constants
 
 const int TILE_SIZE_PIXELS = 16;
@@ -127,9 +129,9 @@ GameTextures gameTextures = new GameTextures {
 // Colour substitution maps
 
 int[][] aiMarkerCols = new int[][] {
-    new int[] { 0, 1, 2, 3, 4, 5, 6, 11, 8, 9, 10, 11, 12, 13, 14, 15 },
-    new int[] { 0, 1, 2, 3, 4, 5, 6, 9, 8, 9, 10, 11, 12, 13, 14, 15 },
-    new int[] { 0, 1, 2, 3, 4, 5, 6, 8, 8, 9, 10, 11, 12, 13, 14, 15 }
+    makeColMap(new int[] { 7 }, new int[] { 11 }),
+    makeColMap(new int[] { 7 }, new int[] { 9 }),
+    makeColMap(new int[] { 7 }, new int[] { 8 })
 };
 
 // Sound effects
@@ -148,3 +150,39 @@ GameSfx gameSfx = new GameSfx {
     engine1 = loadsfx("assets/sfx/engine1.wav"),
     engine2 = loadsfx("assets/sfx/engine2.wav")
 };
+
+// Car palettes
+int[][] playerCarPalettes;
+{   
+    int[] srcCols = new int[] { 1, 2, 3, 12 };
+    playerCarPalettes = new int[][] {
+        makeColMap(srcCols, new int[] { 1,2,3,12 }),
+        makeColMap(srcCols, new int[] { 2,3,12,7 }),
+        makeColMap(srcCols, new int[] { 4,8,9,10 }),
+        makeColMap(srcCols, new int[] { 4,9,10,7 }),
+        makeColMap(srcCols, new int[] { 1,2,14,11 }),
+        makeColMap(srcCols, new int[] { 2,14,11,7 }),
+        makeColMap(srcCols, new int[] { 1,5,13,6 })
+    };
+}
+
+int[][] aiCarPalettes;
+{
+    int[] srcCols = new int[] { 7,9,4 };
+    aiCarPalettes = new int[][] {
+        makeColMap(srcCols, new int[] { 0,11,0 }),
+        makeColMap(srcCols, new int[] { 0,8,0 }),
+        makeColMap(srcCols, new int[] { 15,4,1 }),
+        makeColMap(srcCols, new int[] { 8,15,8 }),
+        makeColMap(srcCols, new int[] { 4,9,4 }),
+        makeColMap(srcCols, new int[] { 6,0,1 }),
+        makeColMap(srcCols, new int[] { 6,7,6 }),
+        makeColMap(srcCols, new int[] { 7,9,4 }),
+        makeColMap(srcCols, new int[] { 1,13,7 }),
+        makeColMap(srcCols, new int[] { 9,8,8 }),
+        makeColMap(srcCols, new int[] { 7,14,2 }),
+        makeColMap(srcCols, new int[] { 7,8,4 }),
+        makeColMap(srcCols, new int[] { 10,14,1 }),
+        makeColMap(srcCols, new int[] { 7,3,1 })
+    };
+}

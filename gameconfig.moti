@@ -6,6 +6,7 @@ struct GameConfig {
     float controllerFactor;
     float drawDistance;
     bool showRacingLine;
+    int playerColour;           // Index into playerCarPalettes array
 }
 
 // Data
@@ -15,5 +16,6 @@ GameConfig gameConfig = new GameConfig {
     controllerSmoothing = 0.9,
     controllerFactor = 1.1,
     drawDistance = 80,
-    showRacingLine = true
+    showRacingLine = true,
+    playerColour = 3
 };
