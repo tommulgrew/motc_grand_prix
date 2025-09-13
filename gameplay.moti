@@ -75,8 +75,11 @@ void updatePlayerInput() {
 }
 
 void updateGame() {
-    sortCars(player.pos.z);
     updatePlayer();
+    for (Car car : aiCars) {
+        car.pos += new Vec { z = 0.5 };
+    }
+    sortCars(player.pos.z);
 
     // Collision sfx timer
     if (collideSfxTimer > 0) {
