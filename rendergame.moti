@@ -11,8 +11,7 @@ const float CAMERA_TILT = 0.175;
 
 struct ScreenSpaceSegment {
     WorldSegment segment;       // Corresponding world segment
-    Vec pos;                    // Screen space position
-    float turn, pitch;          // Screen space turn and pitch
+    Transform T;
     float clipY;
     int zIndex;                 // Index of segment in world array
     int index;                  // Index of segment in screen segment array
@@ -69,9 +68,11 @@ ScreenSpaceSegment[] getScreenSpaceSegments(Vec cameraPos, float cameraTurn, flo
         }
         screenSegs.add(new ScreenSpaceSegment {
             segment = segment,
-            pos = pos,
-            turn = turn,
-            pitch = pitch,
+            T = new Transform {
+                translate = pos,
+                skewX = turn, 
+                skewY = pitch
+            },
             clipY = ceil(clipY),
             zIndex = segmentZIndex,
             index = i
@@ -108,8 +109,42 @@ void drawHorizon(ScreenSpaceSegment[] screenSegs, Track track, float cameraTurn,
     rectfill(0, groundY, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
-void drawCar(Vec pos, float sx, float sy) {
+void drawModelEx(ModelEx model, Transform T) {
+    for (NestedModelEx nested : model.nestedModels) {
+        drawModelEx(nested.model, childTransform(T, nested.pos));
+    }
 
+    for (ModelPoly poly : model.polys.horizPolys) {
+        Vec n = T * poly.pos, f = T * poly.farPos;
+        int side = sgn(n.x / n.z - (f.x - n.x) / (f.z - n.z));
+        if (poly.side = 0 or poly.side = side) {
+            drawQuadHoriz(
+                poly.material.texture, 
+                poly.size.x,
+                n,
+                f,
+                0, 1);
+        }
+    }
+}
+
+void drawCar(Transform t) {
+
+    // Adjust position.
+    // Essentially we push the car away to scale it down.
+    t = new Transform {
+        translate = t.translate * 4 + new Vec { y = -0.1 },
+        skewX = t.skewX,
+        skewY = t.skewY        
+    };
+
+    // Camera relative position
+    Vec c = new Vec {
+        x = -t.translate.x + t.skewX * t.translate.z,
+        y = -t.translate.y + t.skewY * t.translate.z,
+        z = -t.translate.z
+    };
+    drawModelEx(carModels.wing, childTransform(t, new Vec { y = -0.4, z = 5 }));
 }
 
 void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
@@ -135,16 +170,16 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
                 x = instance.pos.x, 
                 y = instance.pos.y 
             };
-            Vec instancePos0 = screenSeg.pos + instanceOffsFromSeg;
+            Vec instancePos0 = screenSeg.T * instanceOffsFromSeg;
             if (instance.ref = REF_LEFT)  instancePos0 += new Vec { x = segment.left };
             if (instance.ref = REF_RIGHT) instancePos0 += new Vec { x = segment.right };
-            Vec instancePos1 = nextScreenSeg.pos + instanceOffsFromSeg;
+            Vec instancePos1 = nextScreenSeg.T * instanceOffsFromSeg;
             if (instance.ref = REF_LEFT)  instancePos1 += new Vec { x = nextSegment.left };
             if (instance.ref = REF_RIGHT) instancePos1 += new Vec { x = nextSegment.right };
 
             // Clip if outside screen horizontal range.
             // Note: This assumes a 90 degree horizontal FOV.
-            float xLimit = screenSeg.pos.z;         
+            float xLimit = screenSeg.T.translate.z;         
             // if (instancePos0.x + model.maxX < -xLimit and instancePos1.x + model.maxX < -xLimit) continue;
             // if (instancePos0.x + model.minX >  xLimit and instancePos1.x + model.minX >  xLimit) continue;
 
@@ -216,26 +251,23 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
                     drawQuadHoriz(
                         gameTextures.marker,
                         1,
-                        screenSeg.pos + markerOffset,
-                        nextScreenSeg.pos + markerOffset,
+                        screenSeg.T * markerOffset,
+                        nextScreenSeg.T * markerOffset,
                         0, 1);
                     colmap();
                 }                
             }
 
-            while (carIndex < sortedCars.length and sortedCars[carIndex].relZ > screenSeg.index) {
+            while (carIndex < sortedCars.length and sortedCars[carIndex].relZ >= screenSeg.index) {
                 Car car = sortedCars[carIndex];
                 if (floor(car.relZ) = screenSeg.index && car != player) {
-                    float zOffset = car.pos.z - floor(car.pos.z);
-                    // TODO: Car colour
+                    // TODO: Car colour                    
                     drawCar(
-                        new Vec { 
-                            x = screenSeg.pos.x + car.pos.x + zOffset * screenSeg.turn,
-                            y = screenSeg.pos.y + car.pos.y + zOffset * screenSeg.pitch,
-                            z = screenSeg.pos.z + zOffset
-                        },
-                        screenSeg.turn + car.turn,
-                        screenSeg.pitch + car.pitch);
+                        new Transform {
+                            translate = screenSeg.T * segmentRelativePos(car.pos),
+                            skewX = screenSeg.T.skewX + car.turn,
+                            skewY = screenSeg.T.skewY + car.turn
+                        });
                 }
                 carIndex++;
             }

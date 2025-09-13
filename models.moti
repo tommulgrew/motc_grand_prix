@@ -474,3 +474,17 @@ GameModels gameModels = new GameModels {
     }
 };
 
+struct CarModels {
+    ModelEx tailLeft, tailRight, tailTop, contour, body, wing, nose, wheel;
+}
+
+CarModels carModels = new CarModels {
+    tailLeft = getExtendedModel("car_tail_l"),
+    tailRight = getExtendedModel("car_tail_r"),
+    tailTop = getExtendedModel("car_tail_t"),
+    contour = getExtendedModel("car_contour"),
+    body = getExtendedModel("car_bd"),
+    wing = getExtendedModel("car_wing"),
+    nose = getExtendedModel("car_nose"),
+    wheel = getExtendedModel("car_w")    
+};

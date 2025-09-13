@@ -1,3 +1,10 @@
+#include "library/trig"
+
+struct Transform {
+    Vec translate;
+    float skewX, skewY;
+}
+
 Vec skew(Vec pos, float xd, float yd) {
     return new Vec {
         x = pos.x + pos.z * xd,
@@ -8,4 +15,20 @@ Vec skew(Vec pos, float xd, float yd) {
 
 float lerp(float a, float b, float f) {
     return (1 - f) * a + f * b;
+}
+
+Vec operator*(Transform T, Vec v) {
+    return T.translate + skew(v, T.skewX, T.skewY);
+}
+
+Transform childTransform(Transform T, Vec childPos) {
+    return new Transform {
+        translate = T.translate + skew(childPos, T.skewX, T.skewY),
+        skewX = T.skewX,
+        skewY = T.skewY
+    };
+}
+
+Vec segmentRelativePos(Vec pos) {
+    return pos - new Vec { z = floor(pos.z) };      // Position relative to segment
 }
