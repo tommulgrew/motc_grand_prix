@@ -10,6 +10,7 @@ void resetPlayer();
 void initAICars();
 void sortCars(float z);
 void updatePlayer();
+void updateAICars();
 void updatePlayerRevs();
 void updatePlayerSuspension();
 void moveCar(Car car);
@@ -76,9 +77,7 @@ void updatePlayerInput() {
 
 void updateGame() {
     updatePlayer();
-    for (Car car : aiCars) {
-        car.pos += new Vec { z = 0.5 };
-    }
+    updateAICars();
     sortCars(player.pos.z);
 
     // Collision sfx timer
@@ -88,6 +87,31 @@ void updateGame() {
     else {
         collideSfxIndex = -1;
     }    
+}
+
+CarAIParams getBaseAIParams(float f) {
+    DifficultyLevel difficulty = difficultyLevels[gameConfig.difficulty];
+    f = clamp(f + difficulty.baseFactorOffset, 0.1, 1);
+    return new CarAIParams {
+        velocityFactor = lerp(difficulty.velocityFactorRange.min, difficulty.velocityFactorRange.max, f),
+        maxVelocity = lerp(difficulty.maxVelocityRange.min, difficulty.maxVelocityRange.max, f),
+        steeringSmoothing = difficulty.steeringSmoothing,
+        wander = difficulty.wander,
+        wanderPeriod = 400,
+        lookAhead = difficulty.lookAhead
+    };
+}
+
+CarAIParams getAIParams(CarAIParams base) {
+    DifficultyLevel difficulty = difficultyLevels[gameConfig.difficulty];
+    return new CarAIParams {
+        velocityFactor = base.velocityFactor + rnd2(difficulty.velocityFactorVariance),
+        maxVelocity = base.maxVelocity + rnd2(difficulty.maxVelocityVariance / 600),
+        steeringSmoothing = min(base.steeringSmoothing + rnd2(difficulty.steeringSmoothingVariance), 0.2),
+        wander = base.wander + rnd2(difficulty.wanderVariance),
+        wanderPeriod = base.wanderPeriod + rnd2(100),
+        lookAhead = base.lookAhead + rnd2(difficulty.lookAheadVariance)
+    };
 }
 
 void resetPlayer() {
@@ -101,14 +125,13 @@ void resetPlayer() {
         anim = new CarAnimation {
             revs = 0.15
         },
+        aiState = new CarAIState {
+            wanderOffset = rnd(),
+            baseAIParams = getBaseAIParams(0.75)
+        },
         input = new CarInput,
         race = new CarRaceState
     };
-}
-
-CarAIParams getBaseAIParams(float f) {
-    // TODO
-    return new CarAIParams;
 }
 
 void initAICars() {
@@ -181,10 +204,87 @@ void sortCars(float z) {
     }
 }
 
+void updateAIInput(Car car) {
+    CarInput input = car.input;
+    CarAIState ai = car.aiState;
+    CarAIParams param = car.aiState.aiParams;
+
+    float accel = 0, steering = 0;
+    int zIndex = floor(car.pos.z);
+
+    // Look a certain distance down the track and calculate where
+    // the car is aiming.
+    float xOffset = 0, turn = 0;
+    float d = max(param.lookAhead * car.vel, 1);
+    WorldSegment segment;
+    for (int i = zIndex; i <= zIndex + d; i++) {
+        segment = world[i % world.length];
+        xOffset += turn;
+        turn += segment.turn;
+    }
+
+    // Calculate how to drive around other vehicles and whether
+    // braking is required to avoid collision
+    float l = -(ROAD_WIDTH + CAR_WIDTH) / 2;
+    float r =  (ROAD_WIDTH + CAR_WIDTH) / 2;
+    float vel = 10;
+    float[] pts = new float[0];
+    // TODO: Other vehicle logic
+    pts.add(l);
+    pts.add(r);
+
+    // Sort points ascending
+    for (int i = 1; i < pts.length; i++) {
+        float v = pts[i];
+        int j = i;
+        while (j > 0 and pts[j - 1] > v) {
+            pts[j] = pts[j - 1];
+            j--;            
+        }
+        pts[j] = v;
+    }
+
+    // Get target AI X at lookahead segment
+    // Use summed sine curves to implement horizontal "wandering",
+    // so that every AI car doesn't aim for exactly the same line.
+    ai.wanderOffset += param.wanderPeriod;
+    float aiX = (segment.aiX + sin(ai.wanderOffset * MATH_PI * 2) + sin(ai.wanderOffset * MATH_PI * 2.6)) * param.wander * 0.4;
+
+    // Look for nearest horizontal gap to aiX.
+    // TODO: Rename variables for clarity
+    float nxd = 100, nx = aiX;
+    for (int i = 1; i < pts.length; i++) {
+        float pt = pts[i], prv = pts[i - 1];
+
+        // Car must be able to fit between two other cars at
+        // placed the horizontal points, allowing for the car widths.
+        float gapl = prv + AI_CAR_WIDTH, gapr = pt - AI_CAR_WIDTH;
+        float gap = gapr - gapl;
+
+        // Viable gap?
+        if (gap > 0) {
+
+            // Prefer to leave a horizontal gap when passing,
+            // depending on available room
+            float buffer = max(gap / 2, AI_PASS_BUFFER);
+            if (prv > l) gapl += buffer;
+            if (pt  < r) gapr -= buffer;
+            float x = clamp(aiX, gapl, gapr);
+            float xd = abs(x - car.pos.x);
+            if (xd < nxd) {
+                nx = x;
+                nxd = xd;
+            }
+        }
+    }
+
+}
+
 void updatePlayer() {
 
     // Update input
-    updatePlayerInput();
+    // updatePlayerInput();
+    updateAIInput(player);
 
     // Update car
     moveCar(player);
@@ -196,6 +296,19 @@ void updatePlayer() {
     updatePlayerRevs();
 
     updatePlayerSuspension();
+}
+
+void updateAICars() {
+    for (Car car : aiCars) {
+        CarAIState ai = car.aiState;
+        if (ai.rndCounter <= 0) {
+            ai.aiParams = getAIParams(ai.baseAIParams);
+            ai.rndCounter = rnd() * 300 + 150;
+        }
+        // updateAIInput(car);
+        // moveCar(car);
+        car.pos.z += 0.1;
+    }
 }
 
 void updatePlayerRevs() {

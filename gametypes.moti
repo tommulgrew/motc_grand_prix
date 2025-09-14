@@ -11,7 +11,6 @@ struct DifficultyLevel {
     FloatRange maxVelocityRange;
     float steeringSmoothing;
     float wander;
-    int wanderPeriod;
     float lookAhead;
     bool applyDontBrake;            // Whether to apply the "don't brake" flag if set on a corner
 

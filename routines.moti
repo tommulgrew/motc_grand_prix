@@ -49,3 +49,7 @@ int[] makeColMap(int[] srcCols, int[] dstCols) {
 
     return m;
 }
+
+float rnd2(float n) {
+    return rnd() * n * 2 - n;
+}
