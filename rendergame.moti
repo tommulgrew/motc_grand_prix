@@ -511,7 +511,7 @@ void drawMirror(Track track) {
     bool isVisible = false;
 
     for (Car car : rearViewCars) {
-        if (car.rearViewZ > 25) continue;
+        if (car.rearViewZ > 18) continue;
 
         if (not isVisible) {
             isVisible = true;
