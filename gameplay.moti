@@ -94,7 +94,7 @@ CarAIParams getBaseAIParams(float f) {
     f = clamp(f + difficulty.baseFactorOffset, 0.1, 1);
     return new CarAIParams {
         velocityFactor = lerp(difficulty.velocityFactorRange.min, difficulty.velocityFactorRange.max, f),
-        maxVelocity = lerp(difficulty.maxVelocityRange.min, difficulty.maxVelocityRange.max, f),
+        maxVelocity = lerp(difficulty.maxVelocityRange.min / 600, difficulty.maxVelocityRange.max / 600, f),
         steeringSmoothing = difficulty.steeringSmoothing,
         wander = difficulty.wander,
         wanderPeriod = 400,
@@ -132,6 +132,7 @@ void resetPlayer() {
         input = new CarInput,
         race = new CarRaceState
     };
+    player.aiState.aiParams = player.aiState.baseAIParams;
 }
 
 void initAICars() {
@@ -209,18 +210,17 @@ void updateAIInput(Car car) {
     CarAIState ai = car.aiState;
     CarAIParams param = car.aiState.aiParams;
 
-    float accel = 0, steering = 0;
     int zIndex = floor(car.pos.z);
 
     // Look a certain distance down the track and calculate where
     // the car is aiming.
     float xOffset = 0, turn = 0;
     float d = max(param.lookAhead * car.vel, 1);
-    WorldSegment segment;
+    WorldSegment lookaheadSegment;
     for (int i = zIndex; i <= zIndex + d; i++) {
-        segment = world[i % world.length];
+        lookaheadSegment = world[i % world.length];
         xOffset += turn;
-        turn += segment.turn;
+        turn += lookaheadSegment.turn;
     }
 
     // Calculate how to drive around other vehicles and whether
@@ -229,6 +229,7 @@ void updateAIInput(Car car) {
     float r =  (ROAD_WIDTH + CAR_WIDTH) / 2;
     float vel = 10;
     float[] pts = new float[0];
+    float aiXDelta = 0.15;          // How hard to steer. Increases if avoiding a potential collision.
     // TODO: Other vehicle logic
     pts.add(l);
     pts.add(r);
@@ -247,8 +248,8 @@ void updateAIInput(Car car) {
     // Get target AI X at lookahead segment
     // Use summed sine curves to implement horizontal "wandering",
     // so that every AI car doesn't aim for exactly the same line.
-    ai.wanderOffset += param.wanderPeriod;
-    float aiX = (segment.aiX + sin(ai.wanderOffset * MATH_PI * 2) + sin(ai.wanderOffset * MATH_PI * 2.6)) * param.wander * 0.4;
+    ai.wanderOffset += 1.0 / param.wanderPeriod;
+    float aiX = (lookaheadSegment.aiX + sin(ai.wanderOffset * MATH_PI * 2) + sin(ai.wanderOffset * MATH_PI * 2.6) * 0.4) * param.wander;
 
     // Look for nearest horizontal gap to aiX.
     // TODO: Rename variables for clarity
@@ -265,12 +266,17 @@ void updateAIInput(Car car) {
         if (gap > 0) {
 
             // Prefer to leave a horizontal gap when passing,
-            // depending on available room
+            // depending on available room.
+            // Don't need to apply gap between edge of road however.
             float buffer = max(gap / 2, AI_PASS_BUFFER);
             if (prv > l) gapl += buffer;
             if (pt  < r) gapr -= buffer;
+
+            // Clamp AI X to gap range to find closest X point
             float x = clamp(aiX, gapl, gapr);
             float xd = abs(x - car.pos.x);
+
+            // Is this the nearest gap?
             if (xd < nxd) {
                 nx = x;
                 nxd = xd;
@@ -278,6 +284,37 @@ void updateAIInput(Car car) {
         }
     }
 
+    // Get target velocity
+    // Start with max velocity for current track segment
+    WorldSegment segment = world[zIndex % world.length];
+    float trackMaxVelocity = segment.aiVelocity;
+
+    // Apply AI parameters
+    trackMaxVelocity *= param.velocityFactor;
+    trackMaxVelocity = min(trackMaxVelocity, param.maxVelocity);
+
+    // Apply to velocity
+    vel = min(vel, trackMaxVelocity);
+
+    // Accelerate/brake appropriately
+    if (car.vel < vel - 0.004) {
+        input.accel = 1;
+    }
+    else if (car.vel > vel) {
+        input.accel = -1;
+    }
+
+    // Calculate steering to aim at "nx"
+    float aiXOffset = nx - aiX;
+    ai.aiXOffset += clamp(aiXOffset - ai.aiXOffset, -aiXDelta, aiXDelta);
+    nx = clamp(aiX + ai.aiXOffset, l, r);
+
+    float targetTurn = clamp((nx + xOffset - car.pos.x) / d, -0.4, 0.4);
+    float steering = (targetTurn - car.turn) / max(car.vel, 0.05) * 0.5;
+
+    // Apply steering smoothing
+    steering = lerp(input.steering, steering, param.steeringSmoothing);
+    input.steering += clamp(steering - input.steering, -0.3, 0.3);
 }
 
 void updatePlayer() {
