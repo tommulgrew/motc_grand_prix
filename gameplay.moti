@@ -14,6 +14,7 @@ void updateAICars();
 void updatePlayerRevs();
 void updatePlayerSuspension();
 void moveCar(Car car);
+void doCarCollisions();
 
 void initRace(Track track) {
     generateTrack(track);
@@ -78,6 +79,7 @@ void updatePlayerInput() {
 void updateGame() {
     updatePlayer();
     updateAICars();
+    doCarCollisions();
     sortCars(player.pos.z);
 
     // Collision sfx timer
@@ -216,9 +218,9 @@ void updateAIInput(Car car) {
     // Look a certain distance down the track and calculate where
     // the car is aiming.
     float xOffset = 0, turn = 0;
-    float d = max(param.lookAhead * car.vel, 1);
+    float lookAheadDist = max(param.lookAhead * car.vel, 1);
     WorldSegment lookaheadSegment;
-    for (int i = zIndex; i <= zIndex + floor(d); i++) {
+    for (int i = zIndex; i <= zIndex + floor(lookAheadDist); i++) {
         lookaheadSegment = world[i % world.length];
         xOffset += turn;
         turn += lookaheadSegment.turn;
@@ -226,59 +228,60 @@ void updateAIInput(Car car) {
 
     // Calculate how to drive around other vehicles and whether
     // braking is required to avoid collision
-    float l = -(ROAD_WIDTH + CAR_WIDTH) / 2;
-    float r =  (ROAD_WIDTH + CAR_WIDTH) / 2;
-    float vel = 10;
+    float limitLeft  = -(ROAD_WIDTH + CAR_WIDTH) / 2;
+    float limitRight =  (ROAD_WIDTH + CAR_WIDTH) / 2;
+    float targetVelocity = 10;
     float[] pts = new float[0];
     float aiXDelta = 0.15;              // How hard to steer. Increases if avoiding a potential collision.
     
     // Avoid other vehicles
     for (Car otherCar : allCars) {
         if (otherCar = car) continue;
-        float dx = otherCar.pos.x - car.pos.x;
-        float db = otherCar.pos.z - car.pos.z;      // Distance to back of other car
-        db -= floor(db / world.length) * world.length;
-        db -= CAR_LENGTH;
-        float dvel = otherCar.vel - car.vel;
-        float ta = 1000, tb = 1000;
-        float da = db - 3.85;                       // Distance to "close" following distance
+        float deltaX = otherCar.pos.x - car.pos.x;
+        float zDist = otherCar.pos.z - car.pos.z;               // Distance to back of other car
+        zDist -= floor(zDist / world.length) * world.length;
+        zDist -= CAR_LENGTH;
+        float deltaVel = otherCar.vel - car.vel;
+        float closeZDist = zDist - 3.85;                       // Distance to "close" following distance
 
         // Catching up to car?
-        if (dvel < 0) {
+        float timeUntilClose = 1000, timeUntilHit = 1000;
+        if (deltaVel < 0) {
             // Time to catch up to other car
-            ta = da > 0 ? da / -(dvel - 0.01) : 0;
-            tb = db > 0 ? db / -(dvel - 0.01) : 0;
+            timeUntilClose = closeZDist > 0 ? closeZDist / -(deltaVel - 0.01) : 0;
+            timeUntilHit   = zDist > 0      ? zDist      / -(deltaVel - 0.01) : 0;
         }
 
         // Avoid all cars that will be "close" in 2 seconds
-        if (ta < 60) {
+        if (timeUntilClose < 60) {
 
             // Add car position to points array
             pts.add(otherCar.pos.x);
 
             // Impending collision (in 2 seconds or less)?
-            if (abs(dx) < CAR_WIDTH and tb < 60) {
+            if (abs(deltaX) < CAR_WIDTH and timeUntilHit < 60) {
 
-                // Brake!
-                vel = min(vel, otherCar.vel);
+                // Reduce target velocity to other car's velocity, to ensure
+                // car will brake if necessary.
+                targetVelocity = min(targetVelocity, otherCar.vel);
             }
         }
 
         // If car is next to us, but we are in front, allow
         // room on whichever side they are on, to avoid a collision
-        if (db <= 0 or db > world.length - CAR_LENGTH * 2) {
+        if (zDist <= 0 or zDist > world.length - CAR_LENGTH * 2) {
             // aiXDelta = 0.25;
             if (otherCar.pos.x < car.pos.x) {
-                l += AI_CAR_WIDTH;
+                limitLeft += AI_CAR_WIDTH;
             }
             else {
-                r -= AI_CAR_WIDTH;
+                limitRight -= AI_CAR_WIDTH;
             }
         }
     }
 
-    pts.add(l);
-    pts.add(r);
+    pts.add(limitLeft);
+    pts.add(limitRight);
 
     // Sort points ascending
     for (int i = 1; i < pts.length; i++) {
@@ -295,37 +298,38 @@ void updateAIInput(Car car) {
     // Use summed sine curves to implement horizontal "wandering",
     // so that every AI car doesn't aim for exactly the same line.
     ai.wanderOffset += 1.0 / param.wanderPeriod;
-    float aiX = (lookaheadSegment.aiX + sin(ai.wanderOffset * MATH_PI * 2) + sin(ai.wanderOffset * MATH_PI * 2.6) * 0.4) * param.wander;
+    float targetX = (lookaheadSegment.aiX + sin(ai.wanderOffset * MATH_PI * 2) + sin(ai.wanderOffset * MATH_PI * 2.6) * 0.4) * param.wander;
 
     // Look for nearest horizontal gap to aiX.
     // TODO: Rename variables for clarity
-    float nxd = 100, nx = aiX;
+    float nearestXDist = 100, nearestX = targetX;
     for (int i = 1; i < pts.length; i++) {
         float pt = pts[i], prv = pts[i - 1];
 
         // Car must be able to fit between two other cars at
         // placed the horizontal points, allowing for the car widths.
-        float gapl = prv + AI_CAR_WIDTH, gapr = pt - AI_CAR_WIDTH;
-        float gap = gapr - gapl;
+        float gapLeft = prv + AI_CAR_WIDTH;
+        float gapRight = pt - AI_CAR_WIDTH;
+        float gapSize = gapRight - gapLeft;
 
         // Viable gap?
-        if (gap > 0) {
+        if (gapSize > 0) {
 
             // Prefer to leave a horizontal gap when passing,
             // depending on available room.
             // Don't need to apply gap between edge of road however.
-            float buffer = max(gap / 2, AI_PASS_BUFFER);
-            if (prv > l) gapl += buffer;
-            if (pt  < r) gapr -= buffer;
+            float buffer = max(gapSize / 2, AI_PASS_BUFFER);
+            if (prv > limitLeft)  gapLeft  += buffer;
+            if (pt  < limitRight) gapRight -= buffer;
 
             // Clamp AI X to gap range to find closest X point
-            float x = clamp(aiX, gapl, gapr);
-            float xd = abs(x - car.pos.x);
+            float x = clamp(targetX, gapLeft, gapRight);
+            float xDist = abs(x - car.pos.x);
 
             // Is this the nearest gap?
-            if (xd < nxd) {
-                nx = x;
-                nxd = xd;
+            if (xDist < nearestXDist) {
+                nearestX = x;
+                nearestXDist = xDist;
             }
         }
     }
@@ -340,22 +344,22 @@ void updateAIInput(Car car) {
     trackMaxVelocity = min(trackMaxVelocity, param.maxVelocity);
 
     // Apply to velocity
-    vel = min(vel, trackMaxVelocity);
+    targetVelocity = min(targetVelocity, trackMaxVelocity);
 
     // Accelerate/brake appropriately
-    if (car.vel < vel - 0.004) {
+    if (car.vel < targetVelocity - 0.004) {
         input.accel = 1;
     }
-    else if (car.vel > vel) {
+    else if (car.vel > targetVelocity) {
         input.accel = -1;
     }
 
-    // Calculate steering to aim at "nx"
-    float aiXOffset = nx - aiX;
+    // Calculate steering to aim at "nearestx"
+    float aiXOffset = nearestX - targetX;
     ai.aiXOffset += clamp(aiXOffset - ai.aiXOffset, -aiXDelta, aiXDelta);
-    nx = clamp(aiX + ai.aiXOffset, l, r);
+    nearestX = clamp(targetX + ai.aiXOffset, limitLeft, limitRight);
 
-    float targetTurn = clamp((nx + xOffset - car.pos.x) / d, -0.4, 0.4);
+    float targetTurn = clamp((nearestX + xOffset - car.pos.x) / lookAheadDist, -0.4, 0.4);
     float steering = (targetTurn - car.turn) / max(car.vel, 0.05) * 0.5;
 
     // Apply steering smoothing
@@ -570,4 +574,11 @@ void moveCar(Car car) {
 
     // Calculate pitch
     car.pitch = lerp(seg.pitch, nextSeg.pitch, zOffset);
+}
+
+void doCarCollisions() {
+    // Compare each car to each other car
+    for (int i = 0; i < allCars.length - 1; i++) {
+        
+    }
 }
