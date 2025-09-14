@@ -27,6 +27,7 @@ Vec playerCameraOffset = new Vec {
 
 void drawWorld(Vec cameraPos, float cameraTurn, float cameraPitch, int drawDistance, Track track);
 void drawCockpit();
+void drawMirror(Track track);
 
 void drawGame(Track track) {
     drawWorld(
@@ -36,6 +37,7 @@ void drawGame(Track track) {
         gameConfig.drawDistance, 
         track);
     drawCockpit();
+    drawMirror(track);
 }
 
 ScreenSpaceSegment[] getScreenSpaceSegments(Vec cameraPos, float cameraTurn, float cameraPitch, int drawDistance) {
@@ -495,4 +497,63 @@ void drawCockpit() {
     float centerHeight = ctex.h * scale;
     scaleTexture(ctex, steerx - centerWidth / 2, steery - centerHeight / 2,
         centerWidth, centerHeight);
+}
+
+void drawMirror(Track track) {
+
+    float mirrorY = 30 * PRATIO;
+    float mirrorW = 160 * PRATIO;
+    float mirrorH = 28 * PRATIO;
+
+    float saveVanishY = vanishY;    
+    vanishY = mirrorY;
+
+    bool isVisible = false;
+
+    for (Car car : rearViewCars) {
+        if (car.rearViewZ > 25) continue;
+
+        if (not isVisible) {
+            isVisible = true;
+            color(track.skyColour);
+            rectfill(
+                SCREEN_WIDTH / 2 - mirrorW / 2,
+                mirrorY - mirrorH / 2,
+                SCREEN_WIDTH / 2 + mirrorW / 2,
+                mirrorY + mirrorH / 2);
+            clipregion(
+                SCREEN_WIDTH / 2 - mirrorW / 2,
+                mirrorY - mirrorH / 2,
+                SCREEN_WIDTH / 2 + mirrorW / 2,
+                mirrorY + mirrorH / 2);
+        }
+
+        Vec mirrorPos = new Vec {
+            x = car.pos.x - player.pos.x,
+            y = car.pos.y - player.pos.y,
+            z = -(car.pos.z - player.pos.z) + 4
+        };        
+        Vec p = project(mirrorPos);
+        float w = p.z * CAR_WIDTH;
+        float h = p.z * CAR_WIDTH / 2;
+        colmap(aiCarPalettes[car.carIndex]);
+        scaleTexture(
+            gameTextures.rearViewCar,
+            p.x - w / 2, p.y - h / 2,
+            w, h,
+            false);
+        colmap();
+    }
+
+    if (isVisible) {
+        color(1);
+        rect(
+            SCREEN_WIDTH / 2 - mirrorW / 2,
+            mirrorY - mirrorH / 2,
+            SCREEN_WIDTH / 2 + mirrorW / 2,
+            mirrorY + mirrorH / 2);
+        clipregion();
+    }
+
+    vanishY = saveVanishY;
 }

@@ -159,6 +159,7 @@ void initAICars() {
 
     allCars = new Car[] { player };
     sortedCars = new Car[] { player };
+    rearViewCars = new Car[0];
     if (raceType != RACETYPE_PRACTICE) {
 
         // Add 7 AI cars to the race
@@ -168,9 +169,10 @@ void initAICars() {
             Car car = aiCarPool[poolIndex];
             aiCarPool.remove(poolIndex);
             aiCars.add(car);
-            // TODO: Rear view cars
+            rearViewCars.add(car);
             allCars.add(car);
             sortedCars.add(car);
+            rearViewCars.add(car);
             // TODO: Leaderboard
         }
     }
@@ -188,12 +190,18 @@ void initAICars() {
 }
 
 void sortCars(float z) {
-    // Calculate relative Z position and screen segment index
-    for (Car car : allCars) {
+
+    // Calculate relative Z position and screen segment index.
+    // Calculate rear view Z as well
+    for (Car car : aiCars) {
         float relZ = car.pos.z - z + 4;
         relZ -= floor(relZ / world.length) * world.length;
         relZ -= 4;
         car.relZ = relZ;
+
+        float rearViewZ = z - car.pos.z;
+        rearViewZ -= floor(rearViewZ / world.length) * world.length;
+        car.rearViewZ = rearViewZ;
     }
 
     // Sort into descending order of relZ
@@ -205,6 +213,17 @@ void sortCars(float z) {
             j--;
         }
         sortedCars[j] = car;
+    }
+
+    // Sort rear view cars
+    for (int i = 1; i < rearViewCars.length; i++) {
+        Car car = rearViewCars[i];
+        int j = i;
+        while (j > 0 and rearViewCars[j - 1].rearViewZ < car.rearViewZ) {
+            rearViewCars[j] = rearViewCars[j - 1];
+            j--;
+        }
+        rearViewCars[j] = car;
     }
 }
 
@@ -397,8 +416,6 @@ void updateAICars() {
         }
         updateAIInput(car);
         moveCar(car);
-        // car.vel = 0.2;
-        // car.pos.z += car.vel * VELOCITY_FACTOR;
     }
 }
 

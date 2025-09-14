@@ -61,6 +61,7 @@ struct Car {
     float turn, pitch;
     float vel, xd;
     float relZ;
+    float rearViewZ;            // Rear view mirror Z
     string name;
     CarInput input;
     CarAnimation anim;

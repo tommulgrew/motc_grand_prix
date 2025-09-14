@@ -13,6 +13,7 @@ Car[] aiCarPool;            // Pool of all possible AI cars, from which the curr
 Car[] aiCars;               // AI controlled cars only
 Car[] allCars;              // All cars including AI controlled and player
 Car[] sortedCars;           // All cars, sorted by z order
+Car[] rearViewCars;         // Non-player cars sorted for rear view mirror
 
 string[] aiCarNames = new string[] {
     "S. Hudson",
