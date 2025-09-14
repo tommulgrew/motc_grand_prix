@@ -336,7 +336,7 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
                         new Transform {
                             translate = screenSeg.T * segmentRelativePos(car.pos),
                             skewX = screenSeg.T.skewX + car.turn,
-                            skewY = screenSeg.T.skewY + car.turn
+                            skewY = screenSeg.T.skewY + car.pitch
                         });
                     colmap();
                 }

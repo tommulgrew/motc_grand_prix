@@ -267,7 +267,7 @@ void updateAIInput(Car car) {
         // If car is next to us, but we are in front, allow
         // room on whichever side they are on, to avoid a collision
         if (db <= 0 or db > world.length - CAR_LENGTH * 2) {
-            aiXDelta = 0.25;
+            // aiXDelta = 0.25;
             if (otherCar.pos.x < car.pos.x) {
                 l += AI_CAR_WIDTH;
             }
@@ -366,8 +366,8 @@ void updateAIInput(Car car) {
 void updatePlayer() {
 
     // Update input
-    //updatePlayerInput();
-    updateAIInput(player);
+    updatePlayerInput();
+    //updateAIInput(player);
 
     // Update car
     moveCar(player);
@@ -388,10 +388,13 @@ void updateAICars() {
             ai.aiParams = getAIParams(ai.baseAIParams);
             ai.rndCounter = rnd() * 300 + 150;
         }
-        // updateAIInput(car);
-        // moveCar(car);
-        car.vel = 0.2;
-        car.pos.z += car.vel * VELOCITY_FACTOR;
+        else {
+            ai.rndCounter--;
+        }
+        updateAIInput(car);
+        moveCar(car);
+        // car.vel = 0.2;
+        // car.pos.z += car.vel * VELOCITY_FACTOR;
     }
 }
 
@@ -412,7 +415,7 @@ void updatePlayerRevs() {
 }
 
 void updatePlayerSuspension() {
-    float suspension = (player.vel - player.anim.prevVel) * 1500.0;
+    float suspension = 0; //(player.vel - player.anim.prevVel) * 1500.0;
     suspension = clamp(suspension, -10, 10);
     player.anim.suspension = lerp(player.anim.suspension, suspension, 0.15);
     player.anim.prevVel = player.vel;
