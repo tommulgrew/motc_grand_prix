@@ -579,6 +579,65 @@ void moveCar(Car car) {
 void doCarCollisions() {
     // Compare each car to each other car
     for (int i = 0; i < allCars.length - 1; i++) {
-        
+        Car a = allCars[i];
+        for (int j = i + 1; j < allCars.length; j++) {
+            Car b = allCars[j];
+
+            // Relative car positions
+            float xd = b.pos.x - a.pos.x;
+            float zd = b.pos.z - a.pos.z;
+            zd -= floor(zd / world.length) * world.length;
+            if (zd > world.length / 2) zd -= world.length;
+
+            // Get positions in multiple of car dimensions
+            float axd = abs(xd) / CAR_WIDTH;
+            float azd = abs(zd) / CAR_LENGTH;
+
+            // Collision?
+            if (axd > 1 or azd > 1) continue;
+            
+            // Relative velocity X and Z
+            float xv = b.xd - a.xd;
+            float zv = b.vel - a.vel;
+
+            if (axd > azd) {
+                // Potential X collision
+                if ((xd > 0) != (xv > 0)) {     // Converging?
+
+                    // Update velocity
+                    float impulse = xv * COLLISION_ELASTIC;
+                    a.xd += impulse;
+                    b.xd -= impulse;
+
+                    // Update position
+                    float ox = sgn(xd) * CAR_WIDTH - xd;
+                    Vec posAdj = new Vec { x = ox / 2 };
+                    a.pos -= posAdj;
+                    b.pos += posAdj;
+
+                    // Collision sound effect
+                    if (a = player or b = player) collideSfx(abs(impulse) * 4);
+                }
+            }
+            else {
+                // Potential Z collision
+                if ((zd > 0) != (zv > 0)) {     // Converging?
+
+                    // Update velocity
+                    float impulse = zv * COLLISION_ELASTIC;
+                    a.vel += impulse;
+                    b.vel -= impulse;
+
+                    // Update position
+                    float oz = sgn(zd) * CAR_LENGTH - zd;
+                    Vec posAdj = new Vec { z = oz / 2 };
+                    a.pos -= posAdj;
+                    b.pos += posAdj;
+
+                    // Collision sound effect
+                    if (a = player or b = player) collideSfx(abs(impulse) * 4);
+                }
+            }
+        }
     }
 }
