@@ -25,11 +25,6 @@ const float COLLISION_ELASTIC = 0.7;
 
 // Enums
 
-// Game difficulty
-const int DIFFICULTY_EASY = 1;
-const int DIFFICULTY_MEDIUM = 2;
-const int DIFFICULTY_HARD = 3;
-
 // Race type
 const int RACETYPE_SINGLE = 1;
 const int RACETYPE_SEASON = 2;

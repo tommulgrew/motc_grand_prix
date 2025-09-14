@@ -7,6 +7,7 @@ struct GameConfig {
     float drawDistance;
     bool showRacingLine;
     int playerColour;           // Index into playerCarPalettes array
+    int difficulty;
 }
 
 // Data
@@ -17,5 +18,6 @@ GameConfig gameConfig = new GameConfig {
     controllerFactor = 1.1,
     drawDistance = 80,
     showRacingLine = true,
-    playerColour = 3
+    playerColour = 3,
+    difficulty = 2
 };

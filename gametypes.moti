@@ -1,7 +1,34 @@
 #include "library/trig"
 
+struct FloatRange {
+    float min, max;
+}
+
+struct DifficultyLevel {
+    string name;
+    float baseFactorOffset;
+    FloatRange velocityFactorRange;
+    FloatRange maxVelocityRange;
+    float steeringSmoothing;
+    float wander;
+    int wanderPeriod;
+    float lookAhead;
+    bool applyDontBrake;            // Whether to apply the "don't brake" flag if set on a corner
+
+    float velocityFactorVariance;
+    float maxVelocityVariance;
+    float steeringSmoothingVariance;
+    float wanderVariance;
+    int lookAheadVariance;
+}
+
 struct CarAIParams {
-    int todo;
+    float velocityFactor;
+    float maxVelocity;
+    float steeringSmoothing;
+    float wander;
+    int wanderPeriod;
+    int lookAhead;
 }
 
 struct CarAIState {
