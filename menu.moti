@@ -1,0 +1,118 @@
+#include "render"
+#include "app"
+
+// Structures
+
+struct MenuState {
+    int y;
+    float animY;
+    bool stickDown, stickUp;
+    bool btnDown, btnUp, btnLeft, btnRight;
+    bool select;
+}
+
+MenuState menu;
+
+// Routines
+
+void initMenu() {
+    menu = new MenuState;
+}
+
+float getMenuScreenY(float y) {
+    return SCREEN_HEIGHT / 2 + (20 + y * 30) * PRATIO;
+}
+
+float getMenuTextY(float y) {
+    return getMenuScreenY(y) + 10 * PRATIO - 4;
+}
+
+void printCentered(string text, float y, bool isSelected) {
+    int x = SCREEN_WIDTH / 2 - (text.length * 6) / 2;
+    if (isSelected and frame % 10 < 5) {
+        color(6);
+    }
+    else {
+        color(5);
+    }
+    print(text, x, y);
+}
+
+void drawMenu() {
+    cls(1);
+
+    // Draw selection bar
+    float screenY = getMenuScreenY(menu.animY);
+    float h = 20 * PRATIO;
+    color(7);
+    rectfill(0, screenY, SCREEN_WIDTH, screenY + h);
+    color(12);
+    rect(-1, screenY, SCREEN_WIDTH + 1, screenY + h);
+
+    // Draw menu options
+    printCentered(
+        "Track: " + tracks[gameConfig.trackIndex].name, 
+        getMenuTextY(0), 
+        menu.y = 0);
+
+    printCentered(
+        "Difficulty: " + difficultyLevels[gameConfig.difficulty].name,
+        getMenuTextY(1),
+        menu.y = 1);
+
+    printCentered(
+        "!! Race !!",
+        getMenuTextY(2),
+        menu.y = 2);
+}
+
+void updateMenu() {
+
+    // Button navigation
+    int yd = 0, xd = 0;
+    bool selectPressed;
+    bool btnDown  = btn(BTN_DOWN) or keydn(KEY_DOWN);
+    bool btnUp    = btn(BTN_UP)   or keydn(KEY_UP);
+    bool btnLeft  = btn(BTN_LEFT) or keydn(KEY_LEFT);
+    bool btnRight = btn(BTN_RIGHT) or keydn(KEY_RIGHT);
+    bool select   = btn(BTN_A) or keydn(KEY_RETURN) or keydn(KEY_SPACE) or keydn("z");
+
+    if (btnUp and not menu.btnUp) yd--;
+    if (btnDown and not menu.btnDown) yd++;
+    if (btnLeft and not menu.btnLeft) xd--;
+    if (btnRight and not menu.btnRight) xd++;
+    selectPressed = select and not menu.select;    
+    menu.btnUp = btnUp;
+    menu.btnDown = btnDown;
+    menu.btnLeft = btnLeft;
+    menu.btnRight = btnRight;
+    menu.select = select;
+
+    // Up/down selects menu option
+    menu.y = clamp(menu.y + yd, 0, 2);
+    menu.animY += clamp(menu.y - menu.animY, -0.1, 0.1);
+
+    // Left right cycles track/difficulty
+    if (xd != 0) {
+        if (menu.y = 0) {
+            int index = gameConfig.trackIndex + xd;
+            if (index >= 0 and index < tracks.length) {
+                gameConfig.trackIndex = index;
+                // TODO: SFX
+            }
+        }
+        else if (menu.y = 1) {
+            int index = gameConfig.difficulty + xd;
+            if (index >= 0 and index < difficultyLevels.length) {
+                gameConfig.difficulty = index;
+                // TODO: SFX
+            }
+        }
+    }
+
+    // Button starts game
+    if (selectPressed and menu.y = 2) {
+        // TODO: SFX
+        setGameMode(GAMEMODE_RACE);
+    }
+}

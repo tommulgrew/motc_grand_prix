@@ -16,8 +16,9 @@ void updatePlayerSuspension();
 void moveCar(Car car);
 void doCarCollisions();
 
-void initRace(Track track) {
-    generateTrack(track);
+void initRace() {
+    currentTrack = tracks[gameConfig.trackIndex];
+    generateTrack(currentTrack);
     resetPlayer();
     initAICars();
 
