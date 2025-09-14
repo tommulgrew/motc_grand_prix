@@ -19,5 +19,5 @@ GameConfig gameConfig = new GameConfig {
     drawDistance = 80,
     showRacingLine = true,
     playerColour = 3,
-    difficulty = 1
+    difficulty = 2
 };

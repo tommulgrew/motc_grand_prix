@@ -419,7 +419,7 @@ void updatePlayerRevs() {
 }
 
 void updatePlayerSuspension() {
-    float suspension = 0; //(player.vel - player.anim.prevVel) * 1500.0;
+    float suspension = (player.vel - player.anim.prevVel) * 1500.0;
     suspension = clamp(suspension, -10, 10);
     player.anim.suspension = lerp(player.anim.suspension, suspension, 0.15);
     player.anim.prevVel = player.vel;
