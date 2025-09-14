@@ -190,6 +190,7 @@ void sortCars(float z) {
     for (Car car : allCars) {
         float relZ = car.pos.z - z + 4;
         relZ -= floor(relZ / world.length) * world.length;
+        relZ -= 4;
         car.relZ = relZ;
     }
 
@@ -217,7 +218,7 @@ void updateAIInput(Car car) {
     float xOffset = 0, turn = 0;
     float d = max(param.lookAhead * car.vel, 1);
     WorldSegment lookaheadSegment;
-    for (int i = zIndex; i <= zIndex + d; i++) {
+    for (int i = zIndex; i <= zIndex + floor(d); i++) {
         lookaheadSegment = world[i % world.length];
         xOffset += turn;
         turn += lookaheadSegment.turn;
@@ -229,8 +230,53 @@ void updateAIInput(Car car) {
     float r =  (ROAD_WIDTH + CAR_WIDTH) / 2;
     float vel = 10;
     float[] pts = new float[0];
-    float aiXDelta = 0.15;          // How hard to steer. Increases if avoiding a potential collision.
-    // TODO: Other vehicle logic
+    float aiXDelta = 0.15;              // How hard to steer. Increases if avoiding a potential collision.
+    
+    // Avoid other vehicles
+    for (Car otherCar : allCars) {
+        if (otherCar = car) continue;
+        float dx = otherCar.pos.x - car.pos.x;
+        float db = otherCar.pos.z - car.pos.z;      // Distance to back of other car
+        db -= floor(db / world.length) * world.length;
+        db -= CAR_LENGTH;
+        float dvel = otherCar.vel - car.vel;
+        float ta = 1000, tb = 1000;
+        float da = db - 3.85;                       // Distance to "close" following distance
+
+        // Catching up to car?
+        if (dvel < 0) {
+            // Time to catch up to other car
+            ta = da > 0 ? da / -(dvel - 0.01) : 0;
+            tb = db > 0 ? db / -(dvel - 0.01) : 0;
+        }
+
+        // Avoid all cars that will be "close" in 2 seconds
+        if (ta < 60) {
+
+            // Add car position to points array
+            pts.add(otherCar.pos.x);
+
+            // Impending collision (in 2 seconds or less)?
+            if (abs(dx) < CAR_WIDTH and tb < 60) {
+
+                // Brake!
+                vel = min(vel, otherCar.vel);
+            }
+        }
+
+        // If car is next to us, but we are in front, allow
+        // room on whichever side they are on, to avoid a collision
+        if (db <= 0 or db > world.length - CAR_LENGTH * 2) {
+            aiXDelta = 0.25;
+            if (otherCar.pos.x < car.pos.x) {
+                l += AI_CAR_WIDTH;
+            }
+            else {
+                r -= AI_CAR_WIDTH;
+            }
+        }
+    }
+
     pts.add(l);
     pts.add(r);
 
@@ -320,7 +366,7 @@ void updateAIInput(Car car) {
 void updatePlayer() {
 
     // Update input
-    // updatePlayerInput();
+    //updatePlayerInput();
     updateAIInput(player);
 
     // Update car
@@ -344,7 +390,8 @@ void updateAICars() {
         }
         // updateAIInput(car);
         // moveCar(car);
-        car.pos.z += 0.1;
+        car.vel = 0.2;
+        car.pos.z += car.vel * VELOCITY_FACTOR;
     }
 }
 
