@@ -47,6 +47,10 @@ struct Track {
 	int skyColour, groundColour;
 }
 
+// Data
+Track[] tracks = new Track[0];
+Track currentTrack;
+
 // Routines
 
 Model[] loadBarriers(Stream stream) {
@@ -163,4 +167,13 @@ Track loadTrack(Stream stream, string name, int finishLineDistance) {
 	track.groundColour = load1(stream);
 
 	return track;
+}
+
+// Deserialize tracks
+for (int i = 0; i < trackData.length; i++) {
+	Track track = loadTrack(
+		new Stream { data = trackData[i] },
+		trackNames[i],
+		trackFinishlineDistances[i]);
+	tracks.add(track);
 }

@@ -19,31 +19,50 @@
 #include "gameplay"
 #include "world"
 #include "rendergame"
+#include "menu"
+#include "app"
 
-Track[] tracks = new Track[0];
+// Routines
 
-// Deserialize tracks
-for (int i = 0; i < trackData.length; i++) {
-	Track track = loadTrack(
-		new Stream { data = trackData[i] },
-		trackNames[i],
-		trackFinishlineDistances[i]);
-	tracks.add(track);
-}
+void draw();
+void update();
+
+// Setup screen buffer
+screen(makeimg(SCREEN_WIDTH, SCREEN_HEIGHT));
+
+// Start in menu mode
+setGameMode(GAMEMODE_MENU);
 
 // Setup for race
-Track currentTrack = tracks[2];
-initRace(currentTrack);
-
-screen(makeimg(SCREEN_WIDTH, SCREEN_HEIGHT));
+// Track currentTrack = tracks[2];
+// initRace(currentTrack);
 
 // Main loop
 while (true) {
-	drawGame(currentTrack);
+	draw();
 	flip();
 
 	interval(1000 / 30);
-	updateGame();
+	update();
 
 	frame++;
+}
+
+void setGameMode(int mode) {
+	if (gameMode != mode) {
+		gameMode = mode;
+		if (gameMode = GAMEMODE_MENU) initMenu();
+		else if (gameMode = GAMEMODE_RACE) initRace();
+		else assert(false, "Unknown game mode");
+	}
+}
+
+void draw() {
+	if (gameMode = GAMEMODE_MENU) drawMenu();
+	else if (gameMode = GAMEMODE_RACE) drawGame();
+}
+
+void update() {
+	if (gameMode = GAMEMODE_MENU) updateMenu();
+	else if (gameMode = GAMEMODE_RACE) updateGame();
 }

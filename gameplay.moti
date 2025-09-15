@@ -16,8 +16,9 @@ void updatePlayerSuspension();
 void moveCar(Car car);
 void doCarCollisions();
 
-void initRace(Track track) {
-    generateTrack(track);
+void initRace() {
+    currentTrack = tracks[gameConfig.trackIndex];
+    generateTrack(currentTrack);
     resetPlayer();
     initAICars();
 
@@ -182,7 +183,7 @@ void initAICars() {
         Car car = allCars[i];
         car.pos = new Vec {
             x = (i%2 - 0.5) * 3,
-            z = i * 6
+            z = i * 6 + 0.0001      // +0.0001 to workaround render issue when cars are exactly integer aligned
         };
     }
 
@@ -590,7 +591,8 @@ void moveCar(Car car) {
     }
 
     // Calculate pitch
-    car.pitch = lerp(seg.pitch, nextSeg.pitch, zOffset);
+    // Store relative to current segment
+    car.pitch = (nextSeg.pitch - seg.pitch) * zOffset;
 }
 
 void doCarCollisions() {

@@ -25,7 +25,12 @@ const float COLLISION_ELASTIC = 0.7;
 
 // Enums
 
+// Game modes
+const int GAMEMODE_MENU = 1;
+const int GAMEMODE_RACE = 2;
+
 // Race type
 const int RACETYPE_SINGLE = 1;
 const int RACETYPE_SEASON = 2;
 const int RACETYPE_PRACTICE = 3;
+const int RACETYPE_DEMO = 4;

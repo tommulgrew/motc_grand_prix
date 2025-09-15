@@ -43,6 +43,18 @@ TrackCurve[] curves;
 
 // Routines
 
+float getWorldZ(float z) {
+    return z - floor(z / world.length) * world.length;
+}
+
+int getSegmentIndex(float z) {
+    return floor(getWorldZ(z));
+}
+
+Vec segmentRelativePos(Vec pos) {
+    return pos - new Vec { z = floor(pos.z) };      // Position relative to segment
+}
+
 void placeItem(Model model, Vec pos, int length = 0, int ref = 0) {
     
     // Place item for nested models
