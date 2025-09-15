@@ -233,7 +233,7 @@ void updateAIInput(Car car) {
     CarAIState ai = car.aiState;
     CarAIParams param = car.aiState.aiParams;
 
-    int zIndex = floor(car.pos.z);
+    int zIndex = getSegmentIndex(car.pos.z);
 
     // Look a certain distance down the track and calculate where
     // the car is aiming.
