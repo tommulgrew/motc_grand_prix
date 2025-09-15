@@ -39,13 +39,14 @@ setGameMode(GAMEMODE_MENU);
 
 // Main loop
 while (true) {
-	draw();
-	flip();
-
-	interval(1000 / 30);
-	update();
-
-	frame++;
+	if (interval(1000 / 30, 3)) {
+		update();
+		frame++;	
+	}
+	else {
+		draw();
+		flip();
+	}
 }
 
 void setGameMode(int mode) {
