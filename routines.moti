@@ -29,10 +29,6 @@ Transform childTransform(Transform T, Vec childPos) {
     };
 }
 
-Vec segmentRelativePos(Vec pos) {
-    return pos - new Vec { z = floor(pos.z) };      // Position relative to segment
-}
-
 int[] makeColMap(int[] srcCols, int[] dstCols) {
     assert(srcCols.length = dstCols.length);
     int[] m = new int[16];

@@ -591,7 +591,8 @@ void moveCar(Car car) {
     }
 
     // Calculate pitch
-    car.pitch = lerp(seg.pitch, nextSeg.pitch, zOffset);
+    // Store relative to current segment
+    car.pitch = (nextSeg.pitch - seg.pitch) * zOffset;
 }
 
 void doCarCollisions() {
