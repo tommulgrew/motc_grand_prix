@@ -183,7 +183,7 @@ void initAICars() {
         Car car = allCars[i];
         car.pos = new Vec {
             x = (i%2 - 0.5) * 3,
-            z = i * 6
+            z = i * 6 + 0.0001      // +0.0001 to workaround render issue when cars are exactly integer aligned
         };
     }
 
