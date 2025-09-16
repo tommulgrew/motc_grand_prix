@@ -3,6 +3,7 @@
 struct GameConfig {
     float controllerDeadzone;
     float controllerSmoothing;
+    float controllerCurve;      // 1 = linear. 2 = x^2 etc.
     float controllerFactor;
     float drawDistance;
     bool showRacingLine;
@@ -14,8 +15,17 @@ struct GameConfig {
 // Data
 
 GameConfig gameConfig = new GameConfig {
+    
+    // Best for gamepads
     controllerDeadzone = 0.06,
     controllerSmoothing = 0.9,
+    controllerCurve = 2,
+
+    // Best for touch screen controls
+    // controllerDeadzone = 0,
+    // controllerSmoothing = 0,
+    // controllerCurve = 1.5,
+
     controllerFactor = 1.1,
     drawDistance = 80,
     showRacingLine = true,
