@@ -55,6 +55,10 @@ Vec segmentRelativePos(Vec pos) {
     return pos - new Vec { z = floor(pos.z) };      // Position relative to segment
 }
 
+int getLap(float z) {
+    return max(floor((z - currentTrack.finishLineDistance) / world.length), 0) + 1;
+}
+
 void placeItem(Model model, Vec pos, int length = 0, int ref = 0) {
     
     // Place item for nested models

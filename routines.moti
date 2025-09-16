@@ -49,3 +49,20 @@ int[] makeColMap(int[] srcCols, int[] dstCols) {
 float rnd2(float n) {
     return rnd() * n * 2 - n;
 }
+
+void printScaled(string text, int x, int y, int scale) {
+    Image mainScreen = screen();
+
+    // Print to buffer
+    int w = text.length * 6, h = 8;
+    Image buffer = makeimg(w, h);
+    screen(buffer);
+    print(text, 0, 0);
+
+    screen(mainScreen);
+
+    // Scale to screen
+    tran(0);
+    scaleimg(buffer, x, y, w * scale, h * scale);
+    tran(-1);    
+}

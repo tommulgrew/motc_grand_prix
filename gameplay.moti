@@ -161,6 +161,7 @@ void initAICars() {
 
     allCars = new Car[] { player };
     sortedCars = new Car[] { player };
+    leaderboard = new Car[] { player };
     rearViewCars = new Car[0];
     if (raceType != RACETYPE_PRACTICE) {
 
@@ -175,7 +176,7 @@ void initAICars() {
             allCars.add(car);
             sortedCars.add(car);
             rearViewCars.add(car);
-            // TODO: Leaderboard
+            leaderboard.add(car);
         }
     }
 
@@ -226,6 +227,17 @@ void sortCars(float z) {
             j--;
         }
         rearViewCars[j] = car;
+    }
+
+    // Sort leaderboard into descending order of Z
+    for (int i = 1; i < leaderboard.length; i++) {
+        Car car = leaderboard[i];
+        int j = i;
+        while (j > 0 and leaderboard[j - 1].pos.z < car.pos.z) {
+            leaderboard[j] = leaderboard[j - 1];
+            j--;            
+        }
+        leaderboard[j] = car;
     }
 }
 

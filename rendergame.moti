@@ -11,6 +11,13 @@ Vec PLAYER_CAMERA_OFFSET = new Vec {    // Intended to be treated as a constant
     y = -0.6
 };
 
+string[] placeText = new string[] {
+    "st",
+    "nd",
+    "rd",
+    "th"
+};
+
 // Structures
 
 struct CameraInfo {
@@ -33,6 +40,7 @@ struct ScreenSpaceSegment {
 void drawWorld(CameraInfo cam, int drawDistance);
 void drawCockpit();
 void drawMirror();
+void drawHud();
 CameraInfo getCamera();
 
 void drawGame() {
@@ -40,6 +48,7 @@ void drawGame() {
     drawWorld(cam, gameConfig.drawDistance);
     drawCockpit();
     drawMirror();
+    drawHud();
 }
 
 CameraInfo getCamera() {
@@ -516,12 +525,12 @@ void drawCockpit() {
 
 void drawMirror() {
 
-    float mirrorY = 30 * PRATIO;
-    float mirrorW = 160 * PRATIO;
-    float mirrorH = 28 * PRATIO;
+    const float MIRROR_Y = 36 * PRATIO;
+    const float MIRROR_W = 160 * PRATIO;
+    const float MIRROR_H = 28 * PRATIO;
 
     float saveVanishY = vanishY;    
-    vanishY = mirrorY;
+    vanishY = MIRROR_Y;
 
     bool isVisible = false;
 
@@ -532,15 +541,15 @@ void drawMirror() {
             isVisible = true;
             color(currentTrack.skyColour);
             rectfill(
-                SCREEN_WIDTH / 2 - mirrorW / 2,
-                mirrorY - mirrorH / 2,
-                SCREEN_WIDTH / 2 + mirrorW / 2,
-                mirrorY + mirrorH / 2);
+                SCREEN_WIDTH / 2 - MIRROR_W / 2,
+                MIRROR_Y - MIRROR_H / 2,
+                SCREEN_WIDTH / 2 + MIRROR_W / 2,
+                MIRROR_Y + MIRROR_H / 2);
             clipregion(
-                SCREEN_WIDTH / 2 - mirrorW / 2,
-                mirrorY - mirrorH / 2,
-                SCREEN_WIDTH / 2 + mirrorW / 2,
-                mirrorY + mirrorH / 2);
+                SCREEN_WIDTH / 2 - MIRROR_W / 2,
+                MIRROR_Y - MIRROR_H / 2,
+                SCREEN_WIDTH / 2 + MIRROR_W / 2,
+                MIRROR_Y + MIRROR_H / 2);
         }
 
         Vec mirrorPos = new Vec {
@@ -563,12 +572,57 @@ void drawMirror() {
     if (isVisible) {
         color(1);
         rect(
-            SCREEN_WIDTH / 2 - mirrorW / 2,
-            mirrorY - mirrorH / 2,
-            SCREEN_WIDTH / 2 + mirrorW / 2,
-            mirrorY + mirrorH / 2);
+            SCREEN_WIDTH / 2 - MIRROR_W / 2,
+            MIRROR_Y - MIRROR_H / 2,
+            SCREEN_WIDTH / 2 + MIRROR_W / 2,
+            MIRROR_Y + MIRROR_H / 2);
         clipregion();
     }
 
     vanishY = saveVanishY;
+}
+
+void drawCarName(int leaderboardIndex, int x, int y) {
+    Car car = leaderboard[leaderboardIndex];
+
+    // Car icon
+    colmap(aiCarPalettes[car.carIndex]);
+    scaleTexture(gameTextures.carIcon, x, y, 16 * PRATIO, 16 * PRATIO);
+    colmap();
+
+    // Car text
+    string nameText = (leaderboardIndex + 1) + placeText[min(leaderboardIndex, 3)]
+        + " " + car.name;
+    color(3);
+    print(nameText, x + 20 * PRATIO, y + 2 * PRATIO);
+}
+
+void drawHud() {
+
+    const int CAR_NAME_X = SCREEN_WIDTH / 2 - 80 * PRATIO;
+
+    // Find player car
+    for (int i = 0; i < leaderboard.length; i++) {
+        if (leaderboard[i] = player) {
+
+            // Current place
+            color(3);
+            printScaled(i + 1, 0, 4 * PRATIO, 2 * PRATIO);
+            print(placeText[min(i, 3)], 10 * PRATIO, 8 * PRATIO);
+
+            // Car in front and behind
+            if (i > 0) {
+                drawCarName(i - 1, CAR_NAME_X, 1 * PRATIO);
+            }
+            if (i < leaderboard.length - 1) {
+                drawCarName(i + 1, CAR_NAME_X, 12 * PRATIO);
+            }            
+        }
+    }
+
+    // Current lap
+    int lap = getLap(player.pos.z);
+    string lapText = lap;
+    printScaled(lapText, SCREEN_WIDTH - (lapText.length * 6 + 8) * PRATIO, 4 * PRATIO, 2 * PRATIO);
+    print("Lap", SCREEN_WIDTH - 45 * PRATIO, 4 * PRATIO);
 }

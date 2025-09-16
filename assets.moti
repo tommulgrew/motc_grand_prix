@@ -113,7 +113,7 @@ Texture getTexture(string name) {
 }
 
 struct GameTextures {
-    Texture horizon, cockpit, steeringWheel, steeringCenter, wheelSide, wheelTire, marker, rearViewCar;
+    Texture horizon, cockpit, steeringWheel, steeringCenter, wheelSide, wheelTire, marker, rearViewCar, carIcon;
 }
 
 GameTextures gameTextures = new GameTextures {
@@ -124,7 +124,8 @@ GameTextures gameTextures = new GameTextures {
     wheelSide = fixTexture(new Texture { name = "wheel_side", u = 14, v = 16, w = 2, h = 4, tran = 1 }),
     wheelTire = fixTexture(new Texture { name = "wheel_tire", u = 13, v = 16, w = 1, h = 4, tran = 1 }),
     marker = getTexture("marker"),
-    rearViewCar = fixTexture(new Texture { name = "rear_view_car", u = 61, v = 6, w = 2, h = 1, tran = 12 })
+    rearViewCar = fixTexture(new Texture { name = "rear_view_car", u = 61, v = 6, w = 2, h = 1, tran = 12 }),
+    carIcon = fixTexture(new Texture { name = "car_icon", u = 61, v = 7, w = 1, h = 1, tran = 12 })
 };
 
 // Colour substitution maps
