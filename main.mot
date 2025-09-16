@@ -1,4 +1,6 @@
 #title Mot Grand Prix
+#executable motgp
+#webtemplate driving
 #file assets/textures.png
 #file assets/sfx/getready.wav
 #file assets/sfx/go.wav
