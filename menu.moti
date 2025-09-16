@@ -1,14 +1,33 @@
 #include "render"
 #include "app"
 
+// Constants
+
+// Menu button enum
+const int MB_UP             = 0;
+const int MB_DOWN           = 1;
+const int MB_LEFT           = 2;
+const int MB_RIGHT          = 3;
+const int MB_SELECT         = 4;
+const int MB_STICK_UP       = 5;
+const int MB_STICK_DOWN     = 6;
+const int MB_STICK_LEFT     = 7;
+const int MB_STICK_RIGHT    = 8;
+
 // Structures
+
+struct MenuInput {
+    bool[] btnDown;
+    bool[] btnPressed;
+}
 
 struct MenuState {
     int y;
     float animY;
-    bool stickDown, stickUp;
+    bool stickDown, stickUp, stickLeft, stickRight;
     bool btnDown, btnUp, btnLeft, btnRight;
     bool select;
+    MenuInput input;
 }
 
 MenuState menu;
@@ -16,7 +35,38 @@ MenuState menu;
 // Routines
 
 void initMenu() {
-    menu = new MenuState;
+    menu = new MenuState {
+        input = new MenuInput {
+            btnDown = new bool[9],        
+            btnPressed = new bool[9]
+        }
+    };
+}
+
+void updateMenuInput(MenuInput input) {
+    bool[] btnDown = new bool[9];
+
+    // Button down state
+    btnDown[MB_UP]     = btn(BTN_UP)    or keydn(KEY_UP);
+    btnDown[MB_DOWN]   = btn(BTN_DOWN)  or keydn(KEY_DOWN);
+    btnDown[MB_LEFT]   = btn(BTN_LEFT)  or keydn(KEY_LEFT);
+    btnDown[MB_RIGHT]  = btn(BTN_RIGHT) or keydn(KEY_RIGHT);
+    btnDown[MB_SELECT] = btn(BTN_A) or keydn(KEY_RETURN) or keydn(KEY_SPACE) or keydn("z");
+
+    // Controller analogue stick navigation.
+    // Stick must be moved past 0.6 to trigger press and back past 0.3 to trigger release.
+    // This prevents jittery devices from triggering false presses.
+    float ax = axis(AX_X), ay = axis(AX_Y);
+    btnDown[MB_STICK_UP]    = ay < (input.btnDown[MB_STICK_UP]    ? -0.3 : -0.6);
+    btnDown[MB_STICK_DOWN]  = ay < (input.btnDown[MB_STICK_DOWN]  ?  0.3 :  0.6);
+    btnDown[MB_STICK_LEFT]  = ax < (input.btnDown[MB_STICK_LEFT]  ? -0.3 : -0.6);
+    btnDown[MB_STICK_RIGHT] = ax < (input.btnDown[MB_STICK_RIGHT] ?  0.3 :  0.6);
+
+    // Calculate button pressed states
+    for (int i = 0; i < btnDown.length; i++) {
+        input.btnPressed[i] = btnDown[i] and not input.btnDown[i];
+        input.btnDown[i] = btnDown[i];
+    }
 }
 
 float getMenuScreenY(float y) {
@@ -67,26 +117,15 @@ void drawMenu() {
 }
 
 void updateMenu() {
+    MenuInput input = menu.input;
+    updateMenuInput(input);
 
     // Button navigation
     int yd = 0, xd = 0;
-    bool selectPressed;
-    bool btnDown  = btn(BTN_DOWN) or keydn(KEY_DOWN);
-    bool btnUp    = btn(BTN_UP)   or keydn(KEY_UP);
-    bool btnLeft  = btn(BTN_LEFT) or keydn(KEY_LEFT);
-    bool btnRight = btn(BTN_RIGHT) or keydn(KEY_RIGHT);
-    bool select   = btn(BTN_A) or keydn(KEY_RETURN) or keydn(KEY_SPACE) or keydn("z");
-
-    if (btnUp and not menu.btnUp) yd--;
-    if (btnDown and not menu.btnDown) yd++;
-    if (btnLeft and not menu.btnLeft) xd--;
-    if (btnRight and not menu.btnRight) xd++;
-    selectPressed = select and not menu.select;    
-    menu.btnUp = btnUp;
-    menu.btnDown = btnDown;
-    menu.btnLeft = btnLeft;
-    menu.btnRight = btnRight;
-    menu.select = select;
+    if (input.btnPressed[MB_UP]    or input.btnPressed[MB_STICK_UP])    yd--;
+    if (input.btnPressed[MB_DOWN]  or input.btnPressed[MB_STICK_DOWN])  yd++;
+    if (input.btnPressed[MB_LEFT]  or input.btnPressed[MB_STICK_LEFT])  xd--;
+    if (input.btnPressed[MB_RIGHT] or input.btnPressed[MB_STICK_RIGHT]) xd++;
 
     // Up/down selects menu option
     menu.y = clamp(menu.y + yd, 0, 2);
@@ -111,7 +150,7 @@ void updateMenu() {
     }
 
     // Button starts game
-    if (selectPressed and menu.y = 2) {
+    if (input.btnPressed[MB_SELECT] and menu.y = 2) {
         // TODO: SFX
         setGameMode(GAMEMODE_RACE);
     }
