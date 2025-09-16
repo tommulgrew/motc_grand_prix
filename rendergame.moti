@@ -546,7 +546,7 @@ void drawMirror() {
         Vec mirrorPos = new Vec {
             x = car.pos.x - player.pos.x,
             y = car.pos.y - player.pos.y,
-            z = -(car.pos.z - player.pos.z) + 4
+            z = car.rearViewZ + 2.5
         };        
         Vec p = project(mirrorPos);
         float w = p.z * CAR_WIDTH;
