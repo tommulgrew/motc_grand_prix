@@ -51,16 +51,16 @@ void updateMenuInput(MenuInput input) {
     btnDown[MB_DOWN]   = btn(BTN_DOWN)  or keydn(KEY_DOWN);
     btnDown[MB_LEFT]   = btn(BTN_LEFT)  or keydn(KEY_LEFT);
     btnDown[MB_RIGHT]  = btn(BTN_RIGHT) or keydn(KEY_RIGHT);
-    btnDown[MB_SELECT] = btn(BTN_A) or keydn(KEY_RETURN) or keydn(KEY_SPACE) or keydn("z");
+    btnDown[MB_SELECT] = btn(BTN_A) or btn(BTN_B) or keydn(KEY_RETURN) or keydn(KEY_SPACE) or keydn("z") or keydn("x");
 
     // Controller analogue stick navigation.
     // Stick must be moved past 0.6 to trigger press and back past 0.3 to trigger release.
     // This prevents jittery devices from triggering false presses.
     float ax = axis(AX_X), ay = axis(AX_Y);
     btnDown[MB_STICK_UP]    = ay < (input.btnDown[MB_STICK_UP]    ? -0.3 : -0.6);
-    btnDown[MB_STICK_DOWN]  = ay < (input.btnDown[MB_STICK_DOWN]  ?  0.3 :  0.6);
+    btnDown[MB_STICK_DOWN]  = ay > (input.btnDown[MB_STICK_DOWN]  ?  0.3 :  0.6);
     btnDown[MB_STICK_LEFT]  = ax < (input.btnDown[MB_STICK_LEFT]  ? -0.3 : -0.6);
-    btnDown[MB_STICK_RIGHT] = ax < (input.btnDown[MB_STICK_RIGHT] ?  0.3 :  0.6);
+    btnDown[MB_STICK_RIGHT] = ax > (input.btnDown[MB_STICK_RIGHT] ?  0.3 :  0.6);
 
     // Calculate button pressed states
     for (int i = 0; i < btnDown.length; i++) {
