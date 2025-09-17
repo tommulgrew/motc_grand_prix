@@ -30,10 +30,28 @@ Done
     - DONE Export from Pico-8
     - DONE Load on startup
     - DONE Trigger
+- DONE Implement proper timing code
 
 To do
 =====
 
+- Pause menu
+    - Quit to main menu
+    - Controller settings
+        - Persist
+    - Car colour
+    - Toggle racing line
+- Select race type
+    - Single
+    - Practice    
+- Select number of laps
+- Ready, set, go sequence
+- End race when laps finished
+- End of race sequence
+    - Calculate podium
+- Season mode
+    - Generate roster
+    - Collect results
+    - Persist roster and results
 - Update texture image. Make use of 2x resolution
 - Check memory usage
-- Implement proper timing code
