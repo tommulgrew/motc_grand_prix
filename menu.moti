@@ -27,6 +27,7 @@ struct MenuState {
     bool stickDown, stickUp, stickLeft, stickRight;
     bool btnDown, btnUp, btnLeft, btnRight;
     bool select;
+    int carPaletteIndex;
     MenuInput input;
 }
 
@@ -39,7 +40,8 @@ void initMenu() {
         input = new MenuInput {
             btnDown = new bool[9],        
             btnPressed = new bool[9]
-        }
+        },
+        carPaletteIndex = rnd() * aiCarPalettes.length
     };
 }
 
@@ -91,7 +93,7 @@ void printCentered(string text, float y, bool isSelected) {
 void drawMenu() {
     cls(1);
 
-    colmap(aiCarPalettes[11]);
+    colmap(aiCarPalettes[menu.carPaletteIndex]);
     drawCar(new Transform {
         translate = new Vec { z = 3.5, y = -0.2 },
         skewX = -0.5,
