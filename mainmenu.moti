@@ -1,47 +1,47 @@
+#include "menu"
 #include "render"
 #include "app"
 #include "ui"
 
+// Constants
+
+// Main menu item enums
+
+const int MAIN_MENU_TRACK = 1;
+const int MAIN_MENU_DIFFICULTY = 2;
+const int MAIN_MENU_STARTRACE = 3;
+
 // Structures
 
 struct MainMenuState {
-    int y;
-    float animY;
-    bool stickDown, stickUp, stickLeft, stickRight;
-    bool btnDown, btnUp, btnLeft, btnRight;
-    bool select;
+    MenuState menuState;
     int carPaletteIndex;
 }
 
+// Data
+
+MenuParams mainMenuParams = new MenuParams {
+    y = SCREEN_HEIGHT * 0.75,
+    itemSpacing = 30,
+    drawBackground = false
+};
 MainMenuState mainMenu;
 
 // Routines
 
+MenuItem[] getMainMenuItems();
+
 void initMenu() {
     mainMenu = new MainMenuState {
+        menuState = new MenuState,
         carPaletteIndex = rnd() * aiCarPalettes.length
     };
-}
-
-float getMenuScreenY(float y) {
-    return SCREEN_HEIGHT / 2 + (20 + y * 30) * PRATIO;
-}
-
-float getMenuTextY(float y) {
-    return getMenuScreenY(y) + 10 * PRATIO - 4;
 }
 
 void drawMenu() {
     cls(1);
 
-    colmap(aiCarPalettes[mainMenu.carPaletteIndex]);
-    drawCar(new Transform {
-        translate = new Vec { z = 3.5, y = -0.2 },
-        skewX = -0.5,
-        skewY = -0.3
-    });
-    colmap();
-
+    // Title text
     const int TITLE_BASE_SCALE = 2;
     const int TITLE_X = SCREEN_WIDTH / 2 - 8 * 6 * TITLE_BASE_SCALE * PRATIO;
     const int TITLE_Y = SCREEN_HEIGHT * 0.15;
@@ -51,65 +51,56 @@ void drawMenu() {
     color(6);
     printScaled("Mot's Grand Prix", TITLE_X, TITLE_Y, TITLE_SCALE);
 
-    // Draw selection bar
-    float screenY = getMenuScreenY(mainMenu.animY);
-    float h = 20 * PRATIO;
-    color(7);
-    rectfill(0, screenY, SCREEN_WIDTH, screenY + h);
-    color(12);
-    rect(-1, screenY, SCREEN_WIDTH + 1, screenY + h);
+    // Draw a racing car
+    colmap(aiCarPalettes[mainMenu.carPaletteIndex]);
+    drawCar(new Transform {
+        translate = new Vec { z = 3.5, y = -0.2 },
+        skewX = -0.5,
+        skewY = -0.3
+    });
+    colmap();
 
-    // Draw menu options
-    printCentered(
-        "Track: " + tracks[gameConfig.trackIndex].name, 
-        getMenuTextY(0), 
-        mainMenu.y = 0);
-
-    printCentered(
-        "Difficulty: " + difficultyLevels[gameConfig.difficulty].name,
-        getMenuTextY(1),
-        mainMenu.y = 1);
-
-    printCentered(
-        "!! Race !!",
-        getMenuTextY(2),
-        mainMenu.y = 2);
+    // Menu UI
+    MenuItem[] items = getMainMenuItems();
+    drawMenu(mainMenuParams, mainMenu.menuState, items);
 }
 
 void updateMenu(UIInput input) {
 
-    // Button navigation
-    int yd = 0, xd = 0;
-    if (input.btnPressed[UI_UP]    or input.btnPressed[UI_STICK_UP])    yd--;
-    if (input.btnPressed[UI_DOWN]  or input.btnPressed[UI_STICK_DOWN])  yd++;
-    if (input.btnPressed[UI_LEFT]  or input.btnPressed[UI_STICK_LEFT])  xd--;
-    if (input.btnPressed[UI_RIGHT] or input.btnPressed[UI_STICK_RIGHT]) xd++;
+    // Items
+    MenuItem[] items = getMainMenuItems();
 
-    // Up/down selects menu option
-    mainMenu.y = clamp(mainMenu.y + yd, 0, 2);
-    mainMenu.animY += clamp(mainMenu.y - mainMenu.animY, -0.1, 0.1);
+    // Update menu
+    MenuAction action = updateMenu(mainMenu.menuState, items, input);
 
-    // Left right cycles track/difficulty
-    if (xd != 0) {
-        if (mainMenu.y = 0) {
-            int index = gameConfig.trackIndex + xd;
-            if (index >= 0 and index < tracks.length) {
-                gameConfig.trackIndex = index;
-                // TODO: SFX
+    // Perform menu action
+    if (action != null) {
+        if (action.menuAction = MENU_ACTION_SELECT) {
+            if (action.itemID = MAIN_MENU_STARTRACE) {
+                setGameMode(GAMEMODE_RACE);            
             }
         }
-        else if (mainMenu.y = 1) {
-            int index = gameConfig.difficulty + xd;
-            if (index >= 0 and index < difficultyLevels.length) {
-                gameConfig.difficulty = index;
-                // TODO: SFX
+        else if (action.menuAction = MENU_ACTION_CHANGE) {
+            if (action.itemID = MAIN_MENU_TRACK) {
+                int index = gameConfig.trackIndex + action.delta;
+                if (index >= 0 and index < tracks.length) {
+                    gameConfig.trackIndex = index;
+                }
+            }
+            else if (action.itemID = MAIN_MENU_DIFFICULTY) {
+                int index = gameConfig.difficulty + action.delta;
+                if (index >= 0 and index < difficultyLevels.length) {
+                    gameConfig.difficulty = index;
+                }
             }
         }
     }
+}
 
-    // Button starts game
-    if (input.btnPressed[UI_SELECT] and mainMenu.y = 2) {
-        // TODO: SFX
-        setGameMode(GAMEMODE_RACE);
-    }
+MenuItem[] getMainMenuItems() {
+    return new MenuItem[] {
+        new MenuItem { id = MAIN_MENU_TRACK, text = "Track: " + tracks[gameConfig.trackIndex].name },
+        new MenuItem { id = MAIN_MENU_DIFFICULTY, text = difficultyLevels[gameConfig.difficulty].name },
+        new MenuItem { id = MAIN_MENU_STARTRACE, text = "!! Race !!" }
+    };
 }

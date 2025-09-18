@@ -33,7 +33,6 @@ PauseMenuState pauseMenuState = new PauseMenuState {
 // Routines
 
 MenuItem[] getPauseMenuItems();
-void pauseMenuAction(MenuAction action);
 
 void updatePauseMenu(UIInput input) {
     if (pauseMenuState.isActive) {
@@ -77,20 +76,8 @@ void drawPauseMenu() {
 }
 
 MenuItem[] getPauseMenuItems() {
-    MenuItem[] items = new MenuItem[0];
-    items.add(new MenuItem { id = PAUSE_QUIT, text = "Quit race" });
-    items.add(new MenuItem { id = PAUSE_RESUME, text = "Resume" });
-    return items;
-}
-
-void pauseMenuAction(MenuAction action) {
-    if (action.menuAction = MENU_ACTION_SELECT) {
-        if (action.itemID = PAUSE_QUIT) {
-            pauseMenuState.isActive = false;
-            setGameMode(GAMEMODE_MENU);
-        }
-        else if (action.itemID = PAUSE_RESUME) {
-            pauseMenuState.isActive = false;
-        }
-    }
+    return new MenuItem[] {
+        new MenuItem { id = PAUSE_QUIT, text = "Quit race" },
+        new MenuItem { id = PAUSE_RESUME, text = "Resume" }
+    };
 }
