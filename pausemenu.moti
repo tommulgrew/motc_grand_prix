@@ -7,12 +7,24 @@
 // Pause menu item enums
 
 const int PAUSE_RESUME = 1;
-const int PAUSE_QUIT = 2;
+const int PAUSE_CONTROLLER = 2;
+const int PAUSE_QUIT = 3;
+const int PAUSE_CONTROLLER_DEADZONE = 4;
+const int PAUSE_CONTROLLER_SMOOTHING = 5;
+const int PAUSE_CONTROLLER_CURVE = 6;
+const int PAUSE_CONTROLLER_FACTOR = 7;
+const int PAUSE_CONTROLLER_BACK = 8;
+
+// Pause submenu
+
+const int PAUSE_MENU_MAIN = 1;
+const int PAUSE_MENU_CONTROLLER = 2;
 
 // Structures
 
 struct PauseMenuState {
     bool isActive;
+    int subMenu;
     MenuState state;
 }
 
@@ -20,14 +32,15 @@ struct PauseMenuState {
 
 MenuParams pauseMenuParams = new MenuParams {
     y = SCREEN_HEIGHT / 2,
-    itemSpacing = 30,
+    itemSpacing = 20,
     drawBackground = true,
     backgroundColour = 1,
     borderColour = 7,
     backgroundPadding = 15
 };
 PauseMenuState pauseMenu = new PauseMenuState { 
-    state = new MenuState 
+    state = new MenuState,
+    subMenu = PAUSE_MENU_MAIN
 };
 
 // Routines
@@ -53,6 +66,14 @@ void updatePauseMenu(UIInput input) {
                 else if (action.itemID = PAUSE_RESUME) {
                     pauseMenu.isActive = false;
                 }
+                else if (action.itemID = PAUSE_CONTROLLER) {
+                    pauseMenu.subMenu = PAUSE_MENU_CONTROLLER;
+                    pauseMenu.state = new MenuState;
+                }
+                else if (action.itemID = PAUSE_CONTROLLER_BACK) {
+                    pauseMenu.subMenu = PAUSE_MENU_MAIN;
+                    pauseMenu.state = new MenuState;
+                }
             }
         }
 
@@ -76,8 +97,20 @@ void drawPauseMenu() {
 }
 
 MenuItem[] getPauseMenuItems() {
-    return new MenuItem[] {
-        new MenuItem { id = PAUSE_QUIT, text = "Quit race" },
-        new MenuItem { id = PAUSE_RESUME, text = "Resume" }
-    };
+    if (pauseMenu.subMenu = PAUSE_MENU_MAIN) {
+        return new MenuItem[] {
+            new MenuItem { id = PAUSE_RESUME, text = "Resume" },
+            new MenuItem { id = PAUSE_CONTROLLER, text = "Controller options..." },
+            new MenuItem { id = PAUSE_QUIT, text = "Quit race" }
+        };
+    }
+    else if (pauseMenu.subMenu = PAUSE_MENU_CONTROLLER) {
+        return new MenuItem[] {
+            new MenuItem { id = PAUSE_CONTROLLER_DEADZONE, text = "Deadzone: " + gameConfig.controllerDeadzone },
+            new MenuItem { id = PAUSE_CONTROLLER_SMOOTHING, text = "Smoothing: " + gameConfig.controllerSmoothing },
+            new MenuItem { id = PAUSE_CONTROLLER_CURVE, text = "Response curve: " + gameConfig.controllerCurve },
+            new MenuItem { id = PAUSE_CONTROLLER_FACTOR, text = "Sensitivity: " + gameConfig.controllerFactor },
+            new MenuItem { id = PAUSE_CONTROLLER_BACK, text = "Back" }
+        };
+    }
 }

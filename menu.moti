@@ -50,7 +50,7 @@ MenuAction updateMenu(MenuState menu, MenuItem[] items, UIInput input) {
 
     // Up/down selects menu option
     menu.y = clamp(menu.y + yd, 0, items.length - 1);
-    menu.animY += clamp(menu.y - menu.animY, -0.1, 0.1);
+    menu.animY += clamp(menu.y - menu.animY, -0.2, 0.2);
 
     if (input.btnPressed[UI_SELECT]) {
         return new MenuAction { 
