@@ -99,5 +99,5 @@ void drawMenu(MenuParams params, MenuState menu, MenuItem[] items) {
 }
 
 float getMenuY(float y, MenuParams params, int itemCount) {
-    return (params.y - tofloat(itemCount / 2) + 0.5) * params.itemSpacing * PRATIO;
+    return params.y + (y - tofloat(itemCount)/2 + 0.5) * params.itemSpacing * PRATIO;
 }

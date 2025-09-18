@@ -13,87 +13,67 @@ const int PAUSE_QUIT = 2;
 
 struct PauseMenuState {
     bool isActive;
-    int y;
-    float animY;
+    MenuState menuState;
 }
 
 // Data
 
-PauseMenuState pauseMenuState = new PauseMenuState;
+MenuParams pauseMenuParams = new MenuParams {
+    y = SCREEN_HEIGHT / 2,
+    itemSpacing = 30,
+    drawBackground = true,
+    backgroundColour = 1,
+    borderColour = 7,
+    backgroundPadding = 15
+};
+PauseMenuState pauseMenuState = new PauseMenuState { 
+    menuState = new MenuState 
+};
 
 // Routines
 
 MenuItem[] getPauseMenuItems();
-int getPauseMenuY(float y, int count);
-void pauseMenuAction(int itemID, int action, int delta = 0);
+void pauseMenuAction(MenuAction action);
 
 void updatePauseMenu(UIInput input) {
     if (pauseMenuState.isActive) {
-    
+
         // Items
         MenuItem[] items = getPauseMenuItems();
 
-        // Button navigation
-        int yd = 0, xd = 0;
-        if (input.btnPressed[UI_UP]    or input.btnPressed[UI_STICK_UP])    yd--;
-        if (input.btnPressed[UI_DOWN]  or input.btnPressed[UI_STICK_DOWN])  yd++;
-        if (input.btnPressed[UI_LEFT]  or input.btnPressed[UI_STICK_LEFT])  xd--;
-        if (input.btnPressed[UI_RIGHT] or input.btnPressed[UI_STICK_RIGHT]) xd++;
+        // Update menu
+        MenuAction action = updateMenu(pauseMenuState.menuState, items, input);
 
-        // Up/down selects menu option
-        pauseMenuState.y = clamp(pauseMenuState.y + yd, 0, items.length - 1);
-        pauseMenuState.animY += clamp(pauseMenuState.y - pauseMenuState.animY, -0.1, 0.1);
-
-        int itemID = items[pauseMenuState.y].id;
-
-        if (input.btnPressed[UI_SELECT]) {
-            pauseMenuAction(itemID, MENU_ACTION_SELECT);
-        }
-        else if (xd != 0) {
-            pauseMenuAction(itemID, MENU_ACTION_CHANGE, xd);
+        // Perform menu action
+        if (action != null) {
+            if (action.menuAction = MENU_ACTION_SELECT) {
+                if (action.itemID = PAUSE_QUIT) {
+                    pauseMenuState.isActive = false;
+                    setGameMode(GAMEMODE_MENU);
+                }
+                else if (action.itemID = PAUSE_RESUME) {
+                    pauseMenuState.isActive = false;
+                }
+            }
         }
 
+        // Pressing pause again exits the pause menu
         if (input.btnPressed[UI_PAUSE]) {
             pauseMenuState.isActive = false;
         }
     }
     else {
+        // Pressing pause displays pause menu
         if (input.btnPressed[UI_PAUSE]) {
             pauseMenuState.isActive = true;
-            pauseMenuState.y = 0;
-            pauseMenuState.animY = 0;
+            pauseMenuState.menuState = new MenuState;
         }
     }
 }
 
 void drawPauseMenu() {
-
-    // Items
     MenuItem[] items = getPauseMenuItems();
-
-    // Background box
-    const int PAUSE_MENU_PADDING = 15;
-    int top = getPauseMenuY(0, items.length) - PAUSE_MENU_PADDING * PRATIO;
-    int bottom = getPauseMenuY(items.length - 1, items.length) + PAUSE_MENU_PADDING * PRATIO;
-    color(1);
-    rectfill(0, top, SCREEN_WIDTH, bottom);
-    color(7);
-    rect(-1, top, SCREEN_WIDTH + 1, bottom);
-
-    // Draw selection bar
-    float h = 20 * PRATIO;
-    float screenY = getPauseMenuY(pauseMenuState.animY, items.length) - h / 2;
-    color(7);
-    rectfill(0, screenY, SCREEN_WIDTH, screenY + h);
-    color(12);
-    rect(-1, screenY, SCREEN_WIDTH + 1, screenY + h);
-
-    // Menu items
-    for (int i = 0; i < items.length; i++) {
-        int y = getPauseMenuY(i, items.length);
-        printCentered(items[i].text, y - 4 * PRATIO, i = pauseMenuState.y);
-    }
-
+    drawMenu(pauseMenuParams, pauseMenuState.menuState, items);
 }
 
 MenuItem[] getPauseMenuItems() {
@@ -103,17 +83,13 @@ MenuItem[] getPauseMenuItems() {
     return items;
 }
 
-int getPauseMenuY(float y, int count) {
-    return (y - tofloat(count / 2) + 0.5) * 30 * PRATIO + SCREEN_HEIGHT / 2;
-}
-
-void pauseMenuAction(int itemID, int action, int delta) {
-    if (action = MENU_ACTION_SELECT) {
-        if (itemID = PAUSE_QUIT) {
+void pauseMenuAction(MenuAction action) {
+    if (action.menuAction = MENU_ACTION_SELECT) {
+        if (action.itemID = PAUSE_QUIT) {
             pauseMenuState.isActive = false;
             setGameMode(GAMEMODE_MENU);
         }
-        else if (itemID = PAUSE_RESUME) {
+        else if (action.itemID = PAUSE_RESUME) {
             pauseMenuState.isActive = false;
         }
     }
