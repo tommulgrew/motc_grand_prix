@@ -91,6 +91,23 @@ void printCentered(string text, float y, bool isSelected) {
 void drawMenu() {
     cls(1);
 
+    colmap(aiCarPalettes[11]);
+    drawCar(new Transform {
+        translate = new Vec { z = 3.5, y = -0.2 },
+        skewX = -0.5,
+        skewY = -0.3
+    });
+    colmap();
+
+    const int TITLE_BASE_SCALE = 2;
+    const int TITLE_X = SCREEN_WIDTH / 2 - 8 * 6 * TITLE_BASE_SCALE * PRATIO;
+    const int TITLE_Y = SCREEN_HEIGHT * 0.15;
+    const int TITLE_SCALE = TITLE_BASE_SCALE * PRATIO;
+    color(5);
+    printScaled("Mot's Grand Prix", TITLE_X, TITLE_Y + 2 * PRATIO, TITLE_SCALE);
+    color(6);
+    printScaled("Mot's Grand Prix", TITLE_X, TITLE_Y, TITLE_SCALE);
+
     // Draw selection bar
     float screenY = getMenuScreenY(menu.animY);
     float h = 20 * PRATIO;
