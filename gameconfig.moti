@@ -17,14 +17,14 @@ struct GameConfig {
 GameConfig gameConfig = new GameConfig {
     
     // Best for gamepads
-    // controllerDeadzone = 0.06,
-    // controllerSmoothing = 0.9,
-    // controllerCurve = 2,
+    controllerDeadzone = 0.06,
+    controllerSmoothing = 0.9,
+    controllerCurve = 2,
 
     // Best for touch screen controls
-    controllerDeadzone = 0,
-    controllerSmoothing = 0,
-    controllerCurve = 1.5,
+    // controllerDeadzone = 0,
+    // controllerSmoothing = 0,
+    // controllerCurve = 1.5,
 
     controllerFactor = 1.1,
     drawDistance = 80,

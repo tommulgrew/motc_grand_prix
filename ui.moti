@@ -1,0 +1,47 @@
+// Constants
+
+// UI button enum
+const int UI_UP             = 0;
+const int UI_DOWN           = 1;
+const int UI_LEFT           = 2;
+const int UI_RIGHT          = 3;
+const int UI_SELECT         = 4;
+const int UI_STICK_UP       = 5;
+const int UI_STICK_DOWN     = 6;
+const int UI_STICK_LEFT     = 7;
+const int UI_STICK_RIGHT    = 8;
+
+// Structures
+
+struct UIInput {
+    bool[] btnDown;
+    bool[] btnPressed;
+}
+
+// Routines
+
+void updateUIInput(UIInput input) {
+    bool[] btnDown = new bool[9];
+
+    // Button down state
+    btnDown[UI_UP]     = btn(BTN_UP)    or keydn(KEY_UP);
+    btnDown[UI_DOWN]   = btn(BTN_DOWN)  or keydn(KEY_DOWN);
+    btnDown[UI_LEFT]   = btn(BTN_LEFT)  or keydn(KEY_LEFT);
+    btnDown[UI_RIGHT]  = btn(BTN_RIGHT) or keydn(KEY_RIGHT);
+    btnDown[UI_SELECT] = btn(BTN_A) or btn(BTN_B) or keydn(KEY_RETURN) or keydn(KEY_SPACE) or keydn("z") or keydn("x");
+
+    // Controller analogue stick navigation.
+    // Stick must be moved past 0.6 to trigger press and back past 0.3 to trigger release.
+    // This prevents jittery devices from triggering false presses.
+    float ax = axis(AX_X), ay = axis(AX_Y);
+    btnDown[UI_STICK_UP]    = ay < (input.btnDown[UI_STICK_UP]    ? -0.3 : -0.6);
+    btnDown[UI_STICK_DOWN]  = ay > (input.btnDown[UI_STICK_DOWN]  ?  0.3 :  0.6);
+    btnDown[UI_STICK_LEFT]  = ax < (input.btnDown[UI_STICK_LEFT]  ? -0.3 : -0.6);
+    btnDown[UI_STICK_RIGHT] = ax > (input.btnDown[UI_STICK_RIGHT] ?  0.3 :  0.6);
+
+    // Calculate button pressed states
+    for (int i = 0; i < btnDown.length; i++) {
+        input.btnPressed[i] = btnDown[i] and not input.btnDown[i];
+        input.btnDown[i] = btnDown[i];
+    }
+}

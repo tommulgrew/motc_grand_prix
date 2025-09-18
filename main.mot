@@ -29,15 +29,16 @@
 void draw();
 void update();
 
+UIInput uiInput = new UIInput {
+	btnDown = new bool[9],        
+	btnPressed = new bool[9]
+};
+
 // Setup screen buffer
 screen(makeimg(SCREEN_WIDTH, SCREEN_HEIGHT));
 
 // Start in menu mode
 setGameMode(GAMEMODE_MENU);
-
-// Setup for race
-// Track currentTrack = tracks[2];
-// initRace(currentTrack);
 
 // Main loop
 while (true) {
@@ -72,6 +73,7 @@ void draw() {
 }
 
 void update() {
-	if (gameMode = GAMEMODE_MENU) updateMenu();
+	updateUIInput(uiInput);
+	if (gameMode = GAMEMODE_MENU) updateMenu(uiInput);
 	else if (gameMode = GAMEMODE_RACE) updateGame();
 }
