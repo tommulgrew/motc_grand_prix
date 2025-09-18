@@ -223,3 +223,14 @@ void drawQuadFront(
         rectfill(x0, y0, x1, y1);
     }
 }
+
+void printCentered(string text, float y, bool isSelected) {
+    int x = SCREEN_WIDTH / 2 - (text.length * 6) / 2;
+    if (isSelected and frame % 10 < 5) {
+        color(6);
+    }
+    else {
+        color(5);
+    }
+    print(text, x, y);
+}

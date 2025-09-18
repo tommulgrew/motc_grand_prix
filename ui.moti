@@ -10,6 +10,10 @@ const int UI_STICK_UP       = 5;
 const int UI_STICK_DOWN     = 6;
 const int UI_STICK_LEFT     = 7;
 const int UI_STICK_RIGHT    = 8;
+const int UI_PAUSE          = 9;
+
+const int UI_ACTION_SELECT  = 0;
+const int UI_ACTION_CHANGE  = 1;
 
 // Structures
 
@@ -20,8 +24,15 @@ struct UIInput {
 
 // Routines
 
+UIInput makeUIInput() {
+    return new UIInput {
+        btnDown = new bool[10],        
+        btnPressed = new bool[10]
+    };
+}
+
 void updateUIInput(UIInput input) {
-    bool[] btnDown = new bool[9];
+    bool[] btnDown = new bool[10];
 
     // Button down state
     btnDown[UI_UP]     = btn(BTN_UP)    or keydn(KEY_UP);
@@ -29,6 +40,7 @@ void updateUIInput(UIInput input) {
     btnDown[UI_LEFT]   = btn(BTN_LEFT)  or keydn(KEY_LEFT);
     btnDown[UI_RIGHT]  = btn(BTN_RIGHT) or keydn(KEY_RIGHT);
     btnDown[UI_SELECT] = btn(BTN_A) or btn(BTN_B) or keydn(KEY_RETURN) or keydn(KEY_SPACE) or keydn("z") or keydn("x");
+    btnDown[UI_PAUSE]  = btn(BTN_START) or keydn(KEY_ESCAPE);
 
     // Controller analogue stick navigation.
     // Stick must be moved past 0.6 to trigger press and back past 0.3 to trigger release.

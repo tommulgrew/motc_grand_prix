@@ -21,7 +21,8 @@
 #include "gameplay"
 #include "world"
 #include "rendergame"
-#include "menu"
+#include "mainmenu"
+#include "pausemenu"
 #include "app"
 
 // Routines
@@ -29,10 +30,7 @@
 void draw();
 void update();
 
-UIInput uiInput = new UIInput {
-	btnDown = new bool[9],        
-	btnPressed = new bool[9]
-};
+UIInput uiInput = makeUIInput();
 
 // Setup screen buffer
 screen(makeimg(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -61,6 +59,7 @@ while (true) {
 void setGameMode(int mode) {
 	if (gameMode != mode) {
 		gameMode = mode;
+		stopsfx();
 		if (gameMode = GAMEMODE_MENU) initMenu();
 		else if (gameMode = GAMEMODE_RACE) initRace();
 		else assert(false, "Unknown game mode");
@@ -69,11 +68,21 @@ void setGameMode(int mode) {
 
 void draw() {
 	if (gameMode = GAMEMODE_MENU) drawMenu();
-	else if (gameMode = GAMEMODE_RACE) drawGame();
+	else if (gameMode = GAMEMODE_RACE) {
+		drawGame();
+		if (pauseMenuState.isActive) {
+			drawPauseMenu();
+		}
+	}
 }
 
 void update() {
 	updateUIInput(uiInput);
 	if (gameMode = GAMEMODE_MENU) updateMenu(uiInput);
-	else if (gameMode = GAMEMODE_RACE) updateGame();
+	else if (gameMode = GAMEMODE_RACE) {
+		updatePauseMenu(uiInput);
+		if (not pauseMenuState.isActive) {
+			updateGame();
+		}
+	}
 }
