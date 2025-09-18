@@ -60,17 +60,17 @@ void setGameMode(int mode) {
 	if (gameMode != mode) {
 		gameMode = mode;
 		stopsfx();
-		if (gameMode = GAMEMODE_MENU) initMenu();
+		if (gameMode = GAMEMODE_MENU) initMainMenu();
 		else if (gameMode = GAMEMODE_RACE) initRace();
 		else assert(false, "Unknown game mode");
 	}
 }
 
 void draw() {
-	if (gameMode = GAMEMODE_MENU) drawMenu();
+	if (gameMode = GAMEMODE_MENU) drawMainMenu();
 	else if (gameMode = GAMEMODE_RACE) {
 		drawGame();
-		if (pauseMenuState.isActive) {
+		if (pauseMenu.isActive) {
 			drawPauseMenu();
 		}
 	}
@@ -78,10 +78,10 @@ void draw() {
 
 void update() {
 	updateUIInput(uiInput);
-	if (gameMode = GAMEMODE_MENU) updateMenu(uiInput);
+	if (gameMode = GAMEMODE_MENU) updateMainMenu(uiInput);
 	else if (gameMode = GAMEMODE_RACE) {
 		updatePauseMenu(uiInput);
-		if (not pauseMenuState.isActive) {
+		if (not pauseMenu.isActive) {
 			updateGame();
 		}
 	}

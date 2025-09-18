@@ -14,7 +14,7 @@ const int MAIN_MENU_STARTRACE = 3;
 // Structures
 
 struct MainMenuState {
-    MenuState menuState;
+    MenuState state;
     int carPaletteIndex;
 }
 
@@ -31,14 +31,14 @@ MainMenuState mainMenu;
 
 MenuItem[] getMainMenuItems();
 
-void initMenu() {
+void initMainMenu() {
     mainMenu = new MainMenuState {
-        menuState = new MenuState,
+        state = new MenuState,
         carPaletteIndex = rnd() * aiCarPalettes.length
     };
 }
 
-void drawMenu() {
+void drawMainMenu() {
     cls(1);
 
     // Title text
@@ -62,16 +62,16 @@ void drawMenu() {
 
     // Menu UI
     MenuItem[] items = getMainMenuItems();
-    drawMenu(mainMenuParams, mainMenu.menuState, items);
+    drawMenu(mainMenuParams, mainMenu.state, items);
 }
 
-void updateMenu(UIInput input) {
+void updateMainMenu(UIInput input) {
 
     // Items
     MenuItem[] items = getMainMenuItems();
 
     // Update menu
-    MenuAction action = updateMenu(mainMenu.menuState, items, input);
+    MenuAction action = updateMenu(mainMenu.state, items, input);
 
     // Perform menu action
     if (action != null) {

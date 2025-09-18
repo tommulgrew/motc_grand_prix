@@ -13,7 +13,7 @@ const int PAUSE_QUIT = 2;
 
 struct PauseMenuState {
     bool isActive;
-    MenuState menuState;
+    MenuState state;
 }
 
 // Data
@@ -26,8 +26,8 @@ MenuParams pauseMenuParams = new MenuParams {
     borderColour = 7,
     backgroundPadding = 15
 };
-PauseMenuState pauseMenuState = new PauseMenuState { 
-    menuState = new MenuState 
+PauseMenuState pauseMenu = new PauseMenuState { 
+    state = new MenuState 
 };
 
 // Routines
@@ -35,44 +35,44 @@ PauseMenuState pauseMenuState = new PauseMenuState {
 MenuItem[] getPauseMenuItems();
 
 void updatePauseMenu(UIInput input) {
-    if (pauseMenuState.isActive) {
+    if (pauseMenu.isActive) {
 
         // Items
         MenuItem[] items = getPauseMenuItems();
 
         // Update menu
-        MenuAction action = updateMenu(pauseMenuState.menuState, items, input);
+        MenuAction action = updateMenu(pauseMenu.state, items, input);
 
         // Perform menu action
         if (action != null) {
             if (action.menuAction = MENU_ACTION_SELECT) {
                 if (action.itemID = PAUSE_QUIT) {
-                    pauseMenuState.isActive = false;
+                    pauseMenu.isActive = false;
                     setGameMode(GAMEMODE_MENU);
                 }
                 else if (action.itemID = PAUSE_RESUME) {
-                    pauseMenuState.isActive = false;
+                    pauseMenu.isActive = false;
                 }
             }
         }
 
         // Pressing pause again exits the pause menu
         if (input.btnPressed[UI_PAUSE]) {
-            pauseMenuState.isActive = false;
+            pauseMenu.isActive = false;
         }
     }
     else {
         // Pressing pause displays pause menu
         if (input.btnPressed[UI_PAUSE]) {
-            pauseMenuState.isActive = true;
-            pauseMenuState.menuState = new MenuState;
+            pauseMenu.isActive = true;
+            pauseMenu.state = new MenuState;
         }
     }
 }
 
 void drawPauseMenu() {
     MenuItem[] items = getPauseMenuItems();
-    drawMenu(pauseMenuParams, pauseMenuState.menuState, items);
+    drawMenu(pauseMenuParams, pauseMenu.state, items);
 }
 
 MenuItem[] getPauseMenuItems() {
