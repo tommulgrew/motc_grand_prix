@@ -12,9 +12,6 @@ const int UI_STICK_LEFT     = 7;
 const int UI_STICK_RIGHT    = 8;
 const int UI_PAUSE          = 9;
 
-const int UI_ACTION_SELECT  = 0;
-const int UI_ACTION_CHANGE  = 1;
-
 // Structures
 
 struct UIInput {

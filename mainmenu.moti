@@ -4,7 +4,7 @@
 
 // Structures
 
-struct MenuState {
+struct MainMenuState {
     int y;
     float animY;
     bool stickDown, stickUp, stickLeft, stickRight;
@@ -13,12 +13,12 @@ struct MenuState {
     int carPaletteIndex;
 }
 
-MenuState menu;
+MainMenuState mainMenu;
 
 // Routines
 
 void initMenu() {
-    menu = new MenuState {
+    mainMenu = new MainMenuState {
         carPaletteIndex = rnd() * aiCarPalettes.length
     };
 }
@@ -34,7 +34,7 @@ float getMenuTextY(float y) {
 void drawMenu() {
     cls(1);
 
-    colmap(aiCarPalettes[menu.carPaletteIndex]);
+    colmap(aiCarPalettes[mainMenu.carPaletteIndex]);
     drawCar(new Transform {
         translate = new Vec { z = 3.5, y = -0.2 },
         skewX = -0.5,
@@ -52,7 +52,7 @@ void drawMenu() {
     printScaled("Mot's Grand Prix", TITLE_X, TITLE_Y, TITLE_SCALE);
 
     // Draw selection bar
-    float screenY = getMenuScreenY(menu.animY);
+    float screenY = getMenuScreenY(mainMenu.animY);
     float h = 20 * PRATIO;
     color(7);
     rectfill(0, screenY, SCREEN_WIDTH, screenY + h);
@@ -63,17 +63,17 @@ void drawMenu() {
     printCentered(
         "Track: " + tracks[gameConfig.trackIndex].name, 
         getMenuTextY(0), 
-        menu.y = 0);
+        mainMenu.y = 0);
 
     printCentered(
         "Difficulty: " + difficultyLevels[gameConfig.difficulty].name,
         getMenuTextY(1),
-        menu.y = 1);
+        mainMenu.y = 1);
 
     printCentered(
         "!! Race !!",
         getMenuTextY(2),
-        menu.y = 2);
+        mainMenu.y = 2);
 }
 
 void updateMenu(UIInput input) {
@@ -86,19 +86,19 @@ void updateMenu(UIInput input) {
     if (input.btnPressed[UI_RIGHT] or input.btnPressed[UI_STICK_RIGHT]) xd++;
 
     // Up/down selects menu option
-    menu.y = clamp(menu.y + yd, 0, 2);
-    menu.animY += clamp(menu.y - menu.animY, -0.1, 0.1);
+    mainMenu.y = clamp(mainMenu.y + yd, 0, 2);
+    mainMenu.animY += clamp(mainMenu.y - mainMenu.animY, -0.1, 0.1);
 
     // Left right cycles track/difficulty
     if (xd != 0) {
-        if (menu.y = 0) {
+        if (mainMenu.y = 0) {
             int index = gameConfig.trackIndex + xd;
             if (index >= 0 and index < tracks.length) {
                 gameConfig.trackIndex = index;
                 // TODO: SFX
             }
         }
-        else if (menu.y = 1) {
+        else if (mainMenu.y = 1) {
             int index = gameConfig.difficulty + xd;
             if (index >= 0 and index < difficultyLevels.length) {
                 gameConfig.difficulty = index;
@@ -108,7 +108,7 @@ void updateMenu(UIInput input) {
     }
 
     // Button starts game
-    if (input.btnPressed[UI_SELECT] and menu.y = 2) {
+    if (input.btnPressed[UI_SELECT] and mainMenu.y = 2) {
         // TODO: SFX
         setGameMode(GAMEMODE_RACE);
     }

@@ -1,4 +1,4 @@
-#include "ui"
+#include "menu"
 #include "render"
 #include "gameconfig"
 
@@ -15,11 +15,6 @@ struct PauseMenuState {
     bool isActive;
     int y;
     float animY;
-}
-
-struct MenuItem {
-    int id;
-    string text;
 }
 
 // Data
@@ -52,10 +47,10 @@ void updatePauseMenu(UIInput input) {
         int itemID = items[pauseMenuState.y].id;
 
         if (input.btnPressed[UI_SELECT]) {
-            pauseMenuAction(itemID, UI_ACTION_SELECT);
+            pauseMenuAction(itemID, MENU_ACTION_SELECT);
         }
         else if (xd != 0) {
-            pauseMenuAction(itemID, UI_ACTION_CHANGE, xd);
+            pauseMenuAction(itemID, MENU_ACTION_CHANGE, xd);
         }
 
         if (input.btnPressed[UI_PAUSE]) {
@@ -113,7 +108,7 @@ int getPauseMenuY(float y, int count) {
 }
 
 void pauseMenuAction(int itemID, int action, int delta) {
-    if (action = UI_ACTION_SELECT) {
+    if (action = MENU_ACTION_SELECT) {
         if (itemID = PAUSE_QUIT) {
             pauseMenuState.isActive = false;
             setGameMode(GAMEMODE_MENU);

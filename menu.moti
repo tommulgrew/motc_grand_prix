@@ -1,0 +1,103 @@
+// Common menu system used for main menu and pause menu
+
+#include "ui"
+
+// Constants
+
+// Menu action enums
+const int MENU_ACTION_SELECT = 0;
+const int MENU_ACTION_CHANGE = 1;
+
+// Structures
+
+struct MenuParams {
+    int y;
+    int itemSpacing;
+    bool drawBackground;
+    int backgroundColour, borderColour;
+    int backgroundPadding;
+}
+
+struct MenuState {
+    int y;
+    float animY;
+}
+
+struct MenuItem {
+    int id;
+    string text;
+}
+
+struct MenuAction {
+    int menuAction;     // One of the MENU_ACTION_xxx enums
+    int itemID;         // The MenuItem id
+    int delta;          // The delta to apply for MENU_ACTION_CHANGE (-1 or 1). Or 0 when not applicable.
+}
+
+// Routines
+
+float getMenuY(float y, MenuParams params, int itemCount);
+
+// Returns the menu action to perform, or null if none
+MenuAction updateMenu(MenuState menu, MenuItem[] items, UIInput input) {
+
+    // Button navigation
+    int yd = 0, xd = 0;
+    if (input.btnPressed[UI_UP]    or input.btnPressed[UI_STICK_UP])    yd--;
+    if (input.btnPressed[UI_DOWN]  or input.btnPressed[UI_STICK_DOWN])  yd++;
+    if (input.btnPressed[UI_LEFT]  or input.btnPressed[UI_STICK_LEFT])  xd--;
+    if (input.btnPressed[UI_RIGHT] or input.btnPressed[UI_STICK_RIGHT]) xd++;
+
+    // Up/down selects menu option
+    menu.y = clamp(menu.y + yd, 0, items.length - 1);
+    menu.animY += clamp(menu.y - menu.animY, -0.1, 0.1);
+
+    if (input.btnPressed[UI_SELECT]) {
+        return new MenuAction { 
+            menuAction = MENU_ACTION_SELECT,
+            itemID = items[menu.y].id
+        };
+    }
+    else if (xd != 0) {        
+        return new MenuAction {
+            menuAction = MENU_ACTION_CHANGE,
+            itemID = items[menu.y].id,
+            delta = xd
+        };
+    }
+
+    return null;
+}
+
+void drawMenu(MenuParams params, MenuState menu, MenuItem[] items) {
+
+    // Background
+    if (params.drawBackground) {
+        int top = getMenuY(0, params, items.length) - params.backgroundPadding * PRATIO;
+        int bottom = getMenuY(items.length - 1, params, items.length) + params.backgroundPadding * PRATIO;
+        color(params.backgroundColour);
+        rectfill(0, top, SCREEN_WIDTH, bottom);
+        color(params.borderColour);
+        rect(-1, top, SCREEN_WIDTH + 1, bottom);
+    }
+
+    // Selection bar
+    {
+        float h = 20 * PRATIO;
+        float y = getMenuY(menu.animY, params, items.length) - h/2;
+        color(7);
+        rectfill(0, y, SCREEN_WIDTH, y + h);
+        color(12);
+        rect(-1, y, SCREEN_WIDTH + 1, y + h);
+    }
+
+    // Menu items
+    for (int i = 0; i < items.length; i++) {
+        float y = getMenuY(i, params, items.length) - 4 * PRATIO;
+        printCentered(items[i].text, y, i = menu.y);
+    }
+}
+
+float getMenuY(float y, MenuParams params, int itemCount) {
+    return (params.y - tofloat(itemCount / 2) + 0.5) * params.itemSpacing * PRATIO;
+}
