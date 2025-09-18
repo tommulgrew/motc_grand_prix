@@ -10,6 +10,7 @@
 const int MAIN_MENU_TRACK = 1;
 const int MAIN_MENU_DIFFICULTY = 2;
 const int MAIN_MENU_STARTRACE = 3;
+const int MAIN_MENU_QUIT = 4;
 
 // Structures
 
@@ -22,7 +23,7 @@ struct MainMenuState {
 
 MenuParams mainMenuParams = new MenuParams {
     y = SCREEN_HEIGHT * 0.75,
-    itemSpacing = 30,
+    itemSpacing = 20,
     drawBackground = false
 };
 MainMenuState mainMenu;
@@ -79,6 +80,9 @@ void updateMainMenu(UIInput input) {
             if (action.itemID = MAIN_MENU_STARTRACE) {
                 setGameMode(GAMEMODE_RACE);            
             }
+            else if (action.itemID = MAIN_MENU_QUIT) {
+                quitApp = true;
+            }
         }
         else if (action.menuAction = MENU_ACTION_CHANGE) {
             if (action.itemID = MAIN_MENU_TRACK) {
@@ -101,6 +105,7 @@ MenuItem[] getMainMenuItems() {
     return new MenuItem[] {
         new MenuItem { id = MAIN_MENU_TRACK, text = "Track: " + tracks[gameConfig.trackIndex].name },
         new MenuItem { id = MAIN_MENU_DIFFICULTY, text = difficultyLevels[gameConfig.difficulty].name },
-        new MenuItem { id = MAIN_MENU_STARTRACE, text = "!! Race !!" }
+        new MenuItem { id = MAIN_MENU_STARTRACE, text = "!! Race !!" },
+        new MenuItem { id = MAIN_MENU_QUIT, text = "Quit game" }
     };
 }

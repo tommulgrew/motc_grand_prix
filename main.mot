@@ -39,7 +39,7 @@ screen(makeimg(SCREEN_WIDTH, SCREEN_HEIGHT));
 setGameMode(GAMEMODE_MENU);
 
 // Main loop
-while (true) {
+while (not quitApp) {
 	if (interval(1000 / 30, 3)) {
 		update();
 		frame++;	

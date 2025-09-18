@@ -1,3 +1,5 @@
+bool quitApp = false;
+
 // Forward declared functions
 
 void setGameMode(int mode);
