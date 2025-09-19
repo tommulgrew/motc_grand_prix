@@ -26,6 +26,8 @@ struct MenuState {
 struct MenuItem {
     int id;
     string text;
+    bool showBar;
+    float value, fraction;
 }
 
 struct MenuAction {
