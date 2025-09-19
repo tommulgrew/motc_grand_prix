@@ -47,6 +47,20 @@ PauseMenuState pauseMenu = new PauseMenuState {
 
 MenuItem[] getPauseMenuItems();
 
+void openPauseMenu() {
+    pauseMenu.isActive = true;
+    pauseMenu.state = new MenuState;
+    setvolume(0, 0);
+    setvolume(1, 0);
+}
+
+void closePauseMenu() {
+    saveConfig();
+    pauseMenu.isActive = false;
+    setvolume(0, 1);
+    setvolume(1, 1);
+}
+
 void updatePauseMenu(UIInput input) {
     if (pauseMenu.isActive) {
 
@@ -60,11 +74,11 @@ void updatePauseMenu(UIInput input) {
         if (action != null) {
             if (action.menuAction = MENU_ACTION_SELECT) {
                 if (action.itemID = PAUSE_QUIT) {
-                    pauseMenu.isActive = false;
+                    closePauseMenu();
                     setGameMode(GAMEMODE_MENU);
                 }
                 else if (action.itemID = PAUSE_RESUME) {
-                    pauseMenu.isActive = false;
+                    closePauseMenu();
                 }
                 else if (action.itemID = PAUSE_CONTROLLER) {
                     pauseMenu.subMenu = PAUSE_MENU_CONTROLLER;
@@ -93,14 +107,13 @@ void updatePauseMenu(UIInput input) {
 
         // Pressing pause again exits the pause menu
         if (input.btnPressed[UI_PAUSE]) {
-            pauseMenu.isActive = false;
+            closePauseMenu();
         }
     }
     else {
         // Pressing pause displays pause menu
         if (input.btnPressed[UI_PAUSE]) {
-            pauseMenu.isActive = true;
-            pauseMenu.state = new MenuState;
+            openPauseMenu();
         }
     }
 }
