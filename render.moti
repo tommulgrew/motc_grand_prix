@@ -224,13 +224,21 @@ void drawQuadFront(
     }
 }
 
-void printCentered(string text, float y, bool isSelected) {
-    int x = SCREEN_WIDTH / 2 - (text.length * 6) / 2;
-    if (isSelected and frame % 10 < 5) {
+bool selectedFlash() {
+    return frame % 10 < 5;
+}
+
+void printSelectable(string text, int x, int y, bool isSelected) {
+    if (isSelected and selectedFlash()) {
         color(6);
     }
     else {
         color(5);
     }
     print(text, x, y);
+}
+
+void printCentered(string text, int y, bool isSelected) {
+    int x = SCREEN_WIDTH / 2 - (text.length * 6) / 2;
+    printSelectable(text, x, y, isSelected);
 }

@@ -27,7 +27,8 @@ struct MenuItem {
     int id;
     string text;
     bool showBar;
-    float value, fraction;
+    float fraction;
+    string valueText;
 }
 
 struct MenuAction {
@@ -95,8 +96,29 @@ void drawMenu(MenuParams params, MenuState menu, MenuItem[] items) {
 
     // Menu items
     for (int i = 0; i < items.length; i++) {
-        float y = getMenuY(i, params, items.length) - 4 * PRATIO;
-        printCentered(items[i].text, y, i = menu.y);
+        MenuItem item = items[i];
+        float y = getMenuY(i, params, items.length);
+        if (item.showBar) {
+            // Left aligned text
+            int textX = SCREEN_WIDTH * 0.2;
+            printSelectable(item.text, textX, y - 4 * PRATIO, i = menu.y);   
+
+            // Right aligned value bar
+            int barRight = SCREEN_WIDTH - textX;
+            int barWidth = SCREEN_WIDTH * 0.25;
+            int barLeft = barRight - barWidth;
+            color(0);
+            rectfill(barLeft - 1, y - 5 * PRATIO, barRight + 2, y + 5 * PRATIO); 
+            color(12);
+            rectfill(barLeft, y - 4 * PRATIO, barLeft + barWidth * item.fraction + 1, y + 4 * PRATIO);
+
+            // Display value
+            color(7);
+            print(item.valueText, barLeft + barWidth / 2 - item.valueText.length * 4, y - 3 * PRATIO);
+        }
+        else {
+            printCentered(item.text, y- 4 * PRATIO, i = menu.y);
+        }
     }
 }
 

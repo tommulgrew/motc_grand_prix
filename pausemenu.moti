@@ -86,7 +86,7 @@ void updatePauseMenu(UIInput input) {
                     gameConfig.controllerCurve = clamp(gameConfig.controllerCurve + action.delta * 0.1, 1, 3);
                 }
                 else if (action.itemID = PAUSE_CONTROLLER_FACTOR) {
-                    gameConfig.controllerFactor = clamp(gameConfig.controllerFactor + action.delta * 0.02, 1, 2);
+                    gameConfig.controllerFactor = clamp(gameConfig.controllerFactor + action.delta * 0.05, 1, 2);
                 }
             }
         }
@@ -120,10 +120,10 @@ MenuItem[] getPauseMenuItems() {
     }
     else if (pauseMenu.subMenu = PAUSE_MENU_CONTROLLER) {
         return new MenuItem[] {
-            new MenuItem { id = PAUSE_CONTROLLER_DEADZONE, text = "Deadzone: " + gameConfig.controllerDeadzone, showBar = true, value = gameConfig.controllerDeadzone, fraction = gameConfig.controllerDeadzone / 0.2 },
-            new MenuItem { id = PAUSE_CONTROLLER_SMOOTHING, text = "Smoothing: " + gameConfig.controllerSmoothing },
-            new MenuItem { id = PAUSE_CONTROLLER_CURVE, text = "Response curve: " + gameConfig.controllerCurve },
-            new MenuItem { id = PAUSE_CONTROLLER_FACTOR, text = "Sensitivity: " + gameConfig.controllerFactor },
+            new MenuItem { id = PAUSE_CONTROLLER_DEADZONE, text = "Deadzone", showBar = true, valueText = toint(gameConfig.controllerDeadzone * 100) + "%", fraction = gameConfig.controllerDeadzone / 0.5 },
+            new MenuItem { id = PAUSE_CONTROLLER_SMOOTHING, text = "Smoothing", showBar = true, valueText = formatFloat(gameConfig.controllerSmoothing), fraction = gameConfig.controllerSmoothing / 0.95 },
+            new MenuItem { id = PAUSE_CONTROLLER_CURVE, text = "Response curve", showBar = true, valueText = formatFloat(gameConfig.controllerCurve - 1), fraction = (gameConfig.controllerCurve - 1) / 2.0 },
+            new MenuItem { id = PAUSE_CONTROLLER_FACTOR, text = "Sensitivity", showBar = true, valueText = formatFloat(gameConfig.controllerFactor), fraction = gameConfig.controllerFactor - 1 },
             new MenuItem { id = PAUSE_CONTROLLER_BACK, text = "Back" }
         };
     }

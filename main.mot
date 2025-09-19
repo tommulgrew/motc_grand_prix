@@ -77,7 +77,7 @@ void draw() {
 }
 
 void update() {
-	updateUIInput(uiInput);
+	updateUIInput(uiInput, frame);
 	if (gameMode = GAMEMODE_MENU) updateMainMenu(uiInput);
 	else if (gameMode = GAMEMODE_RACE) {
 		updatePauseMenu(uiInput);

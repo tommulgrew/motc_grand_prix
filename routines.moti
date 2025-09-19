@@ -66,3 +66,15 @@ void printScaled(string text, int x, int y, int scale) {
     scaleimg(buffer, x, y, w * scale, h * scale);
     tran(-1);    
 }
+
+string formatFloat(float value, int dp = 2) {
+    string text = value;
+    int doti = 1;
+    while (doti < text.length and substring(text, doti, 1) != ".")
+        doti++;
+    int length = dp != 0 ? doti + dp + 1 : doti;
+    while (text.length < length) {
+        text += "0";
+    }
+    return substring(text, 0, length);
+}

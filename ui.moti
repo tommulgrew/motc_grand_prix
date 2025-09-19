@@ -17,6 +17,7 @@ const int UI_PAUSE          = 9;
 struct UIInput {
     bool[] btnDown;
     bool[] btnPressed;
+    int[] btnRepeatCounter;
 }
 
 // Routines
@@ -24,11 +25,12 @@ struct UIInput {
 UIInput makeUIInput() {
     return new UIInput {
         btnDown = new bool[10],        
-        btnPressed = new bool[10]
+        btnPressed = new bool[10],
+        btnRepeatCounter = new int[10]
     };
 }
 
-void updateUIInput(UIInput input) {
+void updateUIInput(UIInput input, int frame) {
     bool[] btnDown = new bool[10];
 
     // Button down state
@@ -50,7 +52,22 @@ void updateUIInput(UIInput input) {
 
     // Calculate button pressed states
     for (int i = 0; i < btnDown.length; i++) {
-        input.btnPressed[i] = btnDown[i] and not input.btnDown[i];
+        input.btnPressed[i] = false;
+        if (btnDown[i]) {
+            if (not input.btnDown[i]) {
+                // Initial press
+                input.btnPressed[i] = true;
+                input.btnRepeatCounter[i] = 20;
+            }
+            else if (input.btnRepeatCounter[i] <= 0) {
+                // Button repeat
+                input.btnPressed[i] = true;
+                input.btnRepeatCounter[i] = 2;
+            }
+            else {
+                input.btnRepeatCounter[i]--;
+            }
+        }
         input.btnDown[i] = btnDown[i];
     }
 }
