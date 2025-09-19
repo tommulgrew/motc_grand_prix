@@ -33,3 +33,36 @@ GameConfig gameConfig = new GameConfig {
     difficulty = 1,
     trackIndex = 0
 };
+
+string configFilename() {
+    return savedir() + "motgpconfig.txt";
+}
+
+void loadGameConfig() {
+    string configFile = configFilename();
+    log("Loading config from: " + configFile + "\n");
+    if (not fileexists(configFile)) {
+        log("No file found. Using default config.");
+        return;
+    }
+
+    string text = loadtext(configFile);
+    string[] lines = split(text, "\n");
+    int i = 0;
+    gameConfig.controllerDeadzone = tofloat(lines[i]); i++;
+    gameConfig.controllerSmoothing = tofloat(lines[i]); i++;
+    gameConfig.controllerCurve = tofloat(lines[i]); i++;
+    gameConfig.controllerFactor = tofloat(lines[i]); i++;
+}
+
+void saveConfig() {
+    string configFile = configFilename();
+    log("Saving config to: " + configFile + "\n");
+
+    string text = 
+        gameConfig.controllerDeadzone + "\n" + 
+        gameConfig.controllerSmoothing + "\n" +
+        gameConfig.controllerCurve + "\n" +
+        gameConfig.controllerFactor;
+    savetext(configFile, text);
+}

@@ -30,6 +30,8 @@
 void draw();
 void update();
 
+loadGameConfig();
+
 UIInput uiInput = makeUIInput();
 
 // Setup screen buffer
