@@ -53,6 +53,7 @@ while (not quitApp) {
 		// print("GC:       " + stat(MEMORY_GCCOUNT), 1, 50); print("");
 		// print("GC Full:  " + stat(MEMORY_FULLGCCOUNT));
 		// print("Heap used:" + stat(MEMORY_LASTGCHEAPUSED) + " " + ((stat(MEMORY_LASTGCHEAPUSED) * 100) / stat(MEMORY_HEAPSIZE)) + "%");
+		// print(hostplatform());
 
 		flip();
 	}

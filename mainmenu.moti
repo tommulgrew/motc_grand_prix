@@ -102,10 +102,13 @@ void updateMainMenu(UIInput input) {
 }
 
 MenuItem[] getMainMenuItems() {
-    return new MenuItem[] {
+    MenuItem[] items = new MenuItem[] {
         new MenuItem { id = MAIN_MENU_TRACK, text = "Track: " + tracks[gameConfig.trackIndex].name },
         new MenuItem { id = MAIN_MENU_DIFFICULTY, text = difficultyLevels[gameConfig.difficulty].name },
-        new MenuItem { id = MAIN_MENU_STARTRACE, text = "!! Race !!" },
-        new MenuItem { id = MAIN_MENU_QUIT, text = "Quit game" }
+        new MenuItem { id = MAIN_MENU_STARTRACE, text = "!! Race !!" }
     };
+    if (hostplatform() != "web") {
+        items.add(new MenuItem { id = MAIN_MENU_QUIT, text = "Quit game" });    
+    }
+    return items;
 }
