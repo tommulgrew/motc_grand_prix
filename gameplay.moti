@@ -484,7 +484,7 @@ void updateAICars() {
 void updatePlayerRevs() {
     if (raceMode = RACEMODE_PRERACE) {
         // Button revs engine
-        float revTarget = lerp(0.1, 0.9, max(player.input.accel, 0));
+        float revTarget = lerp(0.1, 0.85, max(player.input.accel, 0));
         player.anim.revs = lerp(player.anim.revs, revTarget, 0.075);
     }
     else if (raceMode = RACEMODE_RACING) {
