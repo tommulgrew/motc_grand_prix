@@ -107,8 +107,12 @@ MenuItem[] getMainMenuItems() {
         new MenuItem { id = MAIN_MENU_DIFFICULTY, text = difficultyLevels[gameConfig.difficulty].name },
         new MenuItem { id = MAIN_MENU_STARTRACE, text = "!! Race !!" }
     };
+
+    // Exclude quit option from web version, as quitting doesn't make sense.
+    // (The game just ends and the application becomes unresponsive.)
     if (hostplatform() != "web") {
         items.add(new MenuItem { id = MAIN_MENU_QUIT, text = "Quit game" });    
     }
+
     return items;
 }
