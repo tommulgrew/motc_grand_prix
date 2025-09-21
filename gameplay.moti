@@ -123,6 +123,7 @@ void updateGame(UIInput uiInput) {
 }
 
 void updateRace() {
+    int prevLap = getLap(player.pos.z);
     updatePlayer();
     updateAICars();
     doCarCollisions();
@@ -134,7 +135,16 @@ void updateRace() {
     }
     else {
         collideSfxIndex = -1;
-    }    
+    }
+
+    // Laps and end of race logic
+    int newLap = getLap(player.pos.z);
+    if (newLap != prevLap) {
+        if (raceMode = RACEMODE_RACING) {
+            playsfx(gameSfx.lapBell);
+            // TODO: Check for end of race
+        }
+    }
 }
 
 CarAIParams getBaseAIParams(float f) {
