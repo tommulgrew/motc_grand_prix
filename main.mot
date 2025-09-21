@@ -85,7 +85,7 @@ void update() {
 	else if (gameMode = GAMEMODE_RACE) {
 		updatePauseMenu(uiInput);
 		if (not pauseMenu.isActive) {
-			updateGame();
+			updateGame(uiInput);
 		}
 	}
 }

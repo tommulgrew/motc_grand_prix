@@ -40,6 +40,8 @@ struct MenuAction {
 // Routines
 
 float getMenuY(float y, MenuParams params, int itemCount);
+void drawMenuItemCentered(string text, int y, bool isSelected);
+void drawMenuItemAndBar(MenuItem item, int y, bool isSelected);
 
 // Returns the menu action to perform, or null if none
 MenuAction updateMenu(MenuState menu, MenuItem[] items, UIInput input) {
@@ -99,29 +101,47 @@ void drawMenu(MenuParams params, MenuState menu, MenuItem[] items) {
         MenuItem item = items[i];
         float y = getMenuY(i, params, items.length);
         if (item.showBar) {
-            // Left aligned text
-            int textX = SCREEN_WIDTH * 0.2;
-            printSelectable(item.text, textX, y - 4 * PRATIO, i = menu.y);   
-
-            // Right aligned value bar
-            int barRight = SCREEN_WIDTH - textX;
-            int barWidth = SCREEN_WIDTH * 0.25;
-            int barLeft = barRight - barWidth;
-            color(0);
-            rectfill(barLeft - 1, y - 5 * PRATIO, barRight + 2, y + 5 * PRATIO); 
-            color(12);
-            rectfill(barLeft, y - 4 * PRATIO, barLeft + barWidth * item.fraction + 1, y + 4 * PRATIO);
-
-            // Display value
-            color(7);
-            print(item.valueText, barLeft + barWidth / 2 - item.valueText.length * 4, y - 3 * PRATIO);
+            drawMenuItemAndBar(item, y, i = menu.y);
         }
         else {
-            printCentered(item.text, y- 4 * PRATIO, i = menu.y);
+            drawMenuItemCentered(item.text, y - 4 * PRATIO, i = menu.y);
         }
     }
 }
 
 float getMenuY(float y, MenuParams params, int itemCount) {
     return params.y + (y - tofloat(itemCount)/2 + 0.5) * params.itemSpacing * PRATIO;
+}
+
+void setMenuItemColor(bool isSelected) {
+    color(isSelected and selectedFlash() ? 6 : 5);
+}
+
+void drawMenuItem(string text, int x, int y, bool isSelected) {
+    setMenuItemColor(isSelected);
+    print(text, x, y);
+}
+
+void drawMenuItemCentered(string text, int y, bool isSelected) {
+    drawMenuItem(text, centerTextX(text), y, isSelected);
+}
+
+void drawMenuItemAndBar(MenuItem item, int y, bool isSelected) {
+
+    // Left aligned text
+    int textX = SCREEN_WIDTH * 0.2;
+    drawMenuItem(item.text, textX, y - 4 * PRATIO, isSelected);   
+
+    // Right aligned value bar
+    int barRight = SCREEN_WIDTH - textX;
+    int barWidth = SCREEN_WIDTH * 0.25;
+    int barLeft = barRight - barWidth;
+    color(0);
+    rectfill(barLeft - 1, y - 5 * PRATIO, barRight + 2, y + 5 * PRATIO); 
+    color(12);
+    rectfill(barLeft, y - 4 * PRATIO, barLeft + barWidth * item.fraction + 1, y + 4 * PRATIO);
+
+    // Display value
+    color(7);
+    print(item.valueText, barLeft + barWidth / 2 - item.valueText.length * 4, y - 3 * PRATIO);
 }

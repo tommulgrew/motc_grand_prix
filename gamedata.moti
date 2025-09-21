@@ -8,6 +8,8 @@ int collideSfxIndex = -1;
 int collideSfxTimer;
 Sfx currentSlideSfx;        // Currently playing slide sound effect
 int gameMode;
+int raceMode;
+int raceSequenceTimer;      // Used by pre-race and post-race sequences
 int raceType = RACETYPE_SINGLE;
 
 Car[] aiCarPool;            // Pool of all possible AI cars, from which the current race's AI cars will be selected.

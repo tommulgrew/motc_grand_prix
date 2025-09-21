@@ -49,6 +49,11 @@ void drawGame() {
     drawCockpit();
     drawMirror();
     drawHud();
+
+    if (raceMode = RACEMODE_PRERACE) {
+        color(8);
+        
+    }
 }
 
 CameraInfo getCamera() {
