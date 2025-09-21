@@ -10,6 +10,7 @@ struct GameConfig {
     int playerColour;           // Index into playerCarPalettes array
     int difficulty;
     int trackIndex;
+    int lapOptionIndex;
 }
 
 // Data
@@ -25,7 +26,8 @@ GameConfig gameConfig = new GameConfig {
     showRacingLine = true,
     playerColour = 0,
     difficulty = 1,
-    trackIndex = 0
+    trackIndex = 0,
+    lapOptionIndex = 2
 };
 
 string configFilename() {
@@ -62,6 +64,7 @@ void loadGameConfig() {
     if (i < ct) { gameConfig.difficulty = toint(lines[i]); i++; }
     if (i < ct) { gameConfig.trackIndex = toint(lines[i]); i++; }
     if (i < ct) { gameConfig.showRacingLine = lines[i] = "true"; i++; }
+    if (i < ct) { gameConfig.lapOptionIndex = toint(lines[i]); i++; }
 }
 
 void saveConfig() {
@@ -76,6 +79,7 @@ void saveConfig() {
         gameConfig.playerColour + "\n" + 
         gameConfig.difficulty + "\n" + 
         gameConfig.trackIndex + "\n" + 
-        gameConfig.showRacingLine;
+        gameConfig.showRacingLine + "\n" + 
+        gameConfig.lapOptionIndex;
     savetext(configFile, text);
 }

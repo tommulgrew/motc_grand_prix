@@ -51,6 +51,13 @@ float rnd2(float n) {
 }
 
 void printScaled(string text, int x, int y, int scale) {
+    
+    // Streamline unscaled text
+    if (scale = 1) {
+        print(text, x, y);
+        return;
+    }
+
     Image mainScreen = screen();
 
     // Print to buffer

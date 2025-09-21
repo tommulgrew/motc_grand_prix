@@ -31,6 +31,8 @@ void initRace() {
     playsfx(gameSfx.engine2, 1, true, 0.4);
 
     setRaceMode(RACEMODE_PRERACE);
+
+    // setRaceMode(RACEMODE_POSTRACE);     // TESTING
 }
 
 void updatePlayerInput() {
@@ -142,7 +144,11 @@ void updateRace() {
     if (newLap != prevLap) {
         if (raceMode = RACEMODE_RACING) {
             playsfx(gameSfx.lapBell);
-            // TODO: Check for end of race
+
+            // End of race?
+            if (newLap > lapOptions[gameConfig.lapOptionIndex]) {
+                setRaceMode(RACEMODE_POSTRACE);            
+            }
         }
     }
 }
@@ -491,13 +497,19 @@ void updateAICars() {
     }
 }
 
+void updateEnginePitch() {
+    setpitch(0, player.anim.revs * 35);
+    setpitch(1, player.anim.revs * 35);
+}
+
 void updatePlayerRevs() {
     if (raceMode = RACEMODE_PRERACE) {
         // Button revs engine
         float revTarget = lerp(0.1, 0.85, max(player.input.accel, 0));
         player.anim.revs = lerp(player.anim.revs, revTarget, 0.075);
+        updateEnginePitch();
     }
-    else if (raceMode = RACEMODE_RACING) {
+    else if (raceMode = RACEMODE_RACING or raceMode = RACEMODE_POSTRACE) {
         // Base revs on speed, with some simulated gear ratios.
         float r = 0.069;
         float gear = floor(player.vel / r);
@@ -505,9 +517,8 @@ void updatePlayerRevs() {
         revs *= (0.7 - gear * 0.1)/r;
         revs += gear * 0.1 + 0.15;
         player.anim.revs = lerp(player.anim.revs, revs, 0.125);
+        updateEnginePitch();
     }
-    setpitch(0, player.anim.revs * 35);
-    setpitch(1, player.anim.revs * 35);
 }
 
 void updatePlayerSuspension() {

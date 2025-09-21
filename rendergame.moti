@@ -50,7 +50,7 @@ void drawGame() {
     drawWorld(cam, gameConfig.drawDistance);
     drawCockpit();
     drawMirror();
-    drawHud();
+    if (raceMode = RACEMODE_PRERACE or raceMode = RACEMODE_RACING) drawHud();
 
     if (raceMode = RACEMODE_PRERACE) {
         // Display 3..2..1
@@ -60,9 +60,17 @@ void drawGame() {
         }
     }
     else if (raceMode = RACEMODE_RACING) {
+
         // Flash "!! GO !!" for first second
         if (raceSequenceTimer < 30 and raceSequenceTimer % 10 < 5) {
             drawPreRaceText("!! GO !!");
+        }
+    }
+    else if (raceMode = RACEMODE_POSTRACE) {
+        int y = SCREEN_HEIGHT * 0.2;
+        fancyPrint("Race Finished", 6, y, -1, 2, 5);
+        if (raceSequenceTimer > 90 and raceSequenceTimer % 30 < 15) {
+            fancyPrint("Press button to continue", 6, y + 20, -1, 1, 5);
         }
     }
 }
@@ -352,7 +360,7 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
                     false);
             }
 
-            if (gameConfig.showRacingLine) {
+            if (gameConfig.showRacingLine and (raceMode = RACEMODE_PRERACE or raceMode = RACEMODE_RACING)) {
                 if (screenSeg.zIndex % 3 = 0 and screenSeg.segment.hasAiX) {
                     float c = (player.vel - screenSeg.segment.aiVelocity * 1.1) * 25 + 1.99;
                     c = clamp(c, 0, aiMarkerCols.length - 1);
@@ -643,10 +651,6 @@ void drawHud() {
 }
 
 void drawPreRaceText(string text) {
-    int x = centerTextX(text, 4);
     int y = SCREEN_HEIGHT * 0.3;
-    color(1);
-    printScaled(text, x, y + 2, 4);
-    color(8);
-    printScaled(text, x, y, 4);
+    fancyPrint(text, 8, y, -1, 3, 1);
 }

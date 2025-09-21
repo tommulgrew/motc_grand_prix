@@ -231,3 +231,15 @@ bool selectedFlash() {
 int centerTextX(string text, float scale = 1) {
     return SCREEN_WIDTH / 2 - (text.length * 6) / 2 * scale;
 }
+
+void fancyPrint(string text, int col, int y, int x = -1, float scale = 1, int underlineColor = -1) {
+    if (x = -1) { 
+        x = centerTextX(text, scale);
+    }
+    if (underlineColor >= 0) {
+        color(underlineColor);
+        printScaled(text, x, y + 1, scale);
+    }
+    color(col);
+    printScaled(text, x, y, scale);
+}
