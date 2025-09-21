@@ -5,8 +5,11 @@
 // Constants
 
 // Menu action enums
-const int MENU_ACTION_SELECT = 0;
-const int MENU_ACTION_CHANGE = 1;
+const int MENU_ACTION_SELECT = 1;
+const int MENU_ACTION_CHANGE = 2;
+
+const int MENU_CONFIRM_YES = 1;
+const int MENU_CONFIRM_NO  = 2;
 
 // Structures
 
@@ -18,9 +21,12 @@ struct MenuParams {
     int backgroundPadding;
 }
 
+struct MenuItem;
+
 struct MenuState {
     int y;
     float animY;
+    MenuItem confirmItem;
 }
 
 struct MenuItem {
@@ -29,6 +35,7 @@ struct MenuItem {
     bool showBar;
     float fraction;
     string valueText;
+    bool confirm;
 }
 
 struct MenuAction {
@@ -36,6 +43,13 @@ struct MenuAction {
     int itemID;         // The MenuItem id
     int delta;          // The delta to apply for MENU_ACTION_CHANGE (-1 or 1). Or 0 when not applicable.
 }
+
+// Data
+
+MenuItem[] confirmMenuItems = new MenuItem[] {
+    new MenuItem { id = MENU_CONFIRM_YES, text = "Yes" },
+    new MenuItem { id = MENU_CONFIRM_NO, text = "No" }
+};
 
 // Routines
 
@@ -45,6 +59,12 @@ void drawMenuItemAndBar(MenuItem item, int y, bool isSelected);
 
 // Returns the menu action to perform, or null if none
 MenuAction updateMenu(MenuState menu, MenuItem[] items, UIInput input) {
+
+    if (menu.confirmItem != null) {
+        // User selected item that requires confirmation.
+        // Show "Yes"/"No" menu
+        items = confirmMenuItems;
+    }
 
     // Button navigation
     int yd = 0, xd = 0;
@@ -56,12 +76,40 @@ MenuAction updateMenu(MenuState menu, MenuItem[] items, UIInput input) {
     // Up/down selects menu option
     menu.y = clamp(menu.y + yd, 0, items.length - 1);
     menu.animY += clamp(menu.y - menu.animY, -0.2, 0.2);
+    menu.animY = clamp(menu.animY, 0, items.length - 1);
 
+    MenuItem item = items[menu.y];
     if (input.btnPressed[UI_SELECT]) {
-        return new MenuAction { 
-            menuAction = MENU_ACTION_SELECT,
-            itemID = items[menu.y].id
-        };
+        if (item.confirm) {
+            // Item requires confirmation.
+            // Switch to Yes/No confirm menu.
+            menu.confirmItem = item;
+            menu.y = 1;
+        }
+        else if (menu.confirmItem != null) {
+            // Yes/no selected
+
+            // Exit confirm mode, but store item being confirmed
+            MenuItem confirmItem = menu.confirmItem;
+            menu.confirmItem = null;
+            menu.y = 0;
+
+            // If yes clicked, send back the menu action
+            if (item.id = MENU_CONFIRM_YES) {
+                return new MenuAction { 
+                    menuAction = MENU_ACTION_SELECT,
+                    itemID = confirmItem.id
+                };
+            }
+        }
+        else {
+
+            // Regular action (no confirmation required)
+            return new MenuAction { 
+                menuAction = MENU_ACTION_SELECT,
+                itemID = item.id
+            };
+        }
     }
     else if (xd != 0) {        
         return new MenuAction {
@@ -76,9 +124,18 @@ MenuAction updateMenu(MenuState menu, MenuItem[] items, UIInput input) {
 
 void drawMenu(MenuParams params, MenuState menu, MenuItem[] items) {
 
+    if (menu.confirmItem != null) {
+        // User selected item that requires confirmation.
+        // Show "Yes"/"No" menu
+        items = confirmMenuItems;
+    }
+
     // Background
     if (params.drawBackground) {
         int top = getMenuY(0, params, items.length) - params.backgroundPadding * PRATIO;
+        if (menu.confirmItem != null) {
+            top -= params.itemSpacing;
+        }
         int bottom = getMenuY(items.length - 1, params, items.length) + params.backgroundPadding * PRATIO;
         color(params.backgroundColour);
         rectfill(0, top, SCREEN_WIDTH, bottom);
@@ -94,6 +151,14 @@ void drawMenu(MenuParams params, MenuState menu, MenuItem[] items) {
         rectfill(0, y, SCREEN_WIDTH, y + h);
         color(12);
         rect(-1, y, SCREEN_WIDTH + 1, y + h);
+    }
+
+    // Confirm prompt
+    if (menu.confirmItem != null) {
+        float y = getMenuY(-1, params, items.length);
+        color(7);
+        string confirmPrompt = "Really " + menu.confirmItem.text + "?";
+        print(confirmPrompt, centerTextX(confirmPrompt), y);
     }
 
     // Menu items

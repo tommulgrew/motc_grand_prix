@@ -107,7 +107,7 @@ MenuItem[] getMainMenuItems() {
     // Exclude quit option from web version, as quitting doesn't make sense.
     // (The game just ends and the application becomes unresponsive.)
     if (hostplatform() != "web") {
-        items.add(new MenuItem { id = MAIN_MENU_QUIT, text = "Quit game" });    
+        items.add(new MenuItem { id = MAIN_MENU_QUIT, text = "Quit game", confirm = true });    
     }
 
     return items;

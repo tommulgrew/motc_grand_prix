@@ -88,15 +88,25 @@ void updateGame(UIInput uiInput) {
     raceSequenceTimer++;
 
     if (raceMode = RACEMODE_PRERACE) {
+        // Player can rev engine in pre race mode.
+        updatePlayerInput();
+        updatePlayerRevs();   
+
         // Start race after 3..2..1 sequence
         if (raceSequenceTimer >= 120) {
             setRaceMode(RACEMODE_RACING);
+            playsfx(gameSfx.go);
+        }
+        else if (raceSequenceTimer >= 30 and raceSequenceTimer % 30 = 0) {
+            playsfx(gameSfx.getReady);
         }
     }
     else if (raceMode = RACEMODE_RACING) {
         updateRace();
     }
     else if (raceMode = RACEMODE_POSTRACE) {
+        updateRace();
+
         // Ignore input for 3 seconds. 
         // After that, pressing button proceeds to race results
         if (raceSequenceTimer > 90 and uiInput.btnPressed[UI_SELECT]) {
@@ -438,7 +448,7 @@ void updatePlayer() {
 
     // Update input
     if (raceMode = RACEMODE_RACING) {
-        // Player controls car during race
+        // Player controls car during race.
         updatePlayerInput();
     }
     else if (raceMode = RACEMODE_POSTRACE) {
@@ -448,14 +458,12 @@ void updatePlayer() {
 
     // Update car
     moveCar(player);
+    updatePlayerSuspension();
+    updatePlayerRevs();
 
     // Animate wheels
     player.anim.wheelPrev = player.anim.wheelTurn;
     player.anim.wheelTurn += player.vel * VELOCITY_FACTOR * 18;
-
-    updatePlayerRevs();
-
-    updatePlayerSuspension();
 }
 
 void updateAICars() {
@@ -474,10 +482,13 @@ void updateAICars() {
 }
 
 void updatePlayerRevs() {
-    bool isPreRace = false;     // TODO: Pre-race mode
-    if (isPreRace) {
+    if (raceMode = RACEMODE_PRERACE) {
+        // Button revs engine
+        float revTarget = lerp(0.1, 0.9, max(player.input.accel, 0));
+        player.anim.revs = lerp(player.anim.revs, revTarget, 0.075);
     }
-    else {
+    else if (raceMode = RACEMODE_RACING) {
+        // Base revs on speed, with some simulated gear ratios.
         float r = 0.069;
         float gear = floor(player.vel / r);
         float revs = player.vel - gear * r;

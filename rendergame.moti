@@ -41,6 +41,8 @@ void drawWorld(CameraInfo cam, int drawDistance);
 void drawCockpit();
 void drawMirror();
 void drawHud();
+void drawPreRaceText(string text);
+
 CameraInfo getCamera();
 
 void drawGame() {
@@ -51,8 +53,17 @@ void drawGame() {
     drawHud();
 
     if (raceMode = RACEMODE_PRERACE) {
-        color(8);
-        
+        // Display 3..2..1
+        int countDown = toint(5 - raceSequenceTimer / 30.0);
+        if (countDown <= 3) {
+            drawPreRaceText(countDown);
+        }
+    }
+    else if (raceMode = RACEMODE_RACING) {
+        // Flash "!! GO !!" for first second
+        if (raceSequenceTimer < 30 and raceSequenceTimer % 10 < 5) {
+            drawPreRaceText("!! GO !!");
+        }
     }
 }
 
@@ -629,4 +640,13 @@ void drawHud() {
     string lapText = lap;
     printScaled(lapText, SCREEN_WIDTH - (lapText.length * 6 + 8) * PRATIO, 4 * PRATIO, 2 * PRATIO);
     print("Lap", SCREEN_WIDTH - 45 * PRATIO, 4 * PRATIO);
+}
+
+void drawPreRaceText(string text) {
+    int x = centerTextX(text, 4);
+    int y = SCREEN_HEIGHT * 0.3;
+    color(1);
+    printScaled(text, x, y + 2, 4);
+    color(8);
+    printScaled(text, x, y, 4);
 }

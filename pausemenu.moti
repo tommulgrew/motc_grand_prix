@@ -141,7 +141,7 @@ MenuItem[] getPauseMenuItems() {
             new MenuItem { id = PAUSE_RACING_LINE, text = "Racing line: " + (gameConfig.showRacingLine ? "ON" : "OFF" ) },
             new MenuItem { id = PAUSE_CAR_COLOUR, text = "Car colour: " + (gameConfig.playerColour + 1) },
             new MenuItem { id = PAUSE_CONTROLLER, text = "Controller options..." },
-            new MenuItem { id = PAUSE_QUIT, text = "Quit race" }
+            new MenuItem { id = PAUSE_QUIT, text = "Quit race", confirm = true }
         };
     }
     else if (pauseMenu.subMenu = PAUSE_MENU_CONTROLLER) {
