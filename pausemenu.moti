@@ -14,6 +14,7 @@ const int PAUSE_CONTROLLER_SMOOTHING = 5;
 const int PAUSE_CONTROLLER_CURVE = 6;
 const int PAUSE_CONTROLLER_FACTOR = 7;
 const int PAUSE_CONTROLLER_BACK = 8;
+const int PAUSE_CAR_COLOUR = 9;
 
 // Pause submenu
 
@@ -90,7 +91,10 @@ void updatePauseMenu(UIInput input) {
                 }
             }
             else if (action.menuAction = MENU_ACTION_CHANGE) {
-                if (action.itemID = PAUSE_CONTROLLER_DEADZONE) {
+                if (action.itemID = PAUSE_CAR_COLOUR) {
+                    gameConfig.playerColour = clamp(gameConfig.playerColour + action.delta, 0, playerCarPalettes.length - 1);
+                }
+                else if (action.itemID = PAUSE_CONTROLLER_DEADZONE) {
                     gameConfig.controllerDeadzone = clamp(gameConfig.controllerDeadzone + action.delta * 0.01, 0, 0.5);
                 }
                 else if (action.itemID = PAUSE_CONTROLLER_SMOOTHING) {
@@ -127,6 +131,7 @@ MenuItem[] getPauseMenuItems() {
     if (pauseMenu.subMenu = PAUSE_MENU_MAIN) {
         return new MenuItem[] {
             new MenuItem { id = PAUSE_RESUME, text = "Resume" },
+            new MenuItem { id = PAUSE_CAR_COLOUR, text = "Car colour: " + (gameConfig.playerColour + 1) },
             new MenuItem { id = PAUSE_CONTROLLER, text = "Controller options..." },
             new MenuItem { id = PAUSE_QUIT, text = "Quit race" }
         };

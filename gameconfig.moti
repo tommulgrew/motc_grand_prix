@@ -46,13 +46,25 @@ void loadGameConfig() {
         return;
     }
 
+    // Load config from file.
+    // Config is stored as a text file, with one setting value per line.
+    // Some lines may be missing from the end if the config was saved from an 
+    // earlier version.
     string text = loadtext(configFile);
     string[] lines = split(text, "\n");
-    int i = 0;
-    gameConfig.controllerDeadzone = tofloat(lines[i]); i++;
-    gameConfig.controllerSmoothing = tofloat(lines[i]); i++;
-    gameConfig.controllerCurve = tofloat(lines[i]); i++;
-    gameConfig.controllerFactor = tofloat(lines[i]); i++;
+
+    // Trim blank lines from end
+    while (lines.length > 0 and lines[lines.length - 1] = "") {
+        lines.remove(lines.length - 1);
+    }
+    int i = 0, ct = lines.length;
+
+    // Parse lines
+    if (i < ct) { gameConfig.controllerDeadzone = tofloat(lines[i]); i++; }
+    if (i < ct) { gameConfig.controllerSmoothing = tofloat(lines[i]); i++; }
+    if (i < ct) { gameConfig.controllerCurve = tofloat(lines[i]); i++; }
+    if (i < ct) { gameConfig.controllerFactor = tofloat(lines[i]); i++; }
+    if (i < ct) { gameConfig.playerColour = toint(lines[i]); i++; }
 }
 
 void saveConfig() {
@@ -63,6 +75,7 @@ void saveConfig() {
         gameConfig.controllerDeadzone + "\n" + 
         gameConfig.controllerSmoothing + "\n" +
         gameConfig.controllerCurve + "\n" +
-        gameConfig.controllerFactor;
+        gameConfig.controllerFactor + "\n" + 
+        gameConfig.playerColour;
     savetext(configFile, text);
 }
