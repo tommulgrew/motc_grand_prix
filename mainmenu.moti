@@ -78,24 +78,20 @@ void updateMainMenu(UIInput input) {
     if (action != null) {
         if (action.menuAction = MENU_ACTION_SELECT) {
             if (action.itemID = MAIN_MENU_STARTRACE) {
+                saveConfig();
                 setGameMode(GAMEMODE_RACE);            
             }
             else if (action.itemID = MAIN_MENU_QUIT) {
+                saveConfig();
                 quitApp = true;
             }
         }
         else if (action.menuAction = MENU_ACTION_CHANGE) {
             if (action.itemID = MAIN_MENU_TRACK) {
-                int index = gameConfig.trackIndex + action.delta;
-                if (index >= 0 and index < tracks.length) {
-                    gameConfig.trackIndex = index;
-                }
+                gameConfig.trackIndex = clamp(gameConfig.trackIndex + action.delta, 0, tracks.length - 1);
             }
             else if (action.itemID = MAIN_MENU_DIFFICULTY) {
-                int index = gameConfig.difficulty + action.delta;
-                if (index >= 0 and index < difficultyLevels.length) {
-                    gameConfig.difficulty = index;
-                }
+                gameConfig.difficulty = clamp(gameConfig.difficulty + action.delta, 0, difficultyLevels.length - 1);
             }
         }
     }

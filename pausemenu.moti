@@ -15,6 +15,7 @@ const int PAUSE_CONTROLLER_CURVE = 6;
 const int PAUSE_CONTROLLER_FACTOR = 7;
 const int PAUSE_CONTROLLER_BACK = 8;
 const int PAUSE_CAR_COLOUR = 9;
+const int PAUSE_RACING_LINE = 10;
 
 // Pause submenu
 
@@ -81,6 +82,9 @@ void updatePauseMenu(UIInput input) {
                 else if (action.itemID = PAUSE_RESUME) {
                     closePauseMenu();
                 }
+                else if (action.itemID = PAUSE_RACING_LINE) {
+                    gameConfig.showRacingLine = not gameConfig.showRacingLine;
+                }
                 else if (action.itemID = PAUSE_CONTROLLER) {
                     pauseMenu.subMenu = PAUSE_MENU_CONTROLLER;
                     pauseMenu.state = new MenuState;
@@ -105,6 +109,9 @@ void updatePauseMenu(UIInput input) {
                 }
                 else if (action.itemID = PAUSE_CONTROLLER_FACTOR) {
                     gameConfig.controllerFactor = clamp(gameConfig.controllerFactor + action.delta * 0.05, 1, 2);
+                }
+                else if (action.itemID = PAUSE_RACING_LINE) {
+                    gameConfig.showRacingLine = action.delta > 0;
                 }
             }
         }
@@ -131,6 +138,7 @@ MenuItem[] getPauseMenuItems() {
     if (pauseMenu.subMenu = PAUSE_MENU_MAIN) {
         return new MenuItem[] {
             new MenuItem { id = PAUSE_RESUME, text = "Resume" },
+            new MenuItem { id = PAUSE_RACING_LINE, text = "Racing line: " + (gameConfig.showRacingLine ? "ON" : "OFF" ) },
             new MenuItem { id = PAUSE_CAR_COLOUR, text = "Car colour: " + (gameConfig.playerColour + 1) },
             new MenuItem { id = PAUSE_CONTROLLER, text = "Controller options..." },
             new MenuItem { id = PAUSE_QUIT, text = "Quit race" }

@@ -15,27 +15,21 @@ struct GameConfig {
 // Data
 
 GameConfig gameConfig = new GameConfig {
-    
-    // Best for gamepads
+
+    // Defaults
     controllerDeadzone = 0.06,
     controllerSmoothing = 0.9,
     controllerCurve = 2,
-
-    // Best for touch screen controls
-    // controllerDeadzone = 0,
-    // controllerSmoothing = 0,
-    // controllerCurve = 1.5,
-
     controllerFactor = 1.1,
     drawDistance = 80,
     showRacingLine = true,
-    playerColour = 3,
+    playerColour = 0,
     difficulty = 1,
     trackIndex = 0
 };
 
 string configFilename() {
-    return savedir() + "motgpconfig.txt";
+    return savedir() + "mot_gp.txt";
 }
 
 void loadGameConfig() {
@@ -65,6 +59,9 @@ void loadGameConfig() {
     if (i < ct) { gameConfig.controllerCurve = tofloat(lines[i]); i++; }
     if (i < ct) { gameConfig.controllerFactor = tofloat(lines[i]); i++; }
     if (i < ct) { gameConfig.playerColour = toint(lines[i]); i++; }
+    if (i < ct) { gameConfig.difficulty = toint(lines[i]); i++; }
+    if (i < ct) { gameConfig.trackIndex = toint(lines[i]); i++; }
+    if (i < ct) { gameConfig.showRacingLine = lines[i] = "true"; i++; }
 }
 
 void saveConfig() {
@@ -76,6 +73,9 @@ void saveConfig() {
         gameConfig.controllerSmoothing + "\n" +
         gameConfig.controllerCurve + "\n" +
         gameConfig.controllerFactor + "\n" + 
-        gameConfig.playerColour;
+        gameConfig.playerColour + "\n" + 
+        gameConfig.difficulty + "\n" + 
+        gameConfig.trackIndex + "\n" + 
+        gameConfig.showRacingLine;
     savetext(configFile, text);
 }
