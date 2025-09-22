@@ -43,14 +43,32 @@ void drawMirror();
 void drawHud();
 void drawPreRaceText(string text);
 
-CameraInfo getCamera();
+CameraInfo getPlayerCamera();
 
 void drawGame() {
-    CameraInfo cam = getCamera();
+
+    // Get camera position
+    CameraInfo cam;
+    if (raceMode = RACEMODE_RESULTS) {
+        cam = new CameraInfo {
+            pos = new Vec { y = -2 }
+        };
+        clipBottom = SCREEN_HEIGHT;
+    }
+    else {
+        cam = getPlayerCamera();   
+        clipBottom = CAR_CLIP_BOTTOM; 
+    }
+
     drawWorld(cam, gameConfig.drawDistance);
-    drawCockpit();
-    drawMirror();
-    if (raceMode = RACEMODE_PRERACE or raceMode = RACEMODE_RACING) drawHud();
+
+    if (raceMode != RACEMODE_RESULTS) {
+        drawCockpit();
+        drawMirror();
+    }
+    if (raceMode = RACEMODE_PRERACE or raceMode = RACEMODE_RACING) {
+        drawHud();
+    }
 
     if (raceMode = RACEMODE_PRERACE) {
         // Display 3..2..1
@@ -75,7 +93,7 @@ void drawGame() {
     }
 }
 
-CameraInfo getCamera() {
+CameraInfo getPlayerCamera() {
     CameraInfo cam = new CameraInfo {
         pos = player.pos,
         turn = player.turn,
@@ -101,7 +119,7 @@ ScreenSpaceSegment[] getScreenSpaceSegments(CameraInfo cam, int drawDistance) {
 
     // Road drawing cursor
     float turn = -cam.turn, pitch = cameraSegment.pitch - cam.pitch - CAMERA_TILT;
-    float clipY = CLIP_BOTTOM;
+    float clipY = clipBottom;
 
     // Calculate initial position
     Vec skewedCameraPos = skew(segmentRelativePos(cam.pos), turn, pitch);

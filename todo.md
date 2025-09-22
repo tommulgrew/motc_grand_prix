@@ -38,6 +38,8 @@ Done
         - DONE - Persist
     - DONE - Car colour
     - DONE - Toggle racing line
+- DONE - Select number of laps
+- DONE - End race when laps finished
 
 To do
 =====
@@ -50,14 +52,21 @@ To do
 - Select race type
     - Single
     - Practice    
-- Select number of laps
-- End race when laps finished
 - End of race sequence
     - Calculate podium
+        - As cars complete race
+        - When player exits post-race sequence
 - Season mode
     - Generate roster
     - Collect results
     - Persist roster and results
 - Update texture image. Make use of 2x resolution
 - Check memory usage
+- Qualification lap
+    - Single lap
+    - No collisions
+    - Don't draw AI cars
+    - Hide cars from AI cars
+    - Player can skip if necessary from pause menu (will be placed last)
+    - Use results of qualification lap to order starting grid for race
 - Release MotC

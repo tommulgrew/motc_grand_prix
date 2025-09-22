@@ -19,6 +19,7 @@ struct MenuParams {
     bool drawBackground;
     int backgroundColour, borderColour;
     int backgroundPadding;
+    int barHeight;
 }
 
 struct MenuItem;
@@ -145,7 +146,7 @@ void drawMenu(MenuParams params, MenuState menu, MenuItem[] items) {
 
     // Selection bar
     {
-        float h = 20 * PRATIO;
+        float h = params.barHeight * PRATIO;
         float y = getMenuY(menu.animY, params, items.length) - h/2;
         color(7);
         rectfill(0, y, SCREEN_WIDTH, y + h);

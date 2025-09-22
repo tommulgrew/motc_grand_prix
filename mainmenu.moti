@@ -24,7 +24,8 @@ struct MainMenuState {
 
 MenuParams mainMenuParams = new MenuParams {
     y = SCREEN_HEIGHT * 0.75,
-    itemSpacing = 20,
+    itemSpacing = 16,
+    barHeight = 16,
     drawBackground = false
 };
 MainMenuState mainMenu;

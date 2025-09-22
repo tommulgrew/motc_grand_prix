@@ -34,7 +34,8 @@ struct PauseMenuState {
 
 MenuParams pauseMenuParams = new MenuParams {
     y = SCREEN_HEIGHT / 2,
-    itemSpacing = 20,
+    itemSpacing = 16,
+    barHeight = 16,
     drawBackground = true,
     backgroundColour = 1,
     borderColour = 7,

@@ -3,13 +3,14 @@
 const int SCREEN_WIDTH = 320;
 const int SCREEN_HEIGHT = 240;
 const float PRATIO = SCREEN_WIDTH / 320.0;      // Pixel ratio compared to 320x240 view
-const int CLIP_BOTTOM = SCREEN_HEIGHT - 64 * PRATIO;
+const int CAR_CLIP_BOTTOM = SCREEN_HEIGHT - 64 * PRATIO;
 const float NEAR_Z = 0.1;
 const float SCREEN_DIST = SCREEN_WIDTH / 2;     // Used for projection calculations
 
 // Data
 
 float vanishY = SCREEN_HEIGHT / 2;
+int clipBottom = CAR_CLIP_BOTTOM;
 
 // Routines
 
@@ -87,7 +88,7 @@ void drawQuadHoriz(
 
     // Clip vertical range
     float y0 = max(ceil(pt0.y), 0);
-    float y1 = min(ceil(pt1.y), CLIP_BOTTOM);
+    float y1 = min(ceil(pt1.y), clipBottom);
     if (y1 <= y0) return;
 
     // p and v delta, per raster line

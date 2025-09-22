@@ -30,9 +30,9 @@ void initRace() {
     playsfx(gameSfx.engine1, 0, true);
     playsfx(gameSfx.engine2, 1, true, 0.4);
 
-    setRaceMode(RACEMODE_PRERACE);
+    // setRaceMode(RACEMODE_PRERACE);
 
-    // setRaceMode(RACEMODE_POSTRACE);     // TESTING
+    setRaceMode(RACEMODE_POSTRACE);     // TESTING
 }
 
 void updatePlayerInput() {
@@ -116,6 +116,8 @@ void updateGame(UIInput uiInput) {
         }
     }
     else if (raceMode = RACEMODE_RESULTS) {
+        updateRace();
+
         // Ignore input for 3 seconds. 
         // After that, pressing button returns to menu
         if (raceSequenceTimer > 90 and uiInput.btnPressed[UI_SELECT]) {
@@ -126,7 +128,9 @@ void updateGame(UIInput uiInput) {
 
 void updateRace() {
     int prevLap = getLap(player.pos.z);
-    updatePlayer();
+    if (raceMode != RACEMODE_RESULTS) {
+        updatePlayer();
+    }
     updateAICars();
     doCarCollisions();
     sortCars(player.pos.z);
@@ -746,7 +750,21 @@ void doCarCollisions() {
     }
 }
 
+void removeCar(Car[] cars, Car car) {
+    for (int i = 0; i < cars.length; i++) {
+        if (cars[i] = car) {
+            cars.remove(i);
+            break;
+        }
+    }
+}
+
 void setRaceMode(int mode) {
     raceMode = mode;
     raceSequenceTimer = 0;
+    if (raceMode = RACEMODE_RESULTS) {
+        stopsfx();    
+        removeCar(allCars, player);
+        removeCar(sortedCars, player);
+    }
 }
