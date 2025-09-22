@@ -12,6 +12,7 @@ void resetPlayer();
 void initAICars();
 void sortCars(float z);
 void updateRace();
+void updateRaceRules();
 void updatePlayer();
 void updateAICars();
 void updatePlayerRevs();
@@ -30,9 +31,9 @@ void initRace() {
     playsfx(gameSfx.engine1, 0, true);
     playsfx(gameSfx.engine2, 1, true, 0.4);
 
-    // setRaceMode(RACEMODE_PRERACE);
+    setRaceMode(RACEMODE_PRERACE);
 
-    setRaceMode(RACEMODE_POSTRACE);     // TESTING
+    // setRaceMode(RACEMODE_RESULTS);     // TESTING
 }
 
 void updatePlayerInput() {
@@ -105,9 +106,14 @@ void updateGame(UIInput uiInput) {
     }
     else if (raceMode = RACEMODE_RACING) {
         updateRace();
+        updateRaceRules();
+        if (player.race.isFinished) {
+            setRaceMode(RACEMODE_POSTRACE);
+        }
     }
     else if (raceMode = RACEMODE_POSTRACE) {
         updateRace();
+        updateRaceRules();          // So cars that haven't finished yet can finish
 
         // Ignore input for 3 seconds. 
         // After that, pressing button proceeds to race results
@@ -127,13 +133,20 @@ void updateGame(UIInput uiInput) {
 }
 
 void updateRace() {
-    int prevLap = getLap(player.pos.z);
     if (raceMode != RACEMODE_RESULTS) {
         updatePlayer();
     }
     updateAICars();
     doCarCollisions();
-    sortCars(player.pos.z);
+
+    // Sort cars
+    // TODO: Should this be part of the drawing 
+    if (raceMode = RACEMODE_RESULTS) {
+        sortCars(0.0001);                    // Camera placed at z=0 when displaying race results
+    }
+    else {
+        sortCars(player.pos.z);
+    }
 
     // Collision sfx timer
     if (collideSfxTimer > 0) {
@@ -142,16 +155,25 @@ void updateRace() {
     else {
         collideSfxIndex = -1;
     }
+}
 
-    // Laps and end of race logic
-    int newLap = getLap(player.pos.z);
-    if (newLap != prevLap) {
-        if (raceMode = RACEMODE_RACING) {
-            playsfx(gameSfx.lapBell);
+void updateRaceRules() {
+    for (Car car : allCars) {
+        if (not car.race.isFinished) {
 
-            // End of race?
-            if (newLap > lapOptions[gameConfig.lapOptionIndex]) {
-                setRaceMode(RACEMODE_POSTRACE);            
+            // Lap complete?
+            int lap = getLap(car.pos.z);
+            if (lap > car.race.lap) {
+                car.race.lap = lap;
+
+                // Play sound effect for player
+                if (car = player) playsfx(gameSfx.lapBell);
+
+                // Race complete?
+                if (lap > lapOptions[gameConfig.lapOptionIndex]) {
+                    car.race.isFinished = true;
+                    raceResults.add(car);
+                }
             }
         }
     }
@@ -198,7 +220,7 @@ void resetPlayer() {
             baseAIParams = getBaseAIParams(0.75)
         },
         input = new CarInput,
-        race = new CarRaceState
+        race = new CarRaceState { lap = 1 }
     };
     player.aiState.aiParams = player.aiState.baseAIParams;
 }
@@ -211,9 +233,7 @@ void initAICars() {
         Car car = new Car {
             carIndex = i,
             name = aiCarNames[i],
-            race = new CarRaceState {
-                lap = 0
-            },
+            race = new CarRaceState { lap = 1 },
             input = new CarInput,
             aiState = new CarAIState {
                 wanderOffset = rnd(),
@@ -226,6 +246,7 @@ void initAICars() {
     allCars = new Car[] { player };
     sortedCars = new Car[] { player };
     leaderboard = new Car[] { player };
+    raceResults = new Car[0];
     rearViewCars = new Car[0];
     if (raceType != RACETYPE_PRACTICE) {
 
@@ -762,7 +783,18 @@ void removeCar(Car[] cars, Car car) {
 void setRaceMode(int mode) {
     raceMode = mode;
     raceSequenceTimer = 0;
+    
     if (raceMode = RACEMODE_RESULTS) {
+
+        // Add any non-finished cars to the podium, in their current leaderboard order
+        for (Car car : leaderboard) {
+            if (!car.race.isFinished) {
+                car.race.isFinished = true;
+                raceResults.add(car);
+            }
+        }
+
+        // Setup for finish line camera
         stopsfx();    
         removeCar(allCars, player);
         removeCar(sortedCars, player);

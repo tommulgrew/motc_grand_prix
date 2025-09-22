@@ -51,8 +51,8 @@ struct CarAnimation {
 }
 
 struct CarRaceState {
-    bool isFinished;
     int lap;
+    bool isFinished;
 }
 
 struct Car {

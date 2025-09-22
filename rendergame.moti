@@ -42,6 +42,7 @@ void drawCockpit();
 void drawMirror();
 void drawHud();
 void drawPreRaceText(string text);
+void drawResults();
 
 CameraInfo getPlayerCamera();
 
@@ -51,7 +52,8 @@ void drawGame() {
     CameraInfo cam;
     if (raceMode = RACEMODE_RESULTS) {
         cam = new CameraInfo {
-            pos = new Vec { y = -2 }
+            pos = new Vec { y = -2 },
+            pitch = -0.25
         };
         clipBottom = SCREEN_HEIGHT;
     }
@@ -89,6 +91,12 @@ void drawGame() {
         fancyPrint("Race Finished", 6, y, -1, 2, 5);
         if (raceSequenceTimer > 90 and raceSequenceTimer % 30 < 15) {
             fancyPrint("Press button to continue", 6, y + 20, -1, 1, 5);
+        }
+    }
+    else if (raceMode = RACEMODE_RESULTS) {
+        drawResults();
+        if (raceSequenceTimer > 90 and raceSequenceTimer % 30 < 15) {
+            fancyPrint("Press button to continue", 7, SCREEN_HEIGHT * 0.6, -1, 1, 5);
         }
     }
 }
@@ -624,8 +632,8 @@ void drawMirror() {
     vanishY = saveVanishY;
 }
 
-void drawCarName(int leaderboardIndex, int x, int y) {
-    Car car = leaderboard[leaderboardIndex];
+void drawCarName(Car car, int position, int x, int y) {
+    // Note: position is 0 index. So position 0 is first place etc.
 
     // Car icon
     colmap(aiCarPalettes[car.carIndex]);
@@ -633,7 +641,7 @@ void drawCarName(int leaderboardIndex, int x, int y) {
     colmap();
 
     // Car text
-    string nameText = (leaderboardIndex + 1) + placeText[min(leaderboardIndex, 3)]
+    string nameText = (position + 1) + placeText[min(position, 3)]
         + " " + car.name;
     print(nameText, x + 20 * PRATIO, y + 2 * PRATIO);
 }
@@ -653,10 +661,10 @@ void drawHud() {
 
             // Car in front and behind
             if (i > 0) {
-                drawCarName(i - 1, CAR_NAME_X, 1 * PRATIO);
+                drawCarName(leaderboard[i - 1], i - 1, CAR_NAME_X, 1 * PRATIO);
             }
             if (i < leaderboard.length - 1) {
-                drawCarName(i + 1, CAR_NAME_X, 12 * PRATIO);
+                drawCarName(leaderboard[i + 1], i + 1, CAR_NAME_X, 12 * PRATIO);
             }            
         }
     }
@@ -671,4 +679,30 @@ void drawHud() {
 void drawPreRaceText(string text) {
     int y = SCREEN_HEIGHT * 0.3;
     fancyPrint(text, 8, y, -1, 3, 1);
+}
+
+void drawResults() {
+    const int CAR_NAME_X = SCREEN_WIDTH / 2 - 60 * PRATIO;
+    
+    const int BOARD_WIDTH = 140 * PRATIO;
+    const int BOARD_HEIGHT = 120 * PRATIO;
+    const int BOARD_Y = 10 * PRATIO;
+    color(0);
+    rectfill(
+        SCREEN_WIDTH/2 - BOARD_WIDTH/2,
+        BOARD_Y,
+        SCREEN_WIDTH/2 + BOARD_WIDTH/2,
+        BOARD_Y + BOARD_HEIGHT);
+    color(6);
+    rect(
+        SCREEN_WIDTH/2 - BOARD_WIDTH/2,
+        BOARD_Y,
+        SCREEN_WIDTH/2 + BOARD_WIDTH/2,
+        BOARD_Y + BOARD_HEIGHT);
+    fancyPrint("Final Standings", 10, BOARD_Y + 12, -1, 1, 5);
+
+    for (int i = 0; i < raceResults.length; i++) {
+        color(raceResults[i] = player ? 7 : 6);
+        drawCarName(raceResults[i], i, CAR_NAME_X, BOARD_Y + 30 * PRATIO + i * 10 * PRATIO);
+    }    
 }

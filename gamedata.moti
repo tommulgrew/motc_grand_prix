@@ -18,6 +18,7 @@ Car[] allCars;              // All cars including AI controlled and player
 Car[] sortedCars;           // All cars, sorted by z order
 Car[] rearViewCars;         // Non-player cars sorted for rear view mirror
 Car[] leaderboard;          // Cars sorted by position in the race
+Car[] raceResults;          // Cars sorted by finishing position
 
 string[] aiCarNames = new string[] {
     "S. Hudson",
