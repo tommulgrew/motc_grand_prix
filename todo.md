@@ -40,28 +40,31 @@ Done
     - DONE - Toggle racing line
 - DONE - Select number of laps
 - DONE - End race when laps finished
+- DONE End of race sequence
+    - DONE Calculate podium
+        - DONE As cars complete race
+        - DONE When player exits post-race sequence
+- DONE - Check memory usage
+- Pause menu
+    - Graphics settings
+        - DONE Draw distance
 
 To do
 =====
 
-- Pause menu
-    - Graphics settings
-        - Screen resolution
-        - Draw distance
-        - Persist
 - Select race type
     - Single
-    - Practice    
-- End of race sequence
-    - Calculate podium
-        - As cars complete race
-        - When player exits post-race sequence
-- Season mode
+    - Practice
+    - Tournament
+- Tournament mode
     - Generate roster
     - Collect results
     - Persist roster and results
 - Update texture image. Make use of 2x resolution
-- Check memory usage
+- Pause menu
+    - Graphics settings
+        - Screen resolution
+        - Persist
 - Qualification lap
     - Single lap
     - No collisions

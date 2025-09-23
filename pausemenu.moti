@@ -9,18 +9,23 @@
 const int PAUSE_RESUME = 1;
 const int PAUSE_CONTROLLER = 2;
 const int PAUSE_QUIT = 3;
+const int PAUSE_CAR_COLOUR = 9;
+const int PAUSE_RACING_LINE = 10;
+const int PAUSE_GRAPHICS = 11;
+
 const int PAUSE_CONTROLLER_DEADZONE = 4;
 const int PAUSE_CONTROLLER_SMOOTHING = 5;
 const int PAUSE_CONTROLLER_CURVE = 6;
 const int PAUSE_CONTROLLER_FACTOR = 7;
 const int PAUSE_CONTROLLER_BACK = 8;
-const int PAUSE_CAR_COLOUR = 9;
-const int PAUSE_RACING_LINE = 10;
+
+const int PAUSE_GRAPHICS_DRAWDIST = 12;
 
 // Pause submenu
 
 const int PAUSE_MENU_MAIN = 1;
 const int PAUSE_MENU_CONTROLLER = 2;
+const int PAUSE_MENU_GRAPHICS = 3;
 
 // Structures
 
@@ -90,6 +95,10 @@ void updatePauseMenu(UIInput input) {
                     pauseMenu.subMenu = PAUSE_MENU_CONTROLLER;
                     pauseMenu.state = new MenuState;
                 }
+                else if (action.itemID = PAUSE_GRAPHICS) {
+                    pauseMenu.subMenu = PAUSE_MENU_GRAPHICS;
+                    pauseMenu.state = new MenuState;
+                }
                 else if (action.itemID = PAUSE_CONTROLLER_BACK) {
                     pauseMenu.subMenu = PAUSE_MENU_MAIN;
                     pauseMenu.state = new MenuState;
@@ -113,6 +122,9 @@ void updatePauseMenu(UIInput input) {
                 }
                 else if (action.itemID = PAUSE_RACING_LINE) {
                     gameConfig.showRacingLine = action.delta > 0;
+                }
+                else if (action.itemID = PAUSE_GRAPHICS_DRAWDIST) {
+                    gameConfig.drawDistance = clamp(gameConfig.drawDistance + action.delta * 5, 30, 150);
                 }
             }
         }
@@ -142,6 +154,7 @@ MenuItem[] getPauseMenuItems() {
             new MenuItem { id = PAUSE_RACING_LINE, text = "Racing line: " + (gameConfig.showRacingLine ? "ON" : "OFF" ) },
             new MenuItem { id = PAUSE_CAR_COLOUR, text = "Car colour: " + (gameConfig.playerColour + 1) },
             new MenuItem { id = PAUSE_CONTROLLER, text = "Controller options..." },
+            new MenuItem { id = PAUSE_GRAPHICS, text = "Graphics options..." },
             new MenuItem { id = PAUSE_QUIT, text = "Quit race", confirm = true }
         };
     }
@@ -151,6 +164,12 @@ MenuItem[] getPauseMenuItems() {
             new MenuItem { id = PAUSE_CONTROLLER_SMOOTHING, text = "Smoothing", showBar = true, valueText = formatFloat(gameConfig.controllerSmoothing), fraction = gameConfig.controllerSmoothing / 0.95 },
             new MenuItem { id = PAUSE_CONTROLLER_CURVE, text = "Response curve", showBar = true, valueText = formatFloat(gameConfig.controllerCurve - 1), fraction = (gameConfig.controllerCurve - 1) / 2.0 },
             new MenuItem { id = PAUSE_CONTROLLER_FACTOR, text = "Sensitivity", showBar = true, valueText = formatFloat(gameConfig.controllerFactor), fraction = gameConfig.controllerFactor - 1 },
+            new MenuItem { id = PAUSE_CONTROLLER_BACK, text = "Back" }
+        };
+    }
+    else if (pauseMenu.subMenu = PAUSE_MENU_GRAPHICS) {
+        return new MenuItem[] {
+            new MenuItem { id = PAUSE_GRAPHICS_DRAWDIST, text = "Draw distance", showBar = true, valueText = gameConfig.drawDistance, fraction = (gameConfig.drawDistance - 30) / 120.0 },
             new MenuItem { id = PAUSE_CONTROLLER_BACK, text = "Back" }
         };
     }

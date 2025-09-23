@@ -5,7 +5,7 @@ struct GameConfig {
     float controllerSmoothing;
     float controllerCurve;      // 1 = linear. 2 = x^2 etc.
     float controllerFactor;
-    float drawDistance;
+    int drawDistance;
     bool showRacingLine;
     int playerColour;           // Index into playerCarPalettes array
     int difficulty;
@@ -65,6 +65,7 @@ void loadGameConfig() {
     if (i < ct) { gameConfig.trackIndex = toint(lines[i]); i++; }
     if (i < ct) { gameConfig.showRacingLine = lines[i] = "true"; i++; }
     if (i < ct) { gameConfig.lapOptionIndex = toint(lines[i]); i++; }
+    if (i < ct) { gameConfig.drawDistance = toint(lines[i]); i++; }
 }
 
 void saveConfig() {
@@ -80,6 +81,7 @@ void saveConfig() {
         gameConfig.difficulty + "\n" + 
         gameConfig.trackIndex + "\n" + 
         gameConfig.showRacingLine + "\n" + 
-        gameConfig.lapOptionIndex;
+        gameConfig.lapOptionIndex + "\n" + 
+        gameConfig.drawDistance;
     savetext(configFile, text);
 }
