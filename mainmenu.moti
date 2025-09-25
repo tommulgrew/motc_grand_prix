@@ -57,7 +57,7 @@ void drawMainMenu() {
     // Draw a racing car
     colmap(aiCarPalettes[mainMenu.carPaletteIndex]);
     drawCar(new Transform {
-        translate = new Vec { z = 3.5, y = -0.2 },
+        translate = new Vec { z = 2.5, y = -0.1 },
         skewX = -0.5,
         skewY = -0.3
     });
