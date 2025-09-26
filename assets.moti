@@ -70,7 +70,7 @@ Texture[] textures = new Texture[] {
     new Texture { name = "rroof", u = 26, v = 8, w = 4, h = 2, tran = 0 },
     new Texture { name = "broof", u = 38, v = 8, w = 4, h = 2, tran = 0 },
     new Texture { name = "shoulder", u = 8, v = 16, w = 1, h = 2, tran = 99 },
-    new Texture { name = "crane", u = 80, v = 0, w = 7, h = 17, tran = 0, flipOnLeft = true },
+    new Texture { name = "crane", u = 73, v = 14, w = 7, h = 17, tran = 0, flipOnLeft = true },
     new Texture { name = "d1", u = 9, v = 18, w = 4, h = 1, tran = 10 },
     new Texture { name = "d2", u = 9, v = 17, w = 4, h = 1, tran = 10 },
     new Texture { name = "d3", u = 9, v = 16, w = 4, h = 1, tran = 10 },
@@ -119,8 +119,8 @@ struct GameTextures {
 
 GameTextures gameTextures = new GameTextures {
     horizon = fixTexture(new Texture { name = "horizon", u = 0, v = 25, w = 16, h = 7, tran = 0}),
-    cockpit = fixTexture(new Texture { name = "cockpit", u = 108, v = 0, w = 20, h = 6, tran = 10 }),
-    steeringWheel = fixTexture(new Texture { name = "steering", u = 96, v = 2, w = 8, h = 8, tran = 12 }),
+    cockpit = fixTexture(new Texture { name = "cockpit", u = 16, v = 26, w = 20, h = 6, tran = 10 }),
+    steeringWheel = fixTexture(new Texture { name = "steering", u = 70, v = 4, w = 8, h = 8, tran = 12 }),
     steeringCenter = fixTexture(new Texture { name = "steeringCenter", u = 8, v = 18, w = 1, h = 1, tran = 12 }),
     wheelSide = fixTexture(new Texture { name = "wheel_side", u = 14, v = 16, w = 2, h = 4, tran = 1 }),
     wheelTire = fixTexture(new Texture { name = "wheel_tire", u = 13, v = 16, w = 1, h = 4, tran = 1 }),
