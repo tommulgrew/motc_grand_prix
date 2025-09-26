@@ -266,7 +266,7 @@ f,6,0,-1,0,4,2\
 v,tex.windows3,-2,-1,0,4,2\
 v,tex.windows3,2,-1,0,4,2"),
 makeModel("crane","f,tex.crane,0,-8.5,0,7,17"),
-makeModel("sign_gravel","f,tex.s_pool,0,-0.5,0,4,3"),
+makeModel("sign_gravel","f,tex.s_pool,0,-0.5,0,6,3"),
 makeModel("bridgesign_whiplash_taxi",
 "m,mdl.box2x3,-7\
 m,mdl.box2x3,7\
