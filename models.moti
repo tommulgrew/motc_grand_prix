@@ -266,12 +266,11 @@ f,6,0,-1,0,4,2\
 v,tex.windows3,-2,-1,0,4,2\
 v,tex.windows3,2,-1,0,4,2"),
 makeModel("crane","f,tex.crane,0,-8.5,0,7,17"),
-makeModel("sign_gravel","f,tex.s_gravel_sm,0,-0.5,0,4,1"),
-makeModel("bridgesign_gravel",
+makeModel("sign_gravel","f,tex.s_pool,0,-0.5,0,4,3"),
+makeModel("bridgesign_whiplash_taxi",
 "m,mdl.box2x3,-7\
 m,mdl.box2x3,7\
-f,8,0,-4,1,24,2\
-f,tex.s_gravel,0,-4,1,4,2"),
+f,tex.s_whiplash_taxi,0,-4,1,24,2"),
 makeModel("building1",
 "f,6,0,-3,0,6,6\
 v,tex.windows,-3,-3,0,10,6\
