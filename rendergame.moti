@@ -366,6 +366,12 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
                 u0 -= floor(u0);
                 float u1 = u0 + TILE_SIZE_PIXELS * 1.0 / texture.w;
 
+                // Flip?
+                if (texture.flipOnLeft and instance.ref = REF_LEFT) {
+                    u0 = 1 - u0;
+                    u1 = 1 - u1;
+                }
+
                 // Draw polygon
                 Vec polyOffset = new Vec { x = poly.pos.x, y = poly.pos.y };
                 drawQuadVert(
@@ -383,7 +389,9 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
                     poly.size.x,
                     poly.size.y,
                     instancePos0 + polyOffset,
-                    false);
+                    poly.material.texture != null 
+                    and poly.material.texture.flipOnLeft 
+                    and (instance.ref = REF_LEFT or (instance.ref = 0 and instanceOffsFromSeg.x < 0)));
             }
 
             if (gameConfig.showRacingLine and (raceMode = RACEMODE_PRERACE or raceMode = RACEMODE_RACING)) {

@@ -11,6 +11,7 @@ struct Texture {
     int u, v;           // Coordinates in textureImage
     int w, h;           // Size in textureImage
     int tran;           // Transparent colour
+    bool flipOnLeft;    // True if texture should be horizontally flipped when displayed on left side of track
 }
 
 struct GameSfx {
@@ -35,7 +36,7 @@ Image textureImage = loadimg("assets/textures.png", false);
 
 Texture[] textures = new Texture[] {
     new Texture { name = "road00", u = 32, v = 0, w = 8, h = 4, tran = 14 },
-    new Texture { name = "b_pico", u = 0, v = 0, w = 4, h = 2, tran = -1 },
+    new Texture { name = "b_pico", u = 0, v = 0, w = 4, h = 2, tran = -1, flipOnLeft = true },
     new Texture { name = "b_gravel", u = 66, v = 0, w = 4, h = 2, tran = -1 },
     new Texture { name = "b_white", u = 4, v = 4, w = 1, h = 2, tran = -1 },
     new Texture { name = "b_red", u = 5, v = 4, w = 1, h = 2, tran = -1 },
@@ -69,7 +70,7 @@ Texture[] textures = new Texture[] {
     new Texture { name = "rroof", u = 26, v = 8, w = 4, h = 2, tran = 0 },
     new Texture { name = "broof", u = 38, v = 8, w = 4, h = 2, tran = 0 },
     new Texture { name = "shoulder", u = 8, v = 16, w = 1, h = 2, tran = 99 },
-    new Texture { name = "crane", u = 80, v = 0, w = 7, h = 17, tran = 0 },
+    new Texture { name = "crane", u = 80, v = 0, w = 7, h = 17, tran = 0, flipOnLeft = true },
     new Texture { name = "d1", u = 9, v = 18, w = 4, h = 1, tran = 10 },
     new Texture { name = "d2", u = 9, v = 17, w = 4, h = 1, tran = 10 },
     new Texture { name = "d3", u = 9, v = 16, w = 4, h = 1, tran = 10 },
