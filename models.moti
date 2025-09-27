@@ -266,7 +266,7 @@ f,6,0,-1,0,4,2\
 v,tex.windows3,-2,-1,0,4,2\
 v,tex.windows3,2,-1,0,4,2"),
 makeModel("crane","f,tex.crane,0,-8.5,0,7,17"),
-makeModel("sign_gravel","f,tex.s_pool,0,-0.5,0,6,3"),
+makeModel("sign_pool","f,tex.s_pool,0,-1.2,0,4,3"),
 makeModel("bridgesign_whiplash_taxi",
 "m,mdl.box2x3,-7\
 m,mdl.box2x3,7\
@@ -441,6 +441,19 @@ ModelEx getExtendedModel(string name) {
     assert(false, "Could not find extended model: " + name);
 }
 
+Model[][] modelSets = new Model[][] {
+    new Model[] {
+        getModel("sign_pool"), makeModel("sign_air_pico","f,tex.s_air_pico,0,-1.2,0,4,3")
+    },
+    new Model[] {
+        getModel("bridgesign_whiplash_taxi"),
+        makeModel("bridgesign_sorcerer",
+"m,mdl.box2x3,-7\
+m,mdl.box2x3,7\
+f,tex.s_sorcerer,0,-4,1,24,2")
+    }
+};
+
 void resolveNestedModelReferences() {
     for (Model model : models) {
         for (NestedModel nested : model.nestedModels) {
@@ -450,6 +463,13 @@ void resolveNestedModelReferences() {
     for (ModelEx model : extendedModels) {
         for (NestedModelEx nested : model.nestedModels) {
             nested.model = getExtendedModel(nested.modelName);
+        }
+    }
+    for (Model[] set : modelSets) {
+        for (int i = 1; i < set.length; i++) {  // set[0] is already processed in "models" array
+            for (NestedModel nested: set[i].nestedModels) {
+                nested.model = getModel(nested.modelName);
+            }
         }
     }
 }

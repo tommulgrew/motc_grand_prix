@@ -23,7 +23,10 @@ void setRaceMode(int mode);
 
 void initRace() {
     currentTrack = tracks[gameConfig.trackIndex];
+    float saveSeed = rnd();
+    srnd(gameConfig.trackIndex + 12345);
     generateTrack(currentTrack);
+    srnd(saveSeed);
     resetPlayer();
     initAICars();
 

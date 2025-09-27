@@ -103,8 +103,16 @@ void placeItems(Track track) {
             };
             if (item.pos != null) pos += item.pos;
 
+            // Apply random model set logic
+            Model model = item.model;
+            for (Model[] set : modelSets) {
+                if (model = set[0]) {
+                    model = set[rnd() * set.length];
+                }
+            }
+
             // Place track item
-            placeItem(item.model, pos);
+            placeItem(model, pos);
         }
     }
 }
