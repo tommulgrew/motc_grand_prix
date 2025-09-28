@@ -79,7 +79,7 @@ void drawGame() {
             drawPreRaceText(countDown);
         }
     }
-    else if (raceMode = RACEMODE_RACING) {
+    else if (raceMode = RACEMODE_RACING and gameConfig.raceType != RACETYPE_PRACTICE) {
 
         // Flash "!! GO !!" for first second
         if (raceSequenceTimer < 30 and raceSequenceTimer % 10 < 5) {
@@ -660,20 +660,22 @@ void drawHud() {
     color(currentTrack.skyColour != 1 ? 3 : 12);
 
     // Find player car
-    for (int i = 0; i < leaderboard.length; i++) {
-        if (leaderboard[i] = player) {
+    if (gameConfig.raceType != RACETYPE_PRACTICE) {
+        for (int i = 0; i < leaderboard.length; i++) {
+            if (leaderboard[i] = player) {
 
-            // Current place
-            printScaled(i + 1, 0, 4 * PRATIO, 2 * PRATIO);
-            print(placeText[min(i, 3)], 10 * PRATIO, 8 * PRATIO);
+                // Current place
+                printScaled(i + 1, 0, 4 * PRATIO, 2 * PRATIO);
+                print(placeText[min(i, 3)], 10 * PRATIO, 8 * PRATIO);
 
-            // Car in front and behind
-            if (i > 0) {
-                drawCarName(leaderboard[i - 1], i - 1, CAR_NAME_X, 1 * PRATIO);
+                // Car in front and behind
+                if (i > 0) {
+                    drawCarName(leaderboard[i - 1], i - 1, CAR_NAME_X, 1 * PRATIO);
+                }
+                if (i < leaderboard.length - 1) {
+                    drawCarName(leaderboard[i + 1], i + 1, CAR_NAME_X, 12 * PRATIO);
+                }            
             }
-            if (i < leaderboard.length - 1) {
-                drawCarName(leaderboard[i + 1], i + 1, CAR_NAME_X, 12 * PRATIO);
-            }            
         }
     }
 

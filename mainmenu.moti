@@ -12,6 +12,13 @@ const int MAIN_MENU_LAPS = 2;
 const int MAIN_MENU_DIFFICULTY = 3;
 const int MAIN_MENU_STARTRACE = 4;
 const int MAIN_MENU_QUIT = 5;
+const int MAIN_MENU_RACETYPE = 6;
+
+string[] raceTypeNames = new string[] {
+    "Single Race",
+    "Tournament",
+    "Practice"
+};
 
 // Structures
 
@@ -89,6 +96,9 @@ void updateMainMenu(UIInput input) {
             }
         }
         else if (action.menuAction = MENU_ACTION_CHANGE) {
+            if (action.itemID = MAIN_MENU_RACETYPE) {
+                gameConfig.raceType = clamp(gameConfig.raceType + action.delta, 0, 2);
+            }
             if (action.itemID = MAIN_MENU_TRACK) {
                 gameConfig.trackIndex = clamp(gameConfig.trackIndex + action.delta, 0, tracks.length - 1);
             }
@@ -104,11 +114,16 @@ void updateMainMenu(UIInput input) {
 
 MenuItem[] getMainMenuItems() {
     MenuItem[] items = new MenuItem[] {
-        new MenuItem { id = MAIN_MENU_DIFFICULTY, text = "Difficulty: " + difficultyLevels[gameConfig.difficulty].name },
-        new MenuItem { id = MAIN_MENU_TRACK, text = "Track: " + tracks[gameConfig.trackIndex].name },
-        new MenuItem { id = MAIN_MENU_LAPS, text = "Laps: " + lapOptions[gameConfig.lapOptionIndex] },
-        new MenuItem { id = MAIN_MENU_STARTRACE, text = "!! Race !!" }
+        new MenuItem { id = MAIN_MENU_RACETYPE, text = raceTypeNames[gameConfig.raceType] }
     };
+    if (gameConfig.raceType != RACETYPE_TOURNAMENT) {
+        items.add(new MenuItem { id = MAIN_MENU_TRACK, text = "Track: " + tracks[gameConfig.trackIndex].name });
+    }
+    if (gameConfig.raceType != RACETYPE_PRACTICE) {
+        items.add(new MenuItem { id = MAIN_MENU_LAPS, text = "Laps: " + lapOptions[gameConfig.lapOptionIndex] });
+        items.add(new MenuItem { id = MAIN_MENU_DIFFICULTY, text = "Difficulty: " + difficultyLevels[gameConfig.difficulty].name });
+    }
+    items.add(new MenuItem { id = MAIN_MENU_STARTRACE, text = "!! Race !!" });
 
     // Exclude quit option from web version, as quitting doesn't make sense.
     // (The game just ends and the application becomes unresponsive.)

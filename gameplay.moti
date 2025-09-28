@@ -34,7 +34,12 @@ void initRace() {
     playsfx(gameSfx.engine1, 0, true);
     playsfx(gameSfx.engine2, 1, true, 0.4);
 
-    setRaceMode(RACEMODE_PRERACE);
+    if (gameConfig.raceType = RACETYPE_PRACTICE) {
+        setRaceMode(RACEMODE_RACING);
+    }
+    else {
+        setRaceMode(RACEMODE_PRERACE);
+    }
 
     // setRaceMode(RACEMODE_RESULTS);     // TESTING
 }
@@ -173,7 +178,7 @@ void updateRaceRules() {
                 if (car = player) playsfx(gameSfx.lapBell);
 
                 // Race complete?
-                if (lap > lapOptions[gameConfig.lapOptionIndex]) {
+                if (gameConfig.raceType != RACETYPE_PRACTICE and lap > lapOptions[gameConfig.lapOptionIndex]) {
                     car.race.isFinished = true;
                     raceResults.add(car);
                 }
@@ -251,10 +256,10 @@ void initAICars() {
     leaderboard = new Car[] { player };
     raceResults = new Car[0];
     rearViewCars = new Car[0];
-    if (raceType != RACETYPE_PRACTICE) {
+    aiCars = new Car[0];
+    if (gameConfig.raceType != RACETYPE_PRACTICE) {
 
         // Add 7 AI cars to the race
-        aiCars = new Car[0];
         for (int i = 0; i < 7; i++) {
             int poolIndex = rnd() * aiCarPool.length;
             Car car = aiCarPool[poolIndex];

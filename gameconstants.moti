@@ -36,7 +36,6 @@ const int RACEMODE_POSTRACE = 3;        // Auto-drive
 const int RACEMODE_RESULTS = 4;         // Displaying race results
 
 // Race type
-const int RACETYPE_SINGLE = 1;
-const int RACETYPE_SEASON = 2;
-const int RACETYPE_PRACTICE = 3;
-const int RACETYPE_DEMO = 4;
+const int RACETYPE_SINGLE = 0;
+const int RACETYPE_TOURNAMENT = 1;
+const int RACETYPE_PRACTICE = 2;

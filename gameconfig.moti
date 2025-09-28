@@ -1,3 +1,5 @@
+#include "gameconstants"
+
 // Structures
 
 struct GameConfig {
@@ -11,6 +13,7 @@ struct GameConfig {
     int difficulty;
     int trackIndex;
     int lapOptionIndex;
+    int raceType;
 }
 
 // Data
@@ -27,7 +30,8 @@ GameConfig gameConfig = new GameConfig {
     playerColour = 0,
     difficulty = 1,
     trackIndex = 0,
-    lapOptionIndex = 2
+    lapOptionIndex = 2,
+    raceType = RACETYPE_SINGLE
 };
 
 string configFilename() {
@@ -66,6 +70,7 @@ void loadGameConfig() {
     if (i < ct) { gameConfig.showRacingLine = lines[i] = "true"; i++; }
     if (i < ct) { gameConfig.lapOptionIndex = toint(lines[i]); i++; }
     if (i < ct) { gameConfig.drawDistance = toint(lines[i]); i++; }
+    if (i < ct) { gameConfig.raceType = toint(lines[i]); i++; }
 }
 
 void saveConfig() {
@@ -82,6 +87,7 @@ void saveConfig() {
         gameConfig.trackIndex + "\n" + 
         gameConfig.showRacingLine + "\n" + 
         gameConfig.lapOptionIndex + "\n" + 
-        gameConfig.drawDistance;
+        gameConfig.drawDistance + "\n" + 
+        gameConfig.raceType;
     savetext(configFile, text);
 }
