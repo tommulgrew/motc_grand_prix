@@ -85,3 +85,18 @@ string formatFloat(float value, int dp = 2) {
     }
     return substring(text, 0, length);
 }
+
+string formatInt(int value, int decimals = 2, string padChar = "0") {
+    string text = value;
+    while (text.length < decimals) {
+        text = padChar + text;
+    }
+    return text;
+}
+
+string formatTime(int time, string padChar = " ") {
+    int f = ((time % 30) * 100) / 30.0;
+    int s = (time / 30) % 60;
+    int m = (time / 30) / 60;
+    return formatInt(m, 3, padChar) + ":" + formatInt(s) + "." + formatInt(f);
+}

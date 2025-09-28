@@ -168,11 +168,25 @@ void updateRace() {
 void updateRaceRules() {
     for (Car car : allCars) {
         if (not car.race.isFinished) {
+            car.race.raceTime++;
+
+            // Cars start behind the finish line. 
+            // Lap timer starts once cars pass the line
+            if (car.pos.z > currentTrack.finishLineDistance) {
+                car.race.currentLapTime++;
+            }
 
             // Lap complete?
             int lap = getLap(car.pos.z);
             if (lap > car.race.lap) {
                 car.race.lap = lap;
+
+                // Update lap times
+                car.race.lastLapTime = car.race.currentLapTime;
+                if (car.race.bestLapTime = 0 or car.race.currentLapTime < car.race.bestLapTime) {
+                    car.race.bestLapTime = car.race.currentLapTime;
+                }
+                car.race.currentLapTime = 0;
 
                 // Play sound effect for player
                 if (car = player) playsfx(gameSfx.lapBell);

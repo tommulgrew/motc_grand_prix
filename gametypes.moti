@@ -53,6 +53,7 @@ struct CarAnimation {
 struct CarRaceState {
     int lap;
     bool isFinished;
+    int raceTime, lastLapTime, currentLapTime, bestLapTime;      // All times are stored as frame counts (frame = 1/30 second)
 }
 
 struct Car {

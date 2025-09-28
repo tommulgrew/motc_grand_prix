@@ -684,6 +684,21 @@ void drawHud() {
     string lapText = lap;
     printScaled(lapText, SCREEN_WIDTH - (lapText.length * 6 + 8) * PRATIO, 4 * PRATIO, 2 * PRATIO);
     print("Lap", SCREEN_WIDTH - 45 * PRATIO, 4 * PRATIO);
+
+    // Times
+    cursor(4 * PRATIO, 20 * PRATIO);
+    if (gameConfig.raceType != RACETYPE_PRACTICE) {
+        print("Race" + formatTime(player.race.raceTime));
+    }
+    if (player.race.currentLapTime > 0) {
+        print("Lap " + formatTime(player.race.currentLapTime));
+    } 
+    if (player.race.lastLapTime > 0) {
+       print("Last" + formatTime(player.race.lastLapTime));    
+    }
+    if (player.race.bestLapTime > 0) {
+       print("Best" + formatTime(player.race.bestLapTime));    
+    }
 }
 
 void drawPreRaceText(string text) {
@@ -692,11 +707,15 @@ void drawPreRaceText(string text) {
 }
 
 void drawResults() {
-    const int CAR_NAME_X = SCREEN_WIDTH / 2 - 60 * PRATIO;
     
-    const int BOARD_WIDTH = 140 * PRATIO;
-    const int BOARD_HEIGHT = 120 * PRATIO;
+    const int BOARD_WIDTH = 250 * PRATIO;
+    const int BOARD_HEIGHT = 125 * PRATIO;
     const int BOARD_Y = 10 * PRATIO;
+    const int RESULTS_Y = BOARD_Y + 34 * PRATIO;
+    const int HEADING_Y = RESULTS_Y - 8 * PRATIO;
+    const int CAR_NAME_X = SCREEN_WIDTH / 2 - BOARD_WIDTH / 2 + 10 * PRATIO;
+    const int RACE_TIME_X = CAR_NAME_X + 115 * PRATIO;
+    const int LAP_TIME_X = RACE_TIME_X + 60 * PRATIO;
     color(0);
     rectfill(
         SCREEN_WIDTH/2 - BOARD_WIDTH/2,
@@ -711,8 +730,27 @@ void drawResults() {
         BOARD_Y + BOARD_HEIGHT);
     fancyPrint("Final Standings", 10, BOARD_Y + 12, -1, 1, 5);
 
+    fancyPrint("Race Time", 7, HEADING_Y, RACE_TIME_X, 1, 5);
+    fancyPrint("Best Lap", 7, HEADING_Y, LAP_TIME_X, 1, 5);
+
+    int bestLap = 999999;
+    int bestLapI = -1;
     for (int i = 0; i < raceResults.length; i++) {
-        color(raceResults[i] = player ? 7 : 6);
-        drawCarName(raceResults[i], i, CAR_NAME_X, BOARD_Y + 30 * PRATIO + i * 10 * PRATIO);
+        Car car = raceResults[i];
+        if (car.race.bestLapTime > 0 and car.race.bestLapTime < bestLap) {
+            bestLap = car.race.bestLapTime;
+            bestLapI = i;
+        }        
+    }
+
+    for (int i = 0; i < raceResults.length; i++) {
+        Car car = raceResults[i];
+        color(car = player ? 7 : 6);
+        int y = RESULTS_Y + i * 10 * PRATIO;
+        drawCarName(car, i, CAR_NAME_X, y);
+        color(5);
+        print(formatTime(car.race.raceTime, "0"), RACE_TIME_X, y + 2 * PRATIO);
+        color(i = bestLapI ? 7 : 5);
+        print(formatTime(car.race.bestLapTime, "0"), LAP_TIME_X, y + 2 * PRATIO);
     }    
 }
