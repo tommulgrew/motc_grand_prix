@@ -48,19 +48,50 @@ Done
 - Pause menu
     - Graphics settings
         - DONE Draw distance
+- DONE Update texture image. Make use of 2x resolution
 
 To do
 =====
 
+- Track race time, current lap time and best lap time for each car
+- Decouple menu settings from race settings
+    - Menu settings:
+        - Stored in gameConfig
+        - Edited in main menu
+        - Persisted to disk
+        - Uses lap option index
+        - Settings
+            - Race type (practice, single race or tournament)   - Need different name
+            - Track
+            - Lap option index
+            - AI difficulty level
+            - Tournament mode settings (discussed elsewhere)
+            - Player car colour (configured in pause menu)
+    - Game settings
+        - Stored in local variables
+        - Uses actual lap count
+        - Settings:
+            - Race type (practice or race)
+            - Track
+            - Number of laps
+            - Race roster
+            - AI Difficulty level
+            - Is demo mode
+            - Is qualification lap
+            - Player car colour
+    - Notes: 
+        - Decoupling would allow game to run demo mode while still preserving
+            the user's menu settings. And make qualification lap logic a bit 
+            cleaner.
+        - Menu code configures game settings before race starts.
 - Select race type
-    - Single
-    - Practice
+    - DONE Single
+    - DONE Practice
     - Tournament
 - Tournament mode
     - Generate roster
     - Collect results
     - Persist roster and results
-- Update texture image. Make use of 2x resolution
 - Pause menu
     - Graphics settings
         - Screen resolution
