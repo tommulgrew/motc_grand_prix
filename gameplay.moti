@@ -123,9 +123,15 @@ void updateGame(UIInput uiInput) {
         updateRaceRules();          // So cars that haven't finished yet can finish
 
         // Ignore input for 3 seconds. 
-        // After that, pressing button proceeds to race results
-        if (raceSequenceTimer > 90 and uiInput.btnPressed[UI_SELECT]) {
-            setRaceMode(RACEMODE_RESULTS);
+        // After that, pressing button proceeds to race results.
+        // Or if in demo mode, it will automatically quit to menu
+        if (raceSequenceTimer > 90) {
+            if (race.isDemo) {
+                setGameMode(GAMEMODE_MENU);
+            }
+            else if (uiInput.btnPressed[UI_SELECT]) {
+                setRaceMode(RACEMODE_RESULTS);
+            }
         }
     }
     else if (raceMode = RACEMODE_RESULTS) {
@@ -136,6 +142,11 @@ void updateGame(UIInput uiInput) {
         if (raceSequenceTimer > 90 and uiInput.btnPressed[UI_SELECT]) {
             setGameMode(GAMEMODE_MENU);
         }
+    }
+
+    // Pressing a button quits demo mode
+    if (race.isDemo and uiInput.btnPressed[UI_SELECT]) {
+        setGameMode(GAMEMODE_MENU);
     }
 }
 
