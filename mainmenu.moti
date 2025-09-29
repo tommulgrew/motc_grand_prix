@@ -125,7 +125,7 @@ void updateMainMenu(UIInput input) {
         }
     }
 
-    // Run demo after 60 seconds of idle time
+    // Run demo after X seconds of idle time
     mainMenu.idleTimer++;
     for (bool btnDown : input.btnDown) {
         if (btnDown) {
@@ -133,7 +133,7 @@ void updateMainMenu(UIInput input) {
             break;
         }
     }
-    if (mainMenu.idleTimer > 60 * 30) {
+    if (mainMenu.idleTimer > 30 * 30) {
         doDemo();
     }
 }

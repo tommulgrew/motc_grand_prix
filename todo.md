@@ -108,3 +108,4 @@ To do
 - Fix car flickering when beside player
 - Fade transitions
 - Menu music
+- Title screen graphics

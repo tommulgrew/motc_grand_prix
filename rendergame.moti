@@ -402,7 +402,7 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
                     and (instance.ref = REF_LEFT or (instance.ref = 0 and instanceOffsFromSeg.x < 0)));
             }
 
-            if (gameConfig.showRacingLine and (raceMode = RACEMODE_PRERACE or raceMode = RACEMODE_RACING)) {
+            if (gameConfig.showRacingLine and (raceMode = RACEMODE_PRERACE or raceMode = RACEMODE_RACING) and not race.isDemo) {
                 if (screenSeg.zIndex % 3 = 0 and screenSeg.segment.hasAiX) {
                     float c = (player.vel - screenSeg.segment.aiVelocity * 1.1) * 25 + 1.99;
                     c = clamp(c, 0, aiMarkerCols.length - 1);
