@@ -49,11 +49,11 @@ Done
     - Graphics settings
         - DONE Draw distance
 - DONE Update texture image. Make use of 2x resolution
+- DONE Track race time, current lap time and best lap time for each car
 
 To do
 =====
 
-- Track race time, current lap time and best lap time for each car
 - Decouple menu settings from race settings
     - Menu settings:
         - Stored in gameConfig
@@ -95,7 +95,6 @@ To do
 - Pause menu
     - Graphics settings
         - Screen resolution
-        - Persist
 - Qualification lap
     - Single lap
     - No collisions
@@ -104,3 +103,4 @@ To do
     - Player can skip if necessary from pause menu (will be placed last)
     - Use results of qualification lap to order starting grid for race
 - Release MotC
+- Fix car shuddering bug when displaying race results
