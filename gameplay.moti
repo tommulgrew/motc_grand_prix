@@ -9,7 +9,7 @@
 // Routines
 
 void resetPlayer();
-void initAICars();
+void initCars();
 void sortCars(float z);
 void updateRace();
 void updateRaceRules();
@@ -27,13 +27,13 @@ void initRace() {
     generateTrack(race.track);
     srnd(saveSeed);
     resetPlayer();
-    initAICars();
+    initCars();
 
     // Start looped engine soundeffects
     playsfx(gameSfx.engine1, 0, true);
     playsfx(gameSfx.engine2, 1, true, 0.4);
 
-    if (gameConfig.raceType = RACETYPE_PRACTICE) {
+    if (race.isPracticeMode) {
         setRaceMode(RACEMODE_RACING);
     }
     else {
@@ -191,7 +191,7 @@ void updateRaceRules() {
                 if (car = player) playsfx(gameSfx.lapBell);
 
                 // Race complete?
-                if (gameConfig.raceType != RACETYPE_PRACTICE and lap > race.laps) {
+                if (not race.isPracticeMode and lap > race.laps) {
                     car.race.isFinished = true;
                     raceResults.add(car);
                 }
@@ -246,44 +246,34 @@ void resetPlayer() {
     player.aiState.aiParams = player.aiState.baseAIParams;
 }
 
-void initAICars() {
+void initCars() {
 
-    // Build AI car pool
-    aiCarPool = new Car[0];
-    for (int i = 0; i < aiCarNames.length; i++) {
-        Car car = new Car {
-            carIndex = i,
-            name = aiCarNames[i],
-            race = new CarRaceState { lap = 1 },
-            input = new CarInput,
-            aiState = new CarAIState {
-                wanderOffset = rnd(),
-                baseAIParams = getBaseAIParams(i * 1.0 / aiCarNames.length)
-            }
-        };
-        aiCarPool.add(car);
-    }
-
+    // Create car arrays
     allCars = new Car[] { player };
     sortedCars = new Car[] { player };
     leaderboard = new Car[] { player };
     raceResults = new Car[0];
     rearViewCars = new Car[0];
     aiCars = new Car[0];
-    if (gameConfig.raceType != RACETYPE_PRACTICE) {
 
-        // Add 7 AI cars to the race
-        for (int i = 0; i < 7; i++) {
-            int poolIndex = rnd() * aiCarPool.length;
-            Car car = aiCarPool[poolIndex];
-            aiCarPool.remove(poolIndex);
-            aiCars.add(car);
-            rearViewCars.add(car);
-            allCars.add(car);
-            sortedCars.add(car);
-            rearViewCars.add(car);
-            leaderboard.add(car);
-        }
+    // Add AI cars
+    for (int aiCarIndex : race.aiCarRoster) {
+        Car car = new Car {
+            carIndex = aiCarIndex,
+            name = aiCarNames[aiCarIndex],
+            race = new CarRaceState { lap = 1 },
+            input = new CarInput,
+            aiState = new CarAIState {
+                wanderOffset = rnd(),
+                baseAIParams = getBaseAIParams(aiCarIndex * 1.0 / aiCarNames.length)
+            }
+        };
+        aiCars.add(car);    
+        rearViewCars.add(car);
+        allCars.add(car);
+        sortedCars.add(car);
+        rearViewCars.add(car);
+        leaderboard.add(car);
     }
 
     // Layout cars in grid
@@ -295,6 +285,7 @@ void initAICars() {
         };
     }
 
+    // Sort car arrays
     sortCars(player.pos.z);
 }
 

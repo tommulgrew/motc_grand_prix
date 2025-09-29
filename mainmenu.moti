@@ -40,6 +40,7 @@ MainMenuState mainMenu;
 // Routines
 
 MenuItem[] getMainMenuItems();
+int[] makeAICarRoster(int count);
 
 void initMainMenu() {
     mainMenu = new MainMenuState {
@@ -90,8 +91,14 @@ void updateMainMenu(UIInput input) {
                 saveConfig();
                 race = new RaceParams {
                     track = tracks[gameConfig.trackIndex],
-                    laps = lapOptions[gameConfig.lapOptionIndex]
+                    laps = lapOptions[gameConfig.lapOptionIndex],
+                    difficulty = difficultyLevels[gameConfig.difficulty],
+                    aiCarRoster = new int[0],
+                    isPracticeMode = gameConfig.raceType = RACETYPE_PRACTICE
                 };
+                if (gameConfig.raceType = RACETYPE_SINGLE) {
+                    race.aiCarRoster = makeAICarRoster(AI_CAR_COUNT);
+                }
                 setGameMode(GAMEMODE_RACE);            
             }
             else if (action.itemID = MAIN_MENU_QUIT) {
@@ -136,4 +143,22 @@ MenuItem[] getMainMenuItems() {
     }
 
     return items;
+}
+
+int[] makeAICarRoster(int count) {
+    // Create pool of valid AI car indices
+    int[] pool = new int[aiCarNames.length];
+    for (int i = 0; i < aiCarNames.length; i++) {
+        pool[i] = i;
+    }
+
+    // Build roster by selecting cars randomly from the pool
+    int[] roster = new int[0];
+    while (roster.length < count) {
+        int i = rnd() * pool.length;
+        roster.add(pool[i]);
+        pool.remove(i);
+    }
+
+    return roster;
 }

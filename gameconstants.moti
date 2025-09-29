@@ -23,6 +23,8 @@ const float FRICTION_SIDE_SLIDE = FRICTION_SIDE * 0.85;
 const float FRICTION_SIDE_GROUND = FRICTION_SIDE * 0.9;
 const float COLLISION_ELASTIC = 0.7;
 
+const int AI_CAR_COUNT = 7;
+
 // Enums
 
 // Game modes

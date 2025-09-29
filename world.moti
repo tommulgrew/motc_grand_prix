@@ -323,8 +323,7 @@ void generateAIVelocity(Track track) {
     // Lower speeds for curves
     for (TrackCurve c : curves) {
         float turn = abs(c.turn);
-        DifficultyLevel difficulty = difficultyLevels[gameConfig.difficulty];
-        if (turn > 0.01 and not (c.dontBrake and difficulty.applyDontBrake)) {
+        if (turn > 0.01 and not (c.dontBrake and race.difficulty.applyDontBrake)) {
 
             // Calculate maximum velocity based on curvature.
             // Basically maximum speed before car will slide off the road.

@@ -1,8 +1,13 @@
 #include "library/trig"
 
+struct DifficultyLevel;
+
 struct RaceParams {
     Track track;
     int laps;
+    DifficultyLevel difficulty;
+    int[] aiCarRoster;
+    bool isPracticeMode;
 }
 
 struct FloatRange {
