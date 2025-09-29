@@ -25,7 +25,7 @@ void initRace() {
     float saveSeed = rnd();
     srnd(race.track.randomSeed);
     generateTrack(race.track);
-    srnd(saveSeed);
+    srnd(saveSeed * 1000000000000);
     resetPlayer();
     initCars();
 
