@@ -50,11 +50,7 @@ Done
         - DONE Draw distance
 - DONE Update texture image. Make use of 2x resolution
 - DONE Track race time, current lap time and best lap time for each car
-
-To do
-=====
-
-- Decouple menu settings from race settings
+- DONE Decouple menu settings from race settings
     - Menu settings:
         - Stored in gameConfig
         - Edited in main menu
@@ -84,6 +80,10 @@ To do
             the user's menu settings. And make qualification lap logic a bit 
             cleaner.
         - Menu code configures game settings before race starts.
+
+To do
+=====
+
 - Select race type
     - DONE Single
     - DONE Practice

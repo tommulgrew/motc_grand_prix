@@ -500,13 +500,18 @@ void updateAIInput(Car car) {
 void updatePlayer() {
 
     // Update input
-    if (raceMode = RACEMODE_RACING) {
-        // Player controls car during race.
-        updatePlayerInput();
-    }
-    else if (raceMode = RACEMODE_POSTRACE) {
+    if (raceMode = RACEMODE_POSTRACE) {
         // AI controls car during post-race sequence
         updateAIInput(player);
+    }
+    else if (raceMode = RACEMODE_RACING) {
+        // Player controls car during race.
+        if (race.isDemo) {
+            updateAIInput(player);        
+        }
+        else {
+            updatePlayerInput();
+        }
     }
 
     // Update car
@@ -540,7 +545,7 @@ void updateEnginePitch() {
 }
 
 void updatePlayerRevs() {
-    if (raceMode = RACEMODE_PRERACE) {
+    if (raceMode = RACEMODE_PRERACE and not race.isDemo) {
         // Button revs engine
         float revTarget = lerp(0.1, 0.85, max(player.input.accel, 0));
         player.anim.revs = lerp(player.anim.revs, revTarget, 0.075);

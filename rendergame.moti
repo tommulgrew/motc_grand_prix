@@ -86,17 +86,24 @@ void drawGame() {
             drawPreRaceText("!! GO !!");
         }
     }
-    else if (raceMode = RACEMODE_POSTRACE) {
+    else if (raceMode = RACEMODE_POSTRACE and not race.isDemo) {
         int y = SCREEN_HEIGHT * 0.2;
         fancyPrint("Race Finished", 6, y, -1, 2, 5);
         if (raceSequenceTimer > 90 and raceSequenceTimer % 30 < 15) {
             fancyPrint("Press button to continue", 6, y + 20, -1, 1, 5);
         }
     }
-    else if (raceMode = RACEMODE_RESULTS) {
+    else if (raceMode = RACEMODE_RESULTS and not race.isDemo) {
         drawResults();
         if (raceSequenceTimer > 90 and raceSequenceTimer % 30 < 15) {
             fancyPrint("Press button to continue", 7, SCREEN_HEIGHT * 0.6, -1, 1, 5);
+        }
+    }
+
+    if (race.isDemo) {
+        fancyPrint("Demo", 7, SCREEN_HEIGHT * 0.2, -1, 2, 5);
+        if (raceSequenceTimer % 30 < 15) {
+            fancyPrint("Press button to quit", 7, SCREEN_HEIGHT * 0.2 + 20, -1, 1, 5);
         }
     }
 }

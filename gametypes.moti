@@ -9,6 +9,7 @@ struct RaceParams {
     int[] aiCarRoster;
     bool isPracticeMode;
     int playerColour;           // Index into playerCarPalettes array
+    bool isDemo;
 }
 
 struct FloatRange {
