@@ -201,7 +201,7 @@ void updateRaceRules() {
 }
 
 CarAIParams getBaseAIParams(float f) {
-    DifficultyLevel difficulty = difficultyLevels[gameConfig.difficulty];
+    DifficultyLevel difficulty = race.difficulty;
     f = clamp(f + difficulty.baseFactorOffset, 0.1, 1);
     return new CarAIParams {
         velocityFactor = lerp(difficulty.velocityFactorRange.min, difficulty.velocityFactorRange.max, f),
@@ -214,7 +214,7 @@ CarAIParams getBaseAIParams(float f) {
 }
 
 CarAIParams getAIParams(CarAIParams base) {
-    DifficultyLevel difficulty = difficultyLevels[gameConfig.difficulty];
+    DifficultyLevel difficulty = race.difficulty;
     return new CarAIParams {
         velocityFactor = base.velocityFactor + rnd2(difficulty.velocityFactorVariance),
         maxVelocity = base.maxVelocity + rnd2(difficulty.maxVelocityVariance / 600),
