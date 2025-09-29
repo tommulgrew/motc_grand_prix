@@ -94,7 +94,8 @@ void updateMainMenu(UIInput input) {
                     laps = lapOptions[gameConfig.lapOptionIndex],
                     difficulty = difficultyLevels[gameConfig.difficulty],
                     aiCarRoster = new int[0],
-                    isPracticeMode = gameConfig.raceType = RACETYPE_PRACTICE
+                    isPracticeMode = gameConfig.raceType = RACETYPE_PRACTICE,
+                    playerColour = gameConfig.playerColour
                 };
                 if (gameConfig.raceType = RACETYPE_SINGLE) {
                     race.aiCarRoster = makeAICarRoster(AI_CAR_COUNT);

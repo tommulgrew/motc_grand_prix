@@ -8,6 +8,7 @@ struct RaceParams {
     DifficultyLevel difficulty;
     int[] aiCarRoster;
     bool isPracticeMode;
+    int playerColour;           // Index into playerCarPalettes array
 }
 
 struct FloatRange {

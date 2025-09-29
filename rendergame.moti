@@ -499,7 +499,7 @@ void drawCockpit() {
     circ(SCREEN_WIDTH / 2, SCREEN_HEIGHT - cockpitHeight * 0.6, SCREEN_WIDTH * 0.3);
 
     // Cockpit base image
-    colmap(playerCarPalettes[gameConfig.playerColour]);
+    colmap(playerCarPalettes[race.playerColour]);
     scaleTexture(cptex, 0, SCREEN_HEIGHT - cockpitHeight, cockpitWidth, cockpitHeight);
     colmap();
 

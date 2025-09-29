@@ -107,6 +107,7 @@ void updatePauseMenu(UIInput input) {
             else if (action.menuAction = MENU_ACTION_CHANGE) {
                 if (action.itemID = PAUSE_CAR_COLOUR) {
                     gameConfig.playerColour = clamp(gameConfig.playerColour + action.delta, 0, playerCarPalettes.length - 1);
+                    race.playerColour = gameConfig.playerColour;
                 }
                 else if (action.itemID = PAUSE_CONTROLLER_DEADZONE) {
                     gameConfig.controllerDeadzone = clamp(gameConfig.controllerDeadzone + action.delta * 0.01, 0, 0.5);
