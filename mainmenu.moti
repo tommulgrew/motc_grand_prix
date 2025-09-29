@@ -25,6 +25,7 @@ string[] raceTypeNames = new string[] {
 struct MainMenuState {
     MenuState state;
     int carPaletteIndex;
+    int idleTimer;
 }
 
 // Data
@@ -88,9 +89,6 @@ void updateMainMenu(UIInput input) {
     // Perform menu action
     if (action != null) {
         if (action.menuAction = MENU_ACTION_SELECT) {
-            if (action.itemID = 999) {
-                doDemo();
-            }
             if (action.itemID = MAIN_MENU_STARTRACE) {
                 saveConfig();
                 race = new RaceParams {
@@ -126,11 +124,22 @@ void updateMainMenu(UIInput input) {
             }
         }
     }
+
+    // Run demo after 60 seconds of idle time
+    mainMenu.idleTimer++;
+    for (bool btnDown : input.btnDown) {
+        if (btnDown) {
+            mainMenu.idleTimer = 0;
+            break;
+        }
+    }
+    if (mainMenu.idleTimer > 60 * 30) {
+        doDemo();
+    }
 }
 
 MenuItem[] getMainMenuItems() {
     MenuItem[] items = new MenuItem[] {
-        new MenuItem { id = 999, text = "Demo" },
         new MenuItem { id = MAIN_MENU_RACETYPE, text = raceTypeNames[gameConfig.raceType] }
     };
     if (gameConfig.raceType != RACETYPE_TOURNAMENT) {

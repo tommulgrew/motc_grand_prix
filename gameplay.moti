@@ -23,7 +23,7 @@ void setRaceMode(int mode);
 
 void initRace() {
     float saveSeed = rnd();
-    srnd(race.track.index + 12345);
+    srnd(race.track.randomSeed);
     generateTrack(race.track);
     srnd(saveSeed);
     resetPlayer();

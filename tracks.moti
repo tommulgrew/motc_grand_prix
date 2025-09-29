@@ -42,10 +42,10 @@ struct TrackStage {
 
 struct Track {
 	string name;
-	int index;
 	int finishLineDistance;
 	TrackStage[] stages;
 	int skyColour, groundColour;
+	int randomSeed;
 }
 
 // Data
@@ -175,6 +175,6 @@ for (int i = 0; i < trackData.length; i++) {
 		new Stream { data = trackData[i] },
 		trackNames[i],
 		trackFinishlineDistances[i]);
-	track.index = i;
+	track.randomSeed = i + 12345;
 	tracks.add(track);
 }

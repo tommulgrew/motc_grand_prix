@@ -80,6 +80,7 @@ Done
             the user's menu settings. And make qualification lap logic a bit 
             cleaner.
         - Menu code configures game settings before race starts.
+- Demo mode
 
 To do
 =====
@@ -104,3 +105,6 @@ To do
     - Use results of qualification lap to order starting grid for race
 - Release MotC
 - Fix car shuddering bug when displaying race results
+- Fix car flickering when beside player
+- Fade transitions
+- Menu music
