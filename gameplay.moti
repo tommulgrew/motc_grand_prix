@@ -22,10 +22,9 @@ void doCarCollisions();
 void setRaceMode(int mode);
 
 void initRace() {
-    currentTrack = tracks[gameConfig.trackIndex];
     float saveSeed = rnd();
-    srnd(gameConfig.trackIndex + 12345);
-    generateTrack(currentTrack);
+    srnd(race.track.index + 12345);
+    generateTrack(race.track);
     srnd(saveSeed);
     resetPlayer();
     initAICars();
@@ -172,7 +171,7 @@ void updateRaceRules() {
 
             // Cars start behind the finish line. 
             // Lap timer starts once cars pass the line
-            if (car.pos.z > currentTrack.finishLineDistance) {
+            if (car.pos.z > race.track.finishLineDistance) {
                 car.race.currentLapTime++;
             }
 
@@ -192,7 +191,7 @@ void updateRaceRules() {
                 if (car = player) playsfx(gameSfx.lapBell);
 
                 // Race complete?
-                if (gameConfig.raceType != RACETYPE_PRACTICE and lap > lapOptions[gameConfig.lapOptionIndex]) {
+                if (gameConfig.raceType != RACETYPE_PRACTICE and lap > race.laps) {
                     car.race.isFinished = true;
                     raceResults.add(car);
                 }

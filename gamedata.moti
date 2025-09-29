@@ -1,6 +1,7 @@
 #include "gametypes"
 #include "gameconstants"
 
+RaceParams race;
 Car player;
 float horizonX;             // Used to scroll horizon horizontally when player car turns
 int frame;

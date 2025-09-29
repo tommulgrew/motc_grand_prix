@@ -56,7 +56,7 @@ Vec segmentRelativePos(Vec pos) {
 }
 
 int getLap(float z) {
-    return max(floor((z - currentTrack.finishLineDistance) / world.length), 0) + 1;
+    return max(floor((z - race.track.finishLineDistance) / world.length), 0) + 1;
 }
 
 void placeItem(Model model, Vec pos, int length = 0, int ref = 0) {

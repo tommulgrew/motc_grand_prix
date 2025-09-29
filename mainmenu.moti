@@ -88,6 +88,10 @@ void updateMainMenu(UIInput input) {
         if (action.menuAction = MENU_ACTION_SELECT) {
             if (action.itemID = MAIN_MENU_STARTRACE) {
                 saveConfig();
+                race = new RaceParams {
+                    track = tracks[gameConfig.trackIndex],
+                    laps = lapOptions[gameConfig.lapOptionIndex]
+                };
                 setGameMode(GAMEMODE_RACE);            
             }
             else if (action.itemID = MAIN_MENU_QUIT) {

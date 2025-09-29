@@ -174,14 +174,14 @@ void drawHorizon(ScreenSpaceSegment[] screenSegs, CameraInfo cam) {
     float h = tex.h * scale;
     hx -= floor(hx / w) * w;
 
-    color(currentTrack.skyColour);
+    color(race.track.skyColour);
     rectfill(0, 0, SCREEN_WIDTH, groundY);
 
     for (float x = -hx; x < SCREEN_WIDTH; x += w) {
         scaleTexture(tex, x, groundY - h, w, h);
     }
 
-    color(currentTrack.groundColour);
+    color(race.track.groundColour);
     rectfill(0, groundY, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
@@ -597,7 +597,7 @@ void drawMirror() {
 
         if (not isVisible) {
             isVisible = true;
-            color(currentTrack.skyColour);
+            color(race.track.skyColour);
             rectfill(
                 SCREEN_WIDTH / 2 - MIRROR_W / 2,
                 MIRROR_Y - MIRROR_H / 2,
@@ -628,7 +628,7 @@ void drawMirror() {
     }
 
     if (isVisible) {
-        color(currentTrack.skyColour != 1 ? 1 : 0);
+        color(race.track.skyColour != 1 ? 1 : 0);
         rect(
             SCREEN_WIDTH / 2 - MIRROR_W / 2,
             MIRROR_Y - MIRROR_H / 2,
@@ -657,7 +657,7 @@ void drawCarName(Car car, int position, int x, int y) {
 void drawHud() {
 
     const int CAR_NAME_X = SCREEN_WIDTH / 2 - 80 * PRATIO;
-    color(currentTrack.skyColour != 1 ? 3 : 12);
+    color(race.track.skyColour != 1 ? 3 : 12);
 
     // Find player car
     if (gameConfig.raceType != RACETYPE_PRACTICE) {

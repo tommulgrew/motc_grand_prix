@@ -1,5 +1,10 @@
 #include "library/trig"
 
+struct RaceParams {
+    Track track;
+    int laps;
+}
+
 struct FloatRange {
     float min, max;
 }
