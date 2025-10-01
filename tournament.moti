@@ -1,0 +1,73 @@
+#include "configFile"
+
+// Structures
+
+struct TournamentCar {
+    int carIndex;               // AI car driver index, or -1 for player
+    int points;                 // Number of points scored
+}
+
+struct TournamentState {
+    bool isActive;
+    int[] trackOrder;           // Index into "tracks" array
+    int trackIndex;             // Index of next track in tournament
+    TournamentCar[] cars;
+}
+
+TournamentState tournament = new TournamentState {
+    isActive = false
+};
+
+string tournamentFilename() {
+    return savedir() + "mot_gp_tournament.txt";
+}
+
+void loadTournament() {
+    ConfigFile f = loadConfigFile(tournamentFilename());
+    tournament.isActive = readBool(f, false);
+    if (not tournament.isActive) return;
+
+    // Load track order
+    int trackCount = readInt(f);
+    tournament.trackOrder = new int[trackCount];
+    for (int i = 0; i < trackCount; i++) {
+        tournament.trackOrder[i] = readInt(f);
+    }
+    tournament.trackIndex = readInt(f);
+
+    // Load cars
+    int carCount = readInt(f);
+    tournament.cars = new TournamentCar[carCount];
+    for (int i = 0; i < carCount; i++) {
+        tournament.cars[i] = new TournamentCar {
+            carIndex = readInt(f),
+            points = readInt(f)
+        };
+    }
+}
+
+void saveTournament() {
+    string filename = tournamentFilename();
+    log("Saving tournament to: " + filename + "\n");
+
+    // Build text
+    string text = tournament.isActive + "\n";
+    if (tournament.isActive) {
+
+        // Track order
+        text += tournament.trackOrder.length + "\n";
+        for (int i : tournament.trackOrder) {
+            text += i + "\n";
+        }
+        text += tournament.trackIndex + "\n";
+
+        // Cars
+        text += tournament.cars.length + "\n";
+        for (TournamentCar car : tournament.cars) {
+            text += car.carIndex + "\n" +
+                    car.points + "\n";
+        }
+    }
+
+    savetext(filename, text);
+}

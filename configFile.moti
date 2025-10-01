@@ -1,0 +1,70 @@
+// Config file reading routines
+
+// Structures
+
+struct ConfigFile {
+    string[] lines;
+    int i;
+}
+
+// Routines
+
+bool eof(ConfigFile f) {
+    return f.lines = null or f.i >= f.lines.length;
+}
+
+string readString(ConfigFile f) {
+    assert(not eof(f));
+    string s = f.lines[f.i];
+    f.i++;
+    return s;
+}
+
+int readInt(ConfigFile f) {
+    return toint(readString(f));
+}
+
+int readInt(ConfigFile f, int def) {
+    return eof(f) ? def : readInt(f);
+}
+
+float readFloat(ConfigFile f) {
+    return tofloat(readString(f));
+}
+
+float readFloat(ConfigFile f, float def) {
+    return eof(f) ? def : readFloat(f);
+}
+
+bool readBool(ConfigFile f) {
+    return readString(f) = "true";
+}
+
+bool readBool(ConfigFile f, bool def) {
+    return eof(f) ? def : readBool(f);
+}
+
+ConfigFile loadConfigFile(string filename) {
+    ConfigFile file = new ConfigFile;
+
+    log("Loading config from: " + filename + "\n");
+    if (not fileexists(filename)) {
+        log("(No file exists.. skipping)");
+        return file;
+    }
+
+    // Load config from file.
+    // Config is stored as a text file, with one setting value per line.
+    // Some lines may be missing from the end if the config was saved from an 
+    // earlier version.
+    string text = loadtext(filename);
+    string[] lines = split(text, "\n");
+
+    // Trim blank lines from end
+    while (lines.length > 0 and lines[lines.length - 1] = "") {
+        lines.remove(lines.length - 1);
+    }
+
+    file.lines = lines;
+    return file;
+}

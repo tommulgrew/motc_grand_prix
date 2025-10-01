@@ -2,6 +2,7 @@
 #include "render"
 #include "app"
 #include "ui"
+#include "tournament"
 
 // Constants
 
@@ -42,6 +43,7 @@ MainMenuState mainMenu;
 
 MenuItem[] getMainMenuItems();
 int[] makeAICarRoster(int count);
+void startRace(RaceParams raceParams);
 void doDemo();
 
 void initMainMenu() {
@@ -90,8 +92,7 @@ void updateMainMenu(UIInput input) {
     if (action != null) {
         if (action.menuAction = MENU_ACTION_SELECT) {
             if (action.itemID = MAIN_MENU_STARTRACE) {
-                saveConfig();
-                race = new RaceParams {
+                RaceParams raceParams = new RaceParams {
                     track = tracks[gameConfig.trackIndex],
                     laps = lapOptions[gameConfig.lapOptionIndex],
                     difficulty = difficultyLevels[gameConfig.difficulty],
@@ -100,9 +101,9 @@ void updateMainMenu(UIInput input) {
                     playerColour = gameConfig.playerColour
                 };
                 if (gameConfig.raceType = RACETYPE_SINGLE) {
-                    race.aiCarRoster = makeAICarRoster(AI_CAR_COUNT);
+                    raceParams.aiCarRoster = makeAICarRoster(AI_CAR_COUNT);
                 }
-                setGameMode(GAMEMODE_RACE);            
+                startRace(raceParams);
             }
             else if (action.itemID = MAIN_MENU_QUIT) {
                 saveConfig();
@@ -178,15 +179,26 @@ int[] makeAICarRoster(int count) {
     return roster;
 }
 
-void doDemo() { 
+void startRace(RaceParams raceParams) {
+
+    // Save settings
     saveConfig();
-    race = new RaceParams {
+    saveTournament();
+
+    // Set race params
+    race = raceParams;
+
+    // Switch to race mode
+    setGameMode(GAMEMODE_RACE);
+}
+
+void doDemo() { 
+    startRace(new RaceParams {
         track = tracks[rnd() * tracks.length],
         laps = 1,
         difficulty = difficultyLevels[2],
         aiCarRoster = makeAICarRoster(AI_CAR_COUNT),
         playerColour = rnd() * playerCarPalettes.length,
         isDemo = true
-    };
-    setGameMode(GAMEMODE_RACE);
+    });
 }

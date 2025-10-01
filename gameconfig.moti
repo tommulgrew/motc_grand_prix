@@ -1,4 +1,5 @@
 #include "gameconstants"
+#include "configFile"
 
 // Structures
 
@@ -39,38 +40,18 @@ string configFilename() {
 }
 
 void loadGameConfig() {
-    string configFile = configFilename();
-    log("Loading config from: " + configFile + "\n");
-    if (not fileexists(configFile)) {
-        log("No file found. Using default config.");
-        return;
-    }
-
-    // Load config from file.
-    // Config is stored as a text file, with one setting value per line.
-    // Some lines may be missing from the end if the config was saved from an 
-    // earlier version.
-    string text = loadtext(configFile);
-    string[] lines = split(text, "\n");
-
-    // Trim blank lines from end
-    while (lines.length > 0 and lines[lines.length - 1] = "") {
-        lines.remove(lines.length - 1);
-    }
-    int i = 0, ct = lines.length;
-
-    // Parse lines
-    if (i < ct) { gameConfig.controllerDeadzone = tofloat(lines[i]); i++; }
-    if (i < ct) { gameConfig.controllerSmoothing = tofloat(lines[i]); i++; }
-    if (i < ct) { gameConfig.controllerCurve = tofloat(lines[i]); i++; }
-    if (i < ct) { gameConfig.controllerFactor = tofloat(lines[i]); i++; }
-    if (i < ct) { gameConfig.playerColour = toint(lines[i]); i++; }
-    if (i < ct) { gameConfig.difficulty = toint(lines[i]); i++; }
-    if (i < ct) { gameConfig.trackIndex = toint(lines[i]); i++; }
-    if (i < ct) { gameConfig.showRacingLine = lines[i] = "true"; i++; }
-    if (i < ct) { gameConfig.lapOptionIndex = toint(lines[i]); i++; }
-    if (i < ct) { gameConfig.drawDistance = toint(lines[i]); i++; }
-    if (i < ct) { gameConfig.raceType = toint(lines[i]); i++; }
+    ConfigFile f = loadConfigFile(configFilename());
+    if (not eof(f)) { gameConfig.controllerDeadzone = readFloat(f); }
+    if (not eof(f)) { gameConfig.controllerSmoothing = readFloat(f); }
+    if (not eof(f)) { gameConfig.controllerCurve = readFloat(f); }
+    if (not eof(f)) { gameConfig.controllerFactor = readFloat(f); }
+    if (not eof(f)) { gameConfig.playerColour = readInt(f); }
+    if (not eof(f)) { gameConfig.difficulty = readInt(f); }
+    if (not eof(f)) { gameConfig.trackIndex = readInt(f); }
+    if (not eof(f)) { gameConfig.showRacingLine = readBool(f); }
+    if (not eof(f)) { gameConfig.lapOptionIndex = readInt(f); }
+    if (not eof(f)) { gameConfig.drawDistance = readInt(f); }
+    if (not eof(f)) { gameConfig.raceType = readInt(f); }
 }
 
 void saveConfig() {
