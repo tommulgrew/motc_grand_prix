@@ -49,6 +49,7 @@ void startRace(RaceParams raceParams);
 void doDemo();
 void newTournament();
 void quitTournament();
+void drawTournamentBoard();
 
 void initMainMenu() {
     mainMenu = new MainMenuState {
@@ -60,52 +61,21 @@ void initMainMenu() {
 void drawMainMenu() {
     cls(1);
 
-    // Title text
-    const int TITLE_BASE_SCALE = 2;
-    const int TITLE_X = SCREEN_WIDTH / 2 - 8 * 6 * TITLE_BASE_SCALE * PRATIO;
-    const int TITLE_Y = SCREEN_HEIGHT * 0.15;
-    const int TITLE_SCALE = TITLE_BASE_SCALE * PRATIO;
-    color(5);
-    printScaled("Mot's Grand Prix", TITLE_X, TITLE_Y + 2 * PRATIO, TITLE_SCALE);
-    color(6);
-    printScaled("Mot's Grand Prix", TITLE_X, TITLE_Y, TITLE_SCALE);
-
     if (gameConfig.raceType = RACETYPE_TOURNAMENT) {
-        const int BOARD_WIDTH = 200 * PRATIO;
-        const int BOARD_HEIGHT = 100 * PRATIO;
-        const int BOARD_X = SCREEN_WIDTH / 2 - BOARD_WIDTH / 2;
-        const int BOARD_Y = SCREEN_HEIGHT * 0.2;
-        color(0);
-        rectfill(BOARD_X, BOARD_Y, BOARD_X + BOARD_WIDTH, BOARD_Y + BOARD_HEIGHT);
-        color(6);
-        rect(BOARD_X, BOARD_Y, BOARD_X + BOARD_WIDTH - 1, BOARD_Y + BOARD_HEIGHT - 1);
-        color(5);
-        rect(BOARD_X + 1, BOARD_Y + 1, BOARD_X + BOARD_WIDTH, BOARD_Y + BOARD_HEIGHT);
-
-        const int CAR_X = BOARD_X + 10 * PRATIO;
-        const int CAR_Y = BOARD_Y + 15 * PRATIO;
-        const int CAR_SPACING = 10 * PRATIO;
-        const int HEADING_Y = CAR_Y - 10 * PRATIO;
-        const int POINTS_X = BOARD_X + BOARD_WIDTH - 40 * PRATIO;
-        print("Driver", CAR_X, HEADING_Y);
-        print("Points", POINTS_X, HEADING_Y);
-
-        if (tournament.isActive) {
-
-            // Car names and points
-            for (int i = 0; i < tournament.cars.length; i++) {
-                TournamentCar car = tournament.cars[i];
-                int y = CAR_Y + i * CAR_SPACING;
-                color(car.carIndex >= 0 ? 6 : 7);
-                drawCarName(
-                    car.carIndex >= 0 ? aiCarPalettes[car.carIndex] : null,
-                    car.carIndex >= 0 ? aiCarNames[car.carIndex] : "Player",
-                    CAR_X, y);
-                print(formatInt(car.points, 5, " "), POINTS_X, y + 2 * PRATIO);
-            }
-        }
+        drawTournamentBoard();
     }
     else {
+
+        // Title text
+        const int TITLE_BASE_SCALE = 2;
+        const int TITLE_X = SCREEN_WIDTH / 2 - 8 * 6 * TITLE_BASE_SCALE * PRATIO;
+        const int TITLE_Y = SCREEN_HEIGHT * 0.15;
+        const int TITLE_SCALE = TITLE_BASE_SCALE * PRATIO;
+        color(5);
+        printScaled("Mot's Grand Prix", TITLE_X, TITLE_Y + 2 * PRATIO, TITLE_SCALE);
+        color(6);
+        printScaled("Mot's Grand Prix", TITLE_X, TITLE_Y, TITLE_SCALE);
+
         // Draw a racing car
         colmap(aiCarPalettes[mainMenu.carPaletteIndex]);
         drawCar(new Transform {
@@ -220,9 +190,12 @@ MenuItem[] getMainMenuItems() {
         }
         else {
             items.add(new MenuItem { id = MAIN_MENU_TOURNAMENT_QUIT, text = "Quit Championship", confirm = true });
+            items.add(new MenuItem { id = MAIN_MENU_STARTRACE, text = "!! Race !!" });    
         }
     }
-    items.add(new MenuItem { id = MAIN_MENU_STARTRACE, text = "!! Race !!" });
+    else {
+        items.add(new MenuItem { id = MAIN_MENU_STARTRACE, text = "!! Race !!" });    
+    }
 
     // Exclude quit option from web version, as quitting doesn't make sense.
     // (The game just ends and the application becomes unresponsive.)
@@ -231,6 +204,53 @@ MenuItem[] getMainMenuItems() {
     }
 
     return items;
+}
+
+void drawTournamentBoard() {
+    const int BOARD_WIDTH = 200 * PRATIO;
+    const int BOARD_HEIGHT = 110 * PRATIO;
+    const int BOARD_X = SCREEN_WIDTH / 2 - BOARD_WIDTH / 2;
+    const int BOARD_Y = 10 * PRATIO;
+    color(0);
+    rectfill(BOARD_X, BOARD_Y, BOARD_X + BOARD_WIDTH, BOARD_Y + BOARD_HEIGHT);
+    color(6);
+    rect(BOARD_X, BOARD_Y, BOARD_X + BOARD_WIDTH - 1, BOARD_Y + BOARD_HEIGHT - 1);
+    color(5);
+    rect(BOARD_X + 1, BOARD_Y + 1, BOARD_X + BOARD_WIDTH, BOARD_Y + BOARD_HEIGHT);
+
+    const int CAR_X = BOARD_X + 10 * PRATIO;
+    const int CAR_Y = BOARD_Y + 15 * PRATIO;
+    const int CAR_SPACING = 10 * PRATIO;
+    const int HEADING_Y = CAR_Y - 10 * PRATIO;
+    const int POINTS_X = BOARD_X + BOARD_WIDTH - 45 * PRATIO;
+    print("Driver", CAR_X, HEADING_Y);
+    print("Points", POINTS_X, HEADING_Y);
+
+    if (tournament.isActive) {
+
+        // Car names and points
+        for (int i = 0; i < tournament.cars.length; i++) {
+            TournamentCar car = tournament.cars[i];
+            int y = CAR_Y + i * CAR_SPACING;
+            color(car.carIndex >= 0 ? 6 : 7);
+            drawCarName(
+                car.carIndex >= 0 ? aiCarPalettes[car.carIndex] : null,
+                car.carIndex >= 0 ? aiCarNames[car.carIndex] : "Player",
+                CAR_X, y);
+            print(formatInt(car.points, 6, " "), POINTS_X, y + 2 * PRATIO);
+        }
+
+        // Next track
+        const int TRACK_X = BOARD_X + 4 * PRATIO;
+        const int TRACK_Y = BOARD_Y + BOARD_HEIGHT - 11 * PRATIO;
+        color(7);
+        if (tournament.trackIndex < tournament.trackOrder.length) {
+            print("Next: " + tracks[tournament.trackOrder[tournament.trackIndex]].name, TRACK_X, TRACK_Y);
+        }
+        else {
+            print("Championship Finished!", TRACK_X, TRACK_Y);
+        }
+    }
 }
 
 int[] randomIndices(int poolSize, int count) {
