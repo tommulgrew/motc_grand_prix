@@ -648,18 +648,23 @@ void drawMirror() {
     vanishY = saveVanishY;
 }
 
-void drawCarName(Car car, int position, int x, int y) {
+void drawCarName(int[] palette, string name, int x, int y) {
     // Note: position is 0 index. So position 0 is first place etc.
 
     // Car icon
-    colmap(aiCarPalettes[car.carIndex]);
+    if (palette != null) colmap(palette);
     scaleTexture(gameTextures.carIcon, x, y, 16 * PRATIO, 16 * PRATIO);
     colmap();
 
     // Car text
-    string nameText = (position + 1) + placeText[min(position, 3)]
-        + " " + car.name;
-    print(nameText, x + 20 * PRATIO, y + 2 * PRATIO);
+    print(name, x + 20 * PRATIO, y + 2 * PRATIO);
+}
+
+void drawCarName(Car car, int position, int x, int y) {
+    drawCarName(
+        aiCarPalettes[car.carIndex], 
+        (position + 1) + placeText[min(position, 3)] + " " + car.name, 
+        x, y);
 }
 
 void drawHud() {

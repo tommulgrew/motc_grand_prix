@@ -14,10 +14,12 @@ const int MAIN_MENU_DIFFICULTY = 3;
 const int MAIN_MENU_STARTRACE = 4;
 const int MAIN_MENU_QUIT = 5;
 const int MAIN_MENU_RACETYPE = 6;
+const int MAIN_MENU_TOURNAMENT_NEW = 7;
+const int MAIN_MENU_TOURNAMENT_QUIT = 8;
 
 string[] raceTypeNames = new string[] {
     "Single Race",
-    "Tournament",
+    "Championship",
     "Practice"
 };
 
@@ -45,6 +47,8 @@ MenuItem[] getMainMenuItems();
 int[] makeAICarRoster(int count);
 void startRace(RaceParams raceParams);
 void doDemo();
+void newTournament();
+void quitTournament();
 
 void initMainMenu() {
     mainMenu = new MainMenuState {
@@ -66,14 +70,51 @@ void drawMainMenu() {
     color(6);
     printScaled("Mot's Grand Prix", TITLE_X, TITLE_Y, TITLE_SCALE);
 
-    // Draw a racing car
-    colmap(aiCarPalettes[mainMenu.carPaletteIndex]);
-    drawCar(new Transform {
-        translate = new Vec { z = 2.5, y = -0.1 },
-        skewX = -0.5,
-        skewY = -0.3
-    });
-    colmap();
+    if (gameConfig.raceType = RACETYPE_TOURNAMENT) {
+        const int BOARD_WIDTH = 200 * PRATIO;
+        const int BOARD_HEIGHT = 100 * PRATIO;
+        const int BOARD_X = SCREEN_WIDTH / 2 - BOARD_WIDTH / 2;
+        const int BOARD_Y = SCREEN_HEIGHT * 0.2;
+        color(0);
+        rectfill(BOARD_X, BOARD_Y, BOARD_X + BOARD_WIDTH, BOARD_Y + BOARD_HEIGHT);
+        color(6);
+        rect(BOARD_X, BOARD_Y, BOARD_X + BOARD_WIDTH - 1, BOARD_Y + BOARD_HEIGHT - 1);
+        color(5);
+        rect(BOARD_X + 1, BOARD_Y + 1, BOARD_X + BOARD_WIDTH, BOARD_Y + BOARD_HEIGHT);
+
+        const int CAR_X = BOARD_X + 10 * PRATIO;
+        const int CAR_Y = BOARD_Y + 15 * PRATIO;
+        const int CAR_SPACING = 10 * PRATIO;
+        const int HEADING_Y = CAR_Y - 10 * PRATIO;
+        const int POINTS_X = BOARD_X + BOARD_WIDTH - 40 * PRATIO;
+        print("Driver", CAR_X, HEADING_Y);
+        print("Points", POINTS_X, HEADING_Y);
+
+        if (tournament.isActive) {
+
+            // Car names and points
+            for (int i = 0; i < tournament.cars.length; i++) {
+                TournamentCar car = tournament.cars[i];
+                int y = CAR_Y + i * CAR_SPACING;
+                color(car.carIndex >= 0 ? 6 : 7);
+                drawCarName(
+                    car.carIndex >= 0 ? aiCarPalettes[car.carIndex] : null,
+                    car.carIndex >= 0 ? aiCarNames[car.carIndex] : "Player",
+                    CAR_X, y);
+                print(formatInt(car.points, 5, " "), POINTS_X, y + 2 * PRATIO);
+            }
+        }
+    }
+    else {
+        // Draw a racing car
+        colmap(aiCarPalettes[mainMenu.carPaletteIndex]);
+        drawCar(new Transform {
+            translate = new Vec { z = 2.5, y = -0.1 },
+            skewX = -0.5,
+            skewY = -0.3
+        });
+        colmap();
+    }
 
     // Menu UI
     MenuItem[] items = getMainMenuItems();
@@ -92,18 +133,41 @@ void updateMainMenu(UIInput input) {
     if (action != null) {
         if (action.menuAction = MENU_ACTION_SELECT) {
             if (action.itemID = MAIN_MENU_STARTRACE) {
+
+                // Common race params
                 RaceParams raceParams = new RaceParams {
-                    track = tracks[gameConfig.trackIndex],
                     laps = lapOptions[gameConfig.lapOptionIndex],
                     difficulty = difficultyLevels[gameConfig.difficulty],
                     aiCarRoster = new int[0],
                     isPracticeMode = gameConfig.raceType = RACETYPE_PRACTICE,
                     playerColour = gameConfig.playerColour
                 };
-                if (gameConfig.raceType = RACETYPE_SINGLE) {
-                    raceParams.aiCarRoster = makeAICarRoster(AI_CAR_COUNT);
+
+                if (gameConfig.raceType = RACETYPE_TOURNAMENT) {
+
+                    // Tournament params
+                    raceParams.track = tracks[tournament.trackOrder[tournament.trackIndex]];
+                    for (TournamentCar car : tournament.cars) {
+                        if (car.carIndex != -1) {           // Not player
+                            raceParams.aiCarRoster.add(car.carIndex);
+                        }
+                    }                
+                }
+                else {
+
+                    // Single race/practice params
+                    raceParams.track = tracks[gameConfig.trackIndex];
+                    if (gameConfig.raceType = RACETYPE_SINGLE) {
+                        raceParams.aiCarRoster = makeAICarRoster(AI_CAR_COUNT);
+                    }
                 }
                 startRace(raceParams);
+            }
+            else if (action.itemID = MAIN_MENU_TOURNAMENT_NEW) {
+                newTournament();
+            }
+            else if (action.itemID = MAIN_MENU_TOURNAMENT_QUIT) {
+                quitTournament();
             }
             else if (action.itemID = MAIN_MENU_QUIT) {
                 saveConfig();
@@ -150,6 +214,14 @@ MenuItem[] getMainMenuItems() {
         items.add(new MenuItem { id = MAIN_MENU_LAPS, text = "Laps: " + lapOptions[gameConfig.lapOptionIndex] });
         items.add(new MenuItem { id = MAIN_MENU_DIFFICULTY, text = "Difficulty: " + difficultyLevels[gameConfig.difficulty].name });
     }
+    if (gameConfig.raceType = RACETYPE_TOURNAMENT) {
+        if (not tournament.isActive) {
+            items.add(new MenuItem { id = MAIN_MENU_TOURNAMENT_NEW, text = "New Championship" });
+        }
+        else {
+            items.add(new MenuItem { id = MAIN_MENU_TOURNAMENT_QUIT, text = "Quit Championship", confirm = true });
+        }
+    }
     items.add(new MenuItem { id = MAIN_MENU_STARTRACE, text = "!! Race !!" });
 
     // Exclude quit option from web version, as quitting doesn't make sense.
@@ -161,22 +233,27 @@ MenuItem[] getMainMenuItems() {
     return items;
 }
 
-int[] makeAICarRoster(int count) {
-    // Create pool of valid AI car indices
-    int[] pool = new int[aiCarNames.length];
-    for (int i = 0; i < aiCarNames.length; i++) {
+int[] randomIndices(int poolSize, int count) {
+
+    // Create a set of numbers 0-(count-1)
+    int[] pool = new int[poolSize];
+    for (int i = 0; i < poolSize; i++) {
         pool[i] = i;
     }
 
-    // Build roster by selecting cars randomly from the pool
-    int[] roster = new int[0];
-    while (roster.length < count) {
+    // Select "count" numbers
+    int[] result = new int[0];
+    while (result.length < count) {
         int i = rnd() * pool.length;
-        roster.add(pool[i]);
+        result.add(pool[i]);
         pool.remove(i);
     }
 
-    return roster;
+    return result;
+}
+
+int[] makeAICarRoster(int count) {
+    return randomIndices(aiCarNames.length, count);
 }
 
 void startRace(RaceParams raceParams) {
@@ -201,4 +278,31 @@ void doDemo() {
         playerColour = rnd() * playerCarPalettes.length,
         isDemo = true
     });
+}
+
+void newTournament() {
+
+    // Setup a new tournament
+    tournament = new TournamentState {
+        isActive = true,
+        cars = new TournamentCar[0],
+        trackOrder = randomIndices(tracks.length, tracks.length)
+    };
+
+    // AI cars
+    int[] carRoster = makeAICarRoster(AI_CAR_COUNT);
+    for (int carIndex : carRoster) {
+        tournament.cars.add(new TournamentCar {
+            carIndex = carIndex
+        });
+    }
+
+    // Player car
+    tournament.cars.add(new TournamentCar { carIndex = -1 });
+}
+
+void quitTournament() {
+
+    // Disable tournament
+    tournament.isActive = false;
 }
