@@ -1,18 +1,31 @@
 // Constants
 
-const int SCREEN_WIDTH = 320;
-const int SCREEN_HEIGHT = 240;
-const float PRATIO = SCREEN_WIDTH / 320.0;      // Pixel ratio compared to 320x240 view
-const int CAR_CLIP_BOTTOM = SCREEN_HEIGHT - 64 * PRATIO;
 const float NEAR_Z = 0.1;
-const float SCREEN_DIST = SCREEN_WIDTH / 2;     // Used for projection calculations
+
 
 // Data
-
+int SCREEN_WIDTH = 320;
+int SCREEN_HEIGHT = 240;
+float PRATIO = SCREEN_WIDTH / 320.0;      // Pixel ratio compared to 320x240 view
+int CAR_CLIP_BOTTOM = SCREEN_HEIGHT - 64 * PRATIO;
+float SCREEN_DIST = SCREEN_WIDTH / 2;     // Used for projection calculations
 float vanishY = SCREEN_HEIGHT / 2;
 int clipBottom = CAR_CLIP_BOTTOM;
 
 // Routines
+
+void setScreenSize(Vec size) {
+    SCREEN_WIDTH = size.x;
+    SCREEN_HEIGHT = size.y;
+
+    PRATIO = SCREEN_WIDTH / 320.0;      // Pixel ratio compared to 320x240 view
+    CAR_CLIP_BOTTOM = SCREEN_HEIGHT - 64 * PRATIO;
+    SCREEN_DIST = SCREEN_WIDTH / 2;     // Used for projection calculations
+    vanishY = SCREEN_HEIGHT / 2;
+    clipBottom = CAR_CLIP_BOTTOM;
+
+    screen(makeimg(size.x, size.y));
+}
 
 // Project a 3D point to the screen
 Vec project(Vec pt) {

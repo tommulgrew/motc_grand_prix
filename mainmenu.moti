@@ -60,9 +60,9 @@ void drawMainMenu() {
 
     // Title text
     const int TITLE_BASE_SCALE = 2;
-    const int TITLE_X = SCREEN_WIDTH / 2 - 8 * 6 * TITLE_BASE_SCALE * PRATIO;
-    const int TITLE_Y = SCREEN_HEIGHT * 0.04;
-    const int TITLE_SCALE = TITLE_BASE_SCALE * PRATIO;
+    int TITLE_X = SCREEN_WIDTH / 2 - 8 * 6 * TITLE_BASE_SCALE * PRATIO;
+    int TITLE_Y = SCREEN_HEIGHT * 0.04;
+    int TITLE_SCALE = TITLE_BASE_SCALE * PRATIO;
     color(5);
     printScaled("Mot's Grand Prix", TITLE_X, TITLE_Y + 2 * PRATIO, TITLE_SCALE);
     color(6);
@@ -207,10 +207,10 @@ MenuItem[] getMainMenuItems() {
 }
 
 void drawTournamentBoard() {
-    const int BOARD_WIDTH = 200 * PRATIO;
-    const int BOARD_HEIGHT = 110 * PRATIO;
-    const int BOARD_X = SCREEN_WIDTH / 2 - BOARD_WIDTH / 2;
-    const int BOARD_Y = 30 * PRATIO;
+    int BOARD_WIDTH = 200 * PRATIO;
+    int BOARD_HEIGHT = 110 * PRATIO;
+    int BOARD_X = SCREEN_WIDTH / 2 - BOARD_WIDTH / 2;
+    int BOARD_Y = 30 * PRATIO;
     color(0);
     rectfill(BOARD_X, BOARD_Y, BOARD_X + BOARD_WIDTH, BOARD_Y + BOARD_HEIGHT);
     color(6);
@@ -218,11 +218,11 @@ void drawTournamentBoard() {
     color(5);
     rect(BOARD_X + 1, BOARD_Y + 1, BOARD_X + BOARD_WIDTH, BOARD_Y + BOARD_HEIGHT);
 
-    const int CAR_X = BOARD_X + 10 * PRATIO;
-    const int CAR_Y = BOARD_Y + 15 * PRATIO;
-    const int CAR_SPACING = 10 * PRATIO;
-    const int HEADING_Y = CAR_Y - 10 * PRATIO;
-    const int POINTS_X = BOARD_X + BOARD_WIDTH - 45 * PRATIO;
+    int CAR_X = BOARD_X + 10 * PRATIO;
+    int CAR_Y = BOARD_Y + 15 * PRATIO;
+    int CAR_SPACING = 10 * PRATIO;
+    int HEADING_Y = CAR_Y - 10 * PRATIO;
+    int POINTS_X = BOARD_X + BOARD_WIDTH - 45 * PRATIO;
     print("Driver", CAR_X, HEADING_Y);
     print("Points", POINTS_X, HEADING_Y);
 
@@ -241,8 +241,8 @@ void drawTournamentBoard() {
         }
 
         // Next track
-        const int TRACK_X = BOARD_X + 4 * PRATIO;
-        const int TRACK_Y = BOARD_Y + BOARD_HEIGHT - 11 * PRATIO;
+        int TRACK_X = BOARD_X + 4 * PRATIO;
+        int TRACK_Y = BOARD_Y + BOARD_HEIGHT - 11 * PRATIO;
         color(7);
         if (tournament.raceIndex < tournament.trackOrder.length) {
             print("Next: " + tracks[tournament.trackOrder[tournament.raceIndex]].name, TRACK_X, TRACK_Y);

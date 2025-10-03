@@ -38,6 +38,8 @@ Done
         - DONE - Persist
     - DONE - Car colour
     - DONE - Toggle racing line
+    - Graphics settings
+        - DONE Draw distance
 - DONE - Select number of laps
 - DONE - End race when laps finished
 - DONE End of race sequence
@@ -45,9 +47,6 @@ Done
         - DONE As cars complete race
         - DONE When player exits post-race sequence
 - DONE - Check memory usage
-- Pause menu
-    - Graphics settings
-        - DONE Draw distance
 - DONE Update texture image. Make use of 2x resolution
 - DONE Track race time, current lap time and best lap time for each car
 - DONE Decouple menu settings from race settings

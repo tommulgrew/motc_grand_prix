@@ -87,7 +87,7 @@ void drawGame() {
         }
     }
     else if (raceMode = RACEMODE_POSTRACE and not race.isDemo) {
-        const int TEXT_Y = SCREEN_HEIGHT * 0.2;
+        int TEXT_Y = SCREEN_HEIGHT * 0.2;
         fancyPrint("Race Finished", 6, TEXT_Y, -1, 2, 5);
         if (raceSequenceTimer > 90 and raceSequenceTimer % 30 < 15) {
             fancyPrint("Press button to continue", 6, TEXT_Y + 20, -1, 1, 5);
@@ -101,7 +101,7 @@ void drawGame() {
     }
 
     if (race.isDemo) {
-        const int TEXT_Y = SCREEN_HEIGHT * 0.15;
+        int TEXT_Y = SCREEN_HEIGHT * 0.15;
         fancyPrint("Demo", 9, TEXT_Y, -1, 2, 5);
         if (raceSequenceTimer % 30 < 15) {
             fancyPrint("Press button to quit", 9, TEXT_Y + 20, -1, 1, 5);
@@ -591,9 +591,9 @@ void drawCockpit() {
 
 void drawMirror() {
 
-    const float MIRROR_Y = 36 * PRATIO;
-    const float MIRROR_W = 160 * PRATIO;
-    const float MIRROR_H = 28 * PRATIO;
+    int MIRROR_Y = 36 * PRATIO;
+    int MIRROR_W = 160 * PRATIO;
+    int MIRROR_H = 28 * PRATIO;
 
     float saveVanishY = vanishY;    
     vanishY = MIRROR_Y;
@@ -669,7 +669,7 @@ void drawCarName(Car car, int position, int x, int y) {
 
 void drawHud() {
 
-    const int CAR_NAME_X = SCREEN_WIDTH / 2 - 80 * PRATIO;
+    int CAR_NAME_X = SCREEN_WIDTH / 2 - 80 * PRATIO;
     color(race.track.skyColour != 1 ? 3 : 12);
 
     // Find player car
@@ -721,14 +721,14 @@ void drawPreRaceText(string text) {
 
 void drawResults() {
     
-    const int BOARD_WIDTH = 250 * PRATIO;
-    const int BOARD_HEIGHT = 125 * PRATIO;
-    const int BOARD_Y = 10 * PRATIO;
-    const int RESULTS_Y = BOARD_Y + 34 * PRATIO;
-    const int HEADING_Y = RESULTS_Y - 8 * PRATIO;
-    const int CAR_NAME_X = SCREEN_WIDTH / 2 - BOARD_WIDTH / 2 + 10 * PRATIO;
-    const int RACE_TIME_X = CAR_NAME_X + 115 * PRATIO;
-    const int LAP_TIME_X = RACE_TIME_X + 60 * PRATIO;
+    int BOARD_WIDTH = 250 * PRATIO;
+    int BOARD_HEIGHT = 125 * PRATIO;
+    int BOARD_Y = 10 * PRATIO;
+    int RESULTS_Y = BOARD_Y + 34 * PRATIO;
+    int HEADING_Y = RESULTS_Y - 8 * PRATIO;
+    int CAR_NAME_X = SCREEN_WIDTH / 2 - BOARD_WIDTH / 2 + 10 * PRATIO;
+    int RACE_TIME_X = CAR_NAME_X + 115 * PRATIO;
+    int LAP_TIME_X = RACE_TIME_X + 60 * PRATIO;
     color(0);
     rectfill(
         SCREEN_WIDTH/2 - BOARD_WIDTH/2,

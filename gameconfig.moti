@@ -15,6 +15,7 @@ struct GameConfig {
     int trackIndex;
     int lapOptionIndex;
     int raceType;
+    int screenResIndex;
 }
 
 // Data
@@ -35,6 +36,11 @@ GameConfig gameConfig = new GameConfig {
     raceType = RACETYPE_SINGLE
 };
 
+Vec[] screenResolutions = new Vec[] {
+    new Vec { x = 320, y = 240 },
+    new Vec { x = 640, y = 480 }
+};
+
 string configFilename() {
     return savedir() + "mot_gp.txt";
 }
@@ -52,6 +58,7 @@ void loadGameConfig() {
     if (not eof(f)) { gameConfig.lapOptionIndex = readInt(f); }
     if (not eof(f)) { gameConfig.drawDistance = readInt(f); }
     if (not eof(f)) { gameConfig.raceType = readInt(f); }
+    if (not eof(f)) { gameConfig.screenResIndex = readInt(f); }
 }
 
 void saveConfig() {
@@ -69,6 +76,7 @@ void saveConfig() {
         gameConfig.showRacingLine + "\n" + 
         gameConfig.lapOptionIndex + "\n" + 
         gameConfig.drawDistance + "\n" + 
-        gameConfig.raceType;
+        gameConfig.raceType + "\n" + 
+        gameConfig.screenResIndex;
     savetext(configFile, text);
 }
