@@ -1,4 +1,5 @@
 #include "configFile"
+#include "routines"
 
 // Structures
 
@@ -10,7 +11,7 @@ struct TournamentCar {
 struct TournamentState {
     bool isActive;
     int[] trackOrder;           // Index into "tracks" array
-    int trackIndex;             // Index of next track in tournament
+    int raceIndex;             // Index of next track in tournament
     TournamentCar[] cars;
 }
 
@@ -33,7 +34,7 @@ void loadTournament() {
     for (int i = 0; i < trackCount; i++) {
         tournament.trackOrder[i] = readInt(f);
     }
-    tournament.trackIndex = readInt(f);
+    tournament.raceIndex = readInt(f);
 
     // Load cars
     int carCount = readInt(f);
@@ -59,7 +60,7 @@ void saveTournament() {
         for (int i : tournament.trackOrder) {
             text += i + "\n";
         }
-        text += tournament.trackIndex + "\n";
+        text += tournament.raceIndex + "\n";
 
         // Cars
         text += tournament.cars.length + "\n";
@@ -70,4 +71,75 @@ void saveTournament() {
     }
 
     savetext(filename, text);
+}
+
+int[] makeAICarRoster(int count) {
+    return randomIndices(aiCarNames.length, count);
+}
+
+void newTournament() {
+
+    // Setup a new tournament
+    tournament = new TournamentState {
+        isActive = true,
+        cars = new TournamentCar[0],
+        trackOrder = randomIndices(tracks.length, tracks.length)
+    };
+
+    // AI cars
+    int[] carRoster = makeAICarRoster(AI_CAR_COUNT);
+    for (int carIndex : carRoster) {
+        tournament.cars.add(new TournamentCar {
+            carIndex = carIndex
+        });
+    }
+
+    // Player car
+    tournament.cars.add(new TournamentCar { carIndex = -1 });
+}
+
+void quitTournament() {
+
+    // Disable tournament
+    tournament.isActive = false;
+}
+
+void sortTournamentCars() {
+    if (not tournament.isActive) return;
+
+    for (int i = 1; i < tournament.cars.length; i++) {
+        TournamentCar car = tournament.cars[i];
+        int j = i; 
+        while (j > 0 and tournament.cars[j - 1].points < car.points) {
+            tournament.cars[j] = tournament.cars[j - 1];
+            j--;
+        }
+        tournament.cars[j] = car;
+    }
+}
+
+int[] racePoints = new int[] { 15, 12, 10, 8, 6, 4, 2, 1 };
+
+void applyRaceResults(Car[] raceResults) {
+    if (gameConfig.raceType != RACETYPE_TOURNAMENT) return;
+
+    // Award points
+    for (int i = 0; i < raceResults.length; i++) {
+        Car car = raceResults[i];
+
+        // Find and update corresponding tournament car
+        int carIndex = car = player ? -1 : car.carIndex;
+        for (TournamentCar tcar : tournament.cars) {
+            if (tcar.carIndex = carIndex) {
+                tcar.points += racePoints[i];
+                break;
+            }
+        }
+    }
+    sortTournamentCars();    
+
+    // Next race
+    tournament.raceIndex++;
+
+    saveTournament();
 }

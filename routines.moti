@@ -100,3 +100,22 @@ string formatTime(int time, string padChar = " ") {
     int m = (time / 30) / 60;
     return formatInt(m, 3, padChar) + ":" + formatInt(s) + "." + formatInt(f);
 }
+
+int[] randomIndices(int poolSize, int count) {
+
+    // Create a set of numbers 0-(count-1)
+    int[] pool = new int[poolSize];
+    for (int i = 0; i < poolSize; i++) {
+        pool[i] = i;
+    }
+
+    // Select "count" numbers
+    int[] result = new int[0];
+    while (result.length < count) {
+        int i = rnd() * pool.length;
+        result.add(pool[i]);
+        pool.remove(i);
+    }
+
+    return result;
+}

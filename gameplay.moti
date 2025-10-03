@@ -21,6 +21,9 @@ void moveCar(Car car);
 void doCarCollisions();
 void setRaceMode(int mode);
 
+// External
+void applyRaceResults(Car[] raceResults);
+
 void initRace() {
     float saveSeed = rnd();
     srnd(race.track.randomSeed);
@@ -140,6 +143,9 @@ void updateGame(UIInput uiInput) {
         // Ignore input for 3 seconds. 
         // After that, pressing button returns to menu
         if (raceSequenceTimer > 90 and uiInput.btnPressed[UI_SELECT]) {
+            if (not race.isDemo) {
+                applyRaceResults(raceResults);
+            }
             setGameMode(GAMEMODE_MENU);
         }
     }
