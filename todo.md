@@ -109,7 +109,12 @@ To do
 - Menu music
 - Title screen graphics
 - 640x480 issues
-    - Fix pause menu vertical position
-    - Fix main menu vertical position
-    - MotC - Clear unused screen space after resolution switch.
-    - Car wheels are displayed in incorrect position
+    - DONE - Fix pause menu vertical position
+    - DONE - Fix main menu vertical position
+    - DONE Car wheels are displayed in incorrect position
+
+
+- MotC 
+    - Clear unused screen space after resolution switch.
+    - Weird upscaling glitch when using `SCALE_FIT` scaling mode
+    - Can we improve filename display in "Find all references" etc.
