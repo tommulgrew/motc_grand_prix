@@ -188,6 +188,8 @@ MenuItem[] getMainMenuItems() {
         }
         else {
             items.add(new MenuItem { id = MAIN_MENU_TOURNAMENT_QUIT, text = "Quit Championship", confirm = true });
+        }
+        if (tournament.isActive and tournament.raceIndex < tournament.trackOrder.length) {
             items.add(new MenuItem { id = MAIN_MENU_STARTRACE, text = "!! Race !!" });    
         }
     }
