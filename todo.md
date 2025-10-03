@@ -80,19 +80,19 @@ Done
             the user's menu settings. And make qualification lap logic a bit 
             cleaner.
         - Menu code configures game settings before race starts.
-- Demo mode
+- DONE Demo mode
+- DONE Select race type
+    - DONE Single
+    - DONE Practice
+    - DONE Tournament
+- DONE Tournament mode
+    - Generate roster
+    - Collect results
+    - Persist roster and results
 
 To do
 =====
 
-- Select race type
-    - DONE Single
-    - DONE Practice
-    - Tournament
-- Tournament mode
-    - Generate roster
-    - Collect results
-    - Persist roster and results
 - Pause menu
     - Graphics settings
         - Screen resolution
