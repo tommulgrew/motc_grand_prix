@@ -453,8 +453,8 @@ void drawWheels(float steering, int wheelRotation, float scale) {
 
     // Wheels
     float w = steering * 16;
-    float lw = 28 + w;
-    float rw = 28 - w;
+    float lw = (28 + w) * PRATIO;
+    float rw = (28 - w) * PRATIO;
     float h = tireTex.h * scale;
     float lx = SCREEN_WIDTH / 2 - 120 * PRATIO;
     float rx = SCREEN_WIDTH / 2 + 120 * PRATIO;
