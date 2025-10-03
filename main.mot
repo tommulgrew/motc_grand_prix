@@ -37,6 +37,7 @@ setScreenSize(screenResolutions[gameConfig.screenResIndex]);
 UIInput uiInput = makeUIInput();
 
 // Setup screen buffer
+screenscale(SCALE_FIT);
 screen(makeimg(SCREEN_WIDTH, SCREEN_HEIGHT));
 
 // Start in menu mode

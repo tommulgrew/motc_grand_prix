@@ -94,7 +94,7 @@ To do
 
 - Pause menu
     - Graphics settings
-        - Screen resolution
+        - DONE Screen resolution
 - Qualification lap
     - Single lap
     - No collisions
@@ -108,3 +108,8 @@ To do
 - Fade transitions
 - Menu music
 - Title screen graphics
+- 640x480 issues
+    - Fix pause menu vertical position
+    - Fix main menu vertical position
+    - MotC - Clear unused screen space after resolution switch.
+    - Car wheels are displayed in incorrect position
