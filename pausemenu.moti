@@ -20,6 +20,7 @@ const int PAUSE_CONTROLLER_FACTOR = 7;
 const int PAUSE_CONTROLLER_BACK = 8;
 
 const int PAUSE_GRAPHICS_DRAWDIST = 12;
+const int PAUSE_GRAPHICS_RESOLUTION = 13;
 
 // Pause submenu
 
@@ -127,6 +128,10 @@ void updatePauseMenu(UIInput input) {
                 else if (action.itemID = PAUSE_GRAPHICS_DRAWDIST) {
                     gameConfig.drawDistance = clamp(gameConfig.drawDistance + action.delta * 5, 30, 150);
                 }
+                else if (action.itemID = PAUSE_GRAPHICS_RESOLUTION) {
+                    gameConfig.screenResIndex = clamp(gameConfig.screenResIndex + action.delta, 0, screenResolutions.length - 1);
+                    setScreenSize(screenResolutions[gameConfig.screenResIndex]);
+                }
             }
         }
 
@@ -169,8 +174,10 @@ MenuItem[] getPauseMenuItems() {
         };
     }
     else if (pauseMenu.subMenu = PAUSE_MENU_GRAPHICS) {
+        Vec res = screenResolutions[gameConfig.screenResIndex];
         return new MenuItem[] {
             new MenuItem { id = PAUSE_GRAPHICS_DRAWDIST, text = "Draw distance", showBar = true, valueText = gameConfig.drawDistance, fraction = (gameConfig.drawDistance - 30) / 120.0 },
+            new MenuItem { id = PAUSE_GRAPHICS_RESOLUTION, text = "Resolution: " + toint(res.x) + "x" + toint(res.y) },
             new MenuItem { id = PAUSE_CONTROLLER_BACK, text = "Back" }
         };
     }
