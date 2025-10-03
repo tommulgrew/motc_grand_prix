@@ -58,20 +58,20 @@ void initMainMenu() {
 void drawMainMenu() {
     cls(1);
 
+    // Title text
+    const int TITLE_BASE_SCALE = 2;
+    const int TITLE_X = SCREEN_WIDTH / 2 - 8 * 6 * TITLE_BASE_SCALE * PRATIO;
+    const int TITLE_Y = SCREEN_HEIGHT * 0.04;
+    const int TITLE_SCALE = TITLE_BASE_SCALE * PRATIO;
+    color(5);
+    printScaled("Mot's Grand Prix", TITLE_X, TITLE_Y + 2 * PRATIO, TITLE_SCALE);
+    color(6);
+    printScaled("Mot's Grand Prix", TITLE_X, TITLE_Y, TITLE_SCALE);
+
     if (gameConfig.raceType = RACETYPE_TOURNAMENT) {
         drawTournamentBoard();
     }
     else {
-
-        // Title text
-        const int TITLE_BASE_SCALE = 2;
-        const int TITLE_X = SCREEN_WIDTH / 2 - 8 * 6 * TITLE_BASE_SCALE * PRATIO;
-        const int TITLE_Y = SCREEN_HEIGHT * 0.15;
-        const int TITLE_SCALE = TITLE_BASE_SCALE * PRATIO;
-        color(5);
-        printScaled("Mot's Grand Prix", TITLE_X, TITLE_Y + 2 * PRATIO, TITLE_SCALE);
-        color(6);
-        printScaled("Mot's Grand Prix", TITLE_X, TITLE_Y, TITLE_SCALE);
 
         // Draw a racing car
         colmap(aiCarPalettes[mainMenu.carPaletteIndex]);
@@ -208,7 +208,7 @@ void drawTournamentBoard() {
     const int BOARD_WIDTH = 200 * PRATIO;
     const int BOARD_HEIGHT = 110 * PRATIO;
     const int BOARD_X = SCREEN_WIDTH / 2 - BOARD_WIDTH / 2;
-    const int BOARD_Y = 10 * PRATIO;
+    const int BOARD_Y = 30 * PRATIO;
     color(0);
     rectfill(BOARD_X, BOARD_Y, BOARD_X + BOARD_WIDTH, BOARD_Y + BOARD_HEIGHT);
     color(6);
