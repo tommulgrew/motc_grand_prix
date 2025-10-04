@@ -96,12 +96,19 @@ To do
     - Graphics settings
         - DONE Screen resolution
 - Qualification lap
-    - Single lap
-    - No collisions
-    - Don't draw AI cars
-    - Hide cars from AI cars
+    - DONE Single lap
+    - DONE No collisions
+    - DONE Don't draw AI cars
+    - DONE Hide cars from AI cars
     - Player can skip if necessary from pause menu (will be placed last)
-    - Use results of qualification lap to order starting grid for race
+    - DONE Use results of qualification lap to order starting grid for race
+    - Show "Qualifying Lap" in pre-race
+    - HUD
+        - Don't show place
+        - Show race time only
+        - Don't show car in front/behind
+    - DONE Fix lap bell issue when race starts
+    
 - Release MotC
 - Fix car shuddering bug when displaying race results
 - Fix car flickering when beside player

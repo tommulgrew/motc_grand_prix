@@ -331,7 +331,7 @@ void setupRaceAfterQualifier() {
         car.vel = 0;
         car.xd = 0;
         car.input = new CarInput;
-        car.race = new CarRaceState;        
+        car.race = new CarRaceState { lap = 1 };        
     }
 
     // Layout cars in grid
