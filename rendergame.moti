@@ -75,6 +75,12 @@ void drawGame() {
     }
 
     if (raceMode = RACEMODE_PRERACE) {
+
+        if (race.isQualificationLap and raceSequenceTimer % 30 < 15) {
+            int TEXT_Y = SCREEN_HEIGHT * 0.15;
+            fancyPrint("Qualification Lap", 8, TEXT_Y, -1, 2, 5);
+        }
+
         // Display 3..2..1
         int countDown = toint(5 - raceSequenceTimer / 30.0);
         if (countDown <= 3) {
@@ -90,15 +96,15 @@ void drawGame() {
     }
     else if (raceMode = RACEMODE_POSTRACE and not race.isDemo) {
         int TEXT_Y = SCREEN_HEIGHT * 0.2;
-        fancyPrint(race.isQualificationLap ? "Qualification Finished" : "Race Finished", 6, TEXT_Y, -1, 2, 5);
+        fancyPrint(race.isQualificationLap ? "Qualification Finished" : "Race Finished", 9, TEXT_Y, -1, 2, 5);
         if (raceSequenceTimer > 90 and raceSequenceTimer % 30 < 15) {
-            fancyPrint("Press button to continue", 6, TEXT_Y + 20, -1, 1, 5);
+            fancyPrint("Press button to continue", 9, TEXT_Y + 20, -1, 1, 5);
         }
     }
     else if (raceMode = RACEMODE_RESULTS and not race.isDemo) {
         drawResults();
         if (raceSequenceTimer > 90 and raceSequenceTimer % 30 < 15) {
-            fancyPrint("Press button to continue", 7, SCREEN_HEIGHT * 0.6, -1, 1, 5);
+            fancyPrint("Press button to continue", 9, SCREEN_HEIGHT * 0.6, -1, 1, 5);
         }
     }
 
@@ -672,9 +678,16 @@ void drawCarName(Car car, int position, int x, int y) {
 }
 
 void drawHud() {
+    color(race.track.skyColour != 1 ? 3 : 12);
+
+    // Simplified HUD during qualification
+    if (race.isQualificationLap) {
+        cursor(4 * PRATIO, 4 * PRATIO);
+        print("Time" + formatTime(player.race.raceTime));
+        return;
+    }
 
     int CAR_NAME_X = SCREEN_WIDTH / 2 - 80 * PRATIO;
-    color(race.track.skyColour != 1 ? 3 : 12);
 
     // Find player car
     if (not race.isPracticeMode) {
