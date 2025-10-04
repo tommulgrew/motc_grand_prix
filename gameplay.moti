@@ -20,6 +20,8 @@ void updatePlayerSuspension();
 void moveCar(Car car);
 void doCarCollisions();
 void setRaceMode(int mode);
+void setupRaceAfterQualifier();
+void startEngineSfx();
 
 // External
 void applyRaceResults(Car[] raceResults);
@@ -33,8 +35,7 @@ void initRace() {
     initCars();
 
     // Start looped engine soundeffects
-    playsfx(gameSfx.engine1, 0, true);
-    playsfx(gameSfx.engine2, 1, true, 0.4);
+    startEngineSfx();
 
     if (race.isPracticeMode) {
         setRaceMode(RACEMODE_RACING);
@@ -143,10 +144,15 @@ void updateGame(UIInput uiInput) {
         // Ignore input for 3 seconds. 
         // After that, pressing button returns to menu
         if (raceSequenceTimer > 90 and uiInput.btnPressed[UI_SELECT]) {
-            if (not race.isDemo) {
-                applyRaceResults(raceResults);
+            if (race.isQualificationLap) {
+                setupRaceAfterQualifier();
             }
-            setGameMode(GAMEMODE_MENU);
+            else {
+                if (not race.isDemo) {
+                    applyRaceResults(raceResults);
+                }
+                setGameMode(GAMEMODE_MENU);
+            }
         }
     }
 
@@ -267,6 +273,18 @@ void resetPlayer() {
     player.aiState.aiParams = player.aiState.baseAIParams;
 }
 
+void layoutCars(Car[] cars) {
+    // Layout cars in grid
+    for (int i = 0; i < cars.length; i++) {
+        Car car = cars[i];
+        int carPositionIndex = race.isQualificationLap ? 0 : i;
+        car.pos = new Vec {
+            x = (carPositionIndex%2 - 0.5) * 3,
+            z = carPositionIndex * 6 + 0.0001      // +0.0001 to workaround render issue when cars are exactly integer aligned
+        };
+    }
+}
+
 void initCars() {
 
     // Create car arrays
@@ -297,18 +315,41 @@ void initCars() {
         leaderboard.add(car);
     }
 
-    // Layout cars in grid
-    for (int i = 0; i < allCars.length; i++) {
-        Car car = allCars[i];
-        int carPositionIndex = race.isQualificationLap ? 0 : i;
-        car.pos = new Vec {
-            x = (carPositionIndex%2 - 0.5) * 3,
-            z = carPositionIndex * 6 + 0.0001      // +0.0001 to workaround render issue when cars are exactly integer aligned
-        };
-    }
+    layoutCars(allCars);
 
     // Sort car arrays
     sortCars(player.pos.z);
+}
+
+void setupRaceAfterQualifier() {
+
+    // Must clear qualification lap flag before laying out cars    
+    race.isQualificationLap = false;
+
+    // Reset cars
+    for (Car car : allCars) {
+        car.vel = 0;
+        car.xd = 0;
+        car.input = new CarInput;
+        car.race = new CarRaceState;        
+    }
+
+    // Layout cars in grid
+    // raceResults has cars in first-to-last order
+    // Car layout routine requires last-to-first order
+    Car[] layoutOrder = new Car[0];
+    for (int i = raceResults.length - 1; i >= 0; i--) {
+        layoutOrder.add(raceResults[i]);        
+    }
+    layoutCars(layoutOrder);
+    sortCars(player.pos.z);
+    
+    // Clear race results
+    raceResults = new Car[0];
+
+    // Switch to race mode
+    setRaceMode(RACEMODE_PRERACE);
+    startEngineSfx();
 }
 
 void sortCars(float z) {
@@ -836,8 +877,16 @@ void setRaceMode(int mode) {
         }
 
         // Setup for finish line camera
-        stopsfx();    
-        removeCar(allCars, player);
-        removeCar(sortedCars, player);
+        stopsfx(); 
+
+        if (not race.isQualificationLap) {  
+            removeCar(allCars, player);
+            removeCar(sortedCars, player);
+        }
     }
+}
+
+void startEngineSfx() {
+    playsfx(gameSfx.engine1, 0, true);
+    playsfx(gameSfx.engine2, 1, true, 0.4);
 }
