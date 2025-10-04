@@ -111,10 +111,10 @@ CameraInfo getCamera() {
     if (raceMode = RACEMODE_RESULTS) {
 
         // Race results camera
-        Vec pos = new Vec { y = -2, z = world.length + race.track.finishLineDistance };
+        Vec pos = new Vec { y = -1.5, z = world.length + race.track.finishLineDistance - 30 };
         cam = new CameraInfo {
             pos = pos,
-            pitch = -0.25,
+            pitch = -0.3,
             segmentIndex = getSegmentIndex(pos.z)
         };
         clipBottom = SCREEN_HEIGHT;
@@ -319,7 +319,7 @@ void drawCar(Transform T) {
 
 }
 
-void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
+void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs, CameraInfo cam) {
 
     // Next car from sortedCars to draw
     int carIndex = 0;
@@ -439,7 +439,7 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
             }
 
             if (not race.isQualificationLap) {
-                float segRelZ = screenSeg.zIndex - player.pos.z;
+                float segRelZ = screenSeg.zIndex - cam.pos.z;
                 segRelZ -= floor(segRelZ / world.length) * world.length;
                 while (carIndex < sortedCars.length and sortedCars[carIndex].relZ >= segRelZ) {
                     Car car = sortedCars[carIndex];
@@ -461,9 +461,10 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
 }
 
 void drawWorld(CameraInfo cam, int drawDistance) {
+    sortCars(cam.pos.z);
     ScreenSpaceSegment[] screenSegs = getScreenSpaceSegments(cam, drawDistance);
     drawHorizon(screenSegs, cam);
-    drawScreenSpaceSegments(screenSegs);
+    drawScreenSpaceSegments(screenSegs, cam);
     
     clipregion();       // Clear clip region
 }
@@ -754,9 +755,9 @@ void drawPreRaceText(string text) {
 void drawResults() {
     
     int BOARD_WIDTH = (race.isQualificationLap ? 150 : 250) * PRATIO;
-    int BOARD_HEIGHT = 125 * PRATIO;
-    int BOARD_Y = 10 * PRATIO;
-    int RESULTS_Y = BOARD_Y + 34 * PRATIO;
+    int BOARD_HEIGHT = 115 * PRATIO;
+    int BOARD_Y = 5 * PRATIO;
+    int RESULTS_Y = BOARD_Y + 29 * PRATIO;
     int HEADING_Y = RESULTS_Y - 8 * PRATIO;
     int CAR_NAME_X = SCREEN_WIDTH / 2 - BOARD_WIDTH / 2 + 10 * PRATIO;
     int RACE_TIME_X = CAR_NAME_X + 115 * PRATIO;
@@ -775,7 +776,7 @@ void drawResults() {
         BOARD_Y + BOARD_HEIGHT);
 
     if (not race.isQualificationLap) {
-        fancyPrint("Final Standings", 10, BOARD_Y + 12, -1, 1, 5);
+        fancyPrint("Final Standings", 10, BOARD_Y + 7 * PRATIO, -1, 1, 5);
         fancyPrint("Race Time", 7, HEADING_Y, RACE_TIME_X, 1, 5);
         fancyPrint("Best Lap", 7, HEADING_Y, LAP_TIME_X, 1, 5);
     }

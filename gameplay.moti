@@ -44,8 +44,6 @@ void initRace() {
     else {
         setRaceMode(RACEMODE_PRERACE);
     }
-
-    // setRaceMode(RACEMODE_RESULTS);     // TESTING
 }
 
 void updatePlayerInput() {
@@ -171,15 +169,6 @@ void updateRace() {
 
     if (!race.isQualificationLap) {         // Cars cannot collide with each other during qualification lap
         doCarCollisions();
-    }
-
-    // Sort cars
-    // TODO: Should this be part of the drawing 
-    if (raceMode = RACEMODE_RESULTS) {
-        sortCars(0.0001);                    // Camera placed at z=0 when displaying race results
-    }
-    else {
-        sortCars(player.pos.z);
     }
 
     // Collision sfx timer
@@ -317,9 +306,6 @@ void initCars() {
     }
 
     layoutCars(allCars);
-
-    // Sort car arrays
-    sortCars(player.pos.z);
 }
 
 void setupRaceAfterQualifier() {
@@ -337,7 +323,6 @@ void setupRaceAfterQualifier() {
 
     // Layout cars in grid, in race result order
     layoutCars(raceResults);
-    sortCars(player.pos.z);
     
     // Clear race results
     raceResults = new Car[0];
