@@ -104,6 +104,10 @@ Done
         - DONE Show race time only
         - DONE Don't show car in front/behind
     - DONE Fix lap bell issue when race starts
+- DONE 640x480 issues
+    - DONE - Fix pause menu vertical position
+    - DONE - Fix main menu vertical position
+    - DONE Car wheels are displayed in incorrect position
     
 
 To do
@@ -115,11 +119,7 @@ To do
 - Fade transitions
 - Menu music
 - Title screen graphics
-- 640x480 issues
-    - DONE - Fix pause menu vertical position
-    - DONE - Fix main menu vertical position
-    - DONE Car wheels are displayed in incorrect position
-
+- Player car colour in results view
 
 - MotC 
     - Clear unused screen space after resolution switch.
