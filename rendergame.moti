@@ -129,7 +129,7 @@ CameraInfo getPlayerCamera() {
     cam.pos += PLAYER_CAMERA_OFFSET;
 
     // Convert pitch from segment relative to absolute
-    WorldSegment segment = world[cam.segmentIndex];
+    WorldSegment segment = getSegment(cam.segmentIndex);
     cam.pitch += segment.pitch;
 
     return cam;
@@ -139,7 +139,7 @@ ScreenSpaceSegment[] getScreenSpaceSegments(CameraInfo cam, int drawDistance) {
     ScreenSpaceSegment[] screenSegs = new ScreenSpaceSegment[0];
 
     // Current world segment
-    WorldSegment cameraSegment = world[cam.segmentIndex];
+    WorldSegment cameraSegment = getSegment(cam.segmentIndex);
 
     // Road drawing cursor
     float turn = -cam.turn, pitch = cameraSegment.pitch - cam.pitch - CAMERA_TILT;
@@ -151,8 +151,8 @@ ScreenSpaceSegment[] getScreenSpaceSegments(CameraInfo cam, int drawDistance) {
 
     // Generate screen segment
     for (int i = 0; i < drawDistance; i++) {
-        int segmentZIndex = (cam.segmentIndex + i) % world.length;
-        WorldSegment segment = world[segmentZIndex];
+        int segmentZIndex = getSegmentIndex(cam.segmentIndex + i);
+        WorldSegment segment = getSegment(segmentZIndex);
         pitch = segment.pitch - cam.pitch - CAMERA_TILT;
         if (pos.z >= NEAR_Z) {
             Vec horizonPt = project(pos);
@@ -602,7 +602,7 @@ void drawCockpit() {
 void drawMirror() {
 
     int MIRROR_Y = 36 * PRATIO;
-    int MIRROR_W = 160 * PRATIO;
+    int MIRROR_W = 150 * PRATIO;
     int MIRROR_H = 28 * PRATIO;
 
     float saveVanishY = vanishY;    
@@ -687,7 +687,7 @@ void drawHud() {
         return;
     }
 
-    int CAR_NAME_X = SCREEN_WIDTH / 2 - 80 * PRATIO;
+    int CAR_NAME_X = SCREEN_WIDTH / 2 - 75 * PRATIO;
 
     // Find player car
     if (not race.isPracticeMode) {
@@ -716,8 +716,11 @@ void drawHud() {
     print("Lap", SCREEN_WIDTH - 45 * PRATIO, 4 * PRATIO);
 
     // Times
-    cursor(4 * PRATIO, 20 * PRATIO);
-    if (not race.isPracticeMode) {
+    if (race.isPracticeMode) {
+        cursor(4 * PRATIO, 4 * PRATIO);
+    }
+    else {
+        cursor(4 * PRATIO, 20 * PRATIO);
         print("Race" + formatTime(player.race.raceTime));
     }
     if (player.race.currentLapTime > 0) {

@@ -43,12 +43,17 @@ TrackCurve[] curves;
 
 // Routines
 
-float getWorldZ(float z) {
-    return z - floor(z / world.length) * world.length;
+int getSegmentIndex(int z) {
+    // Note: z should never be negative!
+    return z % world.length;
 }
 
-int getSegmentIndex(float z) {
-    return floor(getWorldZ(z));
+float getWorldZ(float z) {    
+    return getSegmentIndex(z) + frac(z);
+}
+
+WorldSegment getSegment(int z) {
+    return world[getSegmentIndex(z)];
 }
 
 Vec segmentRelativePos(Vec pos) {
@@ -56,7 +61,7 @@ Vec segmentRelativePos(Vec pos) {
 }
 
 int getLap(float z) {
-    return max(floor((z - race.track.finishLineDistance) / world.length), 0) + 1;
+    return max(floor((z - race.track.finishLineDistance) / world.length), 1);
 }
 
 void placeItem(Model model, Vec pos, int length = 0, int ref = 0) {
@@ -89,7 +94,7 @@ void placeItem(Model model, Vec pos, int length = 0, int ref = 0) {
     // Attach to world segments
     int effectiveLength = length > 0 ? length : model.segments.length;
     for (int i = 0; i < effectiveLength; i++) {
-        WorldSegment segment = world[(z + i) % world.length];
+        WorldSegment segment = getSegment(z + i);
         segment.modelInstances.add(instance);
     }
 }
@@ -289,7 +294,7 @@ void generateAIX(Track track) {
         float x = vert.x;
         float xd = (nextVert.x - vert.x) / deltaZ;
         for (int j = 0; j < deltaZ; j++) {
-            WorldSegment w = world[(toint(vert.z) + j) % world.length];
+            WorldSegment w = getSegment(toint(vert.z) + j);
             if (w.hasAiX) {
                 // Sometimes cornering lines can overlap.
                 // Average them out when they do.
@@ -334,7 +339,7 @@ void generateAIVelocity(Track track) {
                 float v = z < c.length / 2 ? maxv : maxv * 1.1;
 
                 // Record against segment
-                WorldSegment segment = world[(z + world.length) % world.length];
+                WorldSegment segment = getSegment(z + world.length);
                 segment.aiVelocity = min(segment.aiVelocity, v);
             }
         }
@@ -345,8 +350,8 @@ void generateAIVelocity(Track track) {
     int prevIndex = 0;
     float v = 1000;
     while (i >= 0) {
-        int segmentIndex = floor(i);
-        WorldSegment segment = world[segmentIndex % world.length];
+        int segmentIndex = getSegmentIndex(i);
+        WorldSegment segment = getSegment(segmentIndex);
         if (segmentIndex != prevIndex) {
             v = min(segment.aiVelocity, v);
             segment.aiVelocity = v;

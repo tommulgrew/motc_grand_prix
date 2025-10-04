@@ -198,7 +198,7 @@ void updateRaceRules() {
 
             // Cars start behind the finish line. 
             // Lap timer starts once cars pass the line
-            if (car.pos.z > race.track.finishLineDistance) {
+            if (car.pos.z > world.length + race.track.finishLineDistance) {
                 car.race.currentLapTime++;
             }
 
@@ -281,7 +281,7 @@ void layoutCars(Car[] cars) {
         int carPositionIndex = race.isQualificationLap ? 0 : i;
         car.pos = new Vec {
             x = (carPositionIndex%2 - 0.5) * 3,
-            z = carPositionIndex * 6 + 0.0001      // +0.0001 to workaround render issue when cars are exactly integer aligned
+            z = race.track.finishLineDistance + world.length - carPositionIndex * 6 - 9.9999
         };
     }
 }
@@ -335,14 +335,8 @@ void setupRaceAfterQualifier() {
         car.race = new CarRaceState { lap = 1 };        
     }
 
-    // Layout cars in grid
-    // raceResults has cars in first-to-last order
-    // Car layout routine requires last-to-first order
-    Car[] layoutOrder = new Car[0];
-    for (int i = raceResults.length - 1; i >= 0; i--) {
-        layoutOrder.add(raceResults[i]);        
-    }
-    layoutCars(layoutOrder);
+    // Layout cars in grid, in race result order
+    layoutCars(raceResults);
     sortCars(player.pos.z);
     
     // Clear race results
@@ -432,7 +426,7 @@ void updateAIInput(Car car) {
     float lookAheadDist = max(param.lookAhead * car.vel, 1);
     WorldSegment lookaheadSegment;
     for (int i = zIndex; i <= zIndex + floor(lookAheadDist); i++) {
-        lookaheadSegment = world[i % world.length];
+        lookaheadSegment = getSegment(i);
         xOffset += turn;
         turn += lookaheadSegment.turn;
     }
@@ -549,7 +543,7 @@ void updateAIInput(Car car) {
 
     // Get target velocity
     // Start with max velocity for current track segment
-    WorldSegment segment = world[zIndex % world.length];
+    WorldSegment segment = getSegment(zIndex);
     float trackMaxVelocity = segment.aiVelocity;
 
     // Apply AI parameters
@@ -759,17 +753,17 @@ void moveCar(Car car) {
     }
 
     // Move car forwards
-    float zIndex = floor(car.pos.z);
+    int zIndex = floor(car.pos.z);
     car.pos += new Vec { 
         x = car.xd  * VELOCITY_FACTOR,
         z = car.vel * VELOCITY_FACTOR
     };
 
     // Account for moving onto new segments
-    while (floor(car.pos.z) > zIndex) {
+    while (car.pos.z >= zIndex + 1) {
 
         // Get turn for current segment
-        float turn = world[toint(zIndex) % world.length].turn;
+        float turn = getSegment(zIndex).turn;
 
         // Adjust car turn and xd
         car.turn -= turn;
@@ -781,12 +775,10 @@ void moveCar(Car car) {
         zIndex++;
     }
 
-    // TODO: Laps, game rules
-
     // Barrier collisions
-    WorldSegment seg = world[toint(zIndex) % world.length];
-    WorldSegment nextSeg = world[toint(zIndex + 1) % world.length];
-    float zOffset = car.pos.z - floor(car.pos.z);
+    WorldSegment seg = getSegment(zIndex);
+    WorldSegment nextSeg = getSegment(zIndex + 1);
+    float zOffset = frac(car.pos.z);
     if (car.vel > 0) {
         float left  = lerp(seg.left, nextSeg.left, zOffset)   + CAR_WIDTH;
         float right = lerp(seg.right, nextSeg.right, zOffset) - CAR_WIDTH;
