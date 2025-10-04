@@ -211,7 +211,8 @@ void updateRaceRules() {
                 if (car = player) playsfx(gameSfx.lapBell);
 
                 // Race complete?
-                if (not race.isPracticeMode and lap > race.laps) {
+                int totalLaps = race.isQualificationLap ? 1 : race.laps;
+                if (not race.isPracticeMode and lap > totalLaps) {
                     car.race.isFinished = true;
                     raceResults.add(car);
                 }

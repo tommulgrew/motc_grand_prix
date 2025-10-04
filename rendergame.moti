@@ -90,7 +90,7 @@ void drawGame() {
     }
     else if (raceMode = RACEMODE_POSTRACE and not race.isDemo) {
         int TEXT_Y = SCREEN_HEIGHT * 0.2;
-        fancyPrint("Race Finished", 6, TEXT_Y, -1, 2, 5);
+        fancyPrint(race.isQualificationLap ? "Qualification Finished" : "Race Finished", 6, TEXT_Y, -1, 2, 5);
         if (raceSequenceTimer > 90 and raceSequenceTimer % 30 < 15) {
             fancyPrint("Press button to continue", 6, TEXT_Y + 20, -1, 1, 5);
         }
@@ -725,7 +725,7 @@ void drawPreRaceText(string text) {
 
 void drawResults() {
     
-    int BOARD_WIDTH = 250 * PRATIO;
+    int BOARD_WIDTH = (race.isQualificationLap ? 150 : 250) * PRATIO;
     int BOARD_HEIGHT = 125 * PRATIO;
     int BOARD_Y = 10 * PRATIO;
     int RESULTS_Y = BOARD_Y + 34 * PRATIO;
@@ -745,10 +745,15 @@ void drawResults() {
         BOARD_Y,
         SCREEN_WIDTH/2 + BOARD_WIDTH/2,
         BOARD_Y + BOARD_HEIGHT);
-    fancyPrint("Final Standings", 10, BOARD_Y + 12, -1, 1, 5);
 
-    fancyPrint("Race Time", 7, HEADING_Y, RACE_TIME_X, 1, 5);
-    fancyPrint("Best Lap", 7, HEADING_Y, LAP_TIME_X, 1, 5);
+    if (not race.isQualificationLap) {
+        fancyPrint("Final Standings", 10, BOARD_Y + 12, -1, 1, 5);
+        fancyPrint("Race Time", 7, HEADING_Y, RACE_TIME_X, 1, 5);
+        fancyPrint("Best Lap", 7, HEADING_Y, LAP_TIME_X, 1, 5);
+    }
+    else {
+        fancyPrint("Qualification Results", 10, BOARD_Y + 12, -1, 1, 5);    
+    }
 
     int bestLap = 999999;
     int bestLapI = -1;
@@ -765,9 +770,11 @@ void drawResults() {
         color(car = player ? 7 : 6);
         int y = RESULTS_Y + i * 10 * PRATIO;
         drawCarName(car, i, CAR_NAME_X, y);
-        color(5);
-        print(formatTime(car.race.raceTime, "0"), RACE_TIME_X, y + 2 * PRATIO);
-        color(i = bestLapI ? 7 : 5);
-        print(formatTime(car.race.bestLapTime, "0"), LAP_TIME_X, y + 2 * PRATIO);
+        if (not race.isQualificationLap) {
+            color(5);
+            print(formatTime(car.race.raceTime, "0"), RACE_TIME_X, y + 2 * PRATIO);
+            color(i = bestLapI ? 7 : 5);
+            print(formatTime(car.race.bestLapTime, "0"), LAP_TIME_X, y + 2 * PRATIO);
+        }
     }    
 }
