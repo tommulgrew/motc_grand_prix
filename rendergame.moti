@@ -44,24 +44,13 @@ void drawHud();
 void drawPreRaceText(string text);
 void drawResults();
 
+CameraInfo getCamera();
 CameraInfo getPlayerCamera();
 
 void drawGame() {
 
-    // Get camera position
-    CameraInfo cam;
-    if (raceMode = RACEMODE_RESULTS) {
-        cam = new CameraInfo {
-            pos = new Vec { y = -2 },
-            pitch = -0.25
-        };
-        clipBottom = SCREEN_HEIGHT;
-    }
-    else {
-        cam = getPlayerCamera();   
-        clipBottom = CAR_CLIP_BOTTOM; 
-    }
-
+    // Draw world
+    CameraInfo cam = getCamera();
     drawWorld(cam, gameConfig.drawDistance);
 
     if (raceMode != RACEMODE_RESULTS) {
@@ -115,6 +104,29 @@ void drawGame() {
             fancyPrint("Press button to quit", 9, TEXT_Y + 20, -1, 1, 5);
         }
     }
+}
+
+CameraInfo getCamera() {
+    CameraInfo cam;
+    if (raceMode = RACEMODE_RESULTS) {
+
+        // Race results camera
+        Vec pos = new Vec { y = -2, z = world.length + race.track.finishLineDistance };
+        cam = new CameraInfo {
+            pos = pos,
+            pitch = -0.25,
+            segmentIndex = getSegmentIndex(pos.z)
+        };
+        clipBottom = SCREEN_HEIGHT;
+    }
+    else {
+
+        // Player camera
+        cam = getPlayerCamera();   
+        clipBottom = CAR_CLIP_BOTTOM; 
+    }
+
+    return cam;
 }
 
 CameraInfo getPlayerCamera() {
