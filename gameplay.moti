@@ -161,7 +161,10 @@ void updateRace() {
         updatePlayer();
     }
     updateAICars();
-    doCarCollisions();
+
+    if (!race.isQualificationLap) {         // Cars cannot collide with each other during qualification lap
+        doCarCollisions();
+    }
 
     // Sort cars
     // TODO: Should this be part of the drawing 
@@ -296,9 +299,10 @@ void initCars() {
     // Layout cars in grid
     for (int i = 0; i < allCars.length; i++) {
         Car car = allCars[i];
+        int carPositionIndex = race.isQualificationLap ? 0 : i;
         car.pos = new Vec {
-            x = (i%2 - 0.5) * 3,
-            z = i * 6 + 0.0001      // +0.0001 to workaround render issue when cars are exactly integer aligned
+            x = (carPositionIndex%2 - 0.5) * 3,
+            z = carPositionIndex * 6 + 0.0001      // +0.0001 to workaround render issue when cars are exactly integer aligned
         };
     }
 
@@ -382,47 +386,49 @@ void updateAIInput(Car car) {
     float aiXDelta = 0.15;              // How hard to steer. Increases if avoiding a potential collision.
     
     // Avoid other vehicles
-    for (Car otherCar : allCars) {
-        if (otherCar = car) continue;
-        float deltaX = otherCar.pos.x - car.pos.x;
-        float zDist = otherCar.pos.z - car.pos.z;               // Distance to back of other car
-        zDist -= floor(zDist / world.length) * world.length;
-        zDist -= CAR_LENGTH;
-        float deltaVel = otherCar.vel - car.vel;
-        float closeZDist = zDist - 3.85;                       // Distance to "close" following distance
+    if (not race.isQualificationLap) {
+        for (Car otherCar : allCars) {
+            if (otherCar = car) continue;
+            float deltaX = otherCar.pos.x - car.pos.x;
+            float zDist = otherCar.pos.z - car.pos.z;               // Distance to back of other car
+            zDist -= floor(zDist / world.length) * world.length;
+            zDist -= CAR_LENGTH;
+            float deltaVel = otherCar.vel - car.vel;
+            float closeZDist = zDist - 3.85;                       // Distance to "close" following distance
 
-        // Catching up to car?
-        float timeUntilClose = 1000, timeUntilHit = 1000;
-        if (deltaVel < 0) {
-            // Time to catch up to other car
-            timeUntilClose = closeZDist > 0 ? closeZDist / -(deltaVel - 0.01) : 0;
-            timeUntilHit   = zDist > 0      ? zDist      / -(deltaVel - 0.01) : 0;
-        }
-
-        // Avoid all cars that will be "close" in 2 seconds
-        if (timeUntilClose < 60) {
-
-            // Add car position to points array
-            pts.add(otherCar.pos.x);
-
-            // Impending collision (in 2 seconds or less)?
-            if (abs(deltaX) < CAR_WIDTH and timeUntilHit < 60) {
-
-                // Reduce target velocity to other car's velocity, to ensure
-                // car will brake if necessary.
-                targetVelocity = min(targetVelocity, otherCar.vel);
+            // Catching up to car?
+            float timeUntilClose = 1000, timeUntilHit = 1000;
+            if (deltaVel < 0) {
+                // Time to catch up to other car
+                timeUntilClose = closeZDist > 0 ? closeZDist / -(deltaVel - 0.01) : 0;
+                timeUntilHit   = zDist > 0      ? zDist      / -(deltaVel - 0.01) : 0;
             }
-        }
 
-        // If car is next to us, but we are in front, allow
-        // room on whichever side they are on, to avoid a collision
-        if (zDist <= 0 or zDist > world.length - CAR_LENGTH * 2) {
-            // aiXDelta = 0.25;
-            if (otherCar.pos.x < car.pos.x) {
-                limitLeft += AI_CAR_WIDTH;
+            // Avoid all cars that will be "close" in 2 seconds
+            if (timeUntilClose < 60) {
+
+                // Add car position to points array
+                pts.add(otherCar.pos.x);
+
+                // Impending collision (in 2 seconds or less)?
+                if (abs(deltaX) < CAR_WIDTH and timeUntilHit < 60) {
+
+                    // Reduce target velocity to other car's velocity, to ensure
+                    // car will brake if necessary.
+                    targetVelocity = min(targetVelocity, otherCar.vel);
+                }
             }
-            else {
-                limitRight -= AI_CAR_WIDTH;
+
+            // If car is next to us, but we are in front, allow
+            // room on whichever side they are on, to avoid a collision
+            if (zDist <= 0 or zDist > world.length - CAR_LENGTH * 2) {
+                // aiXDelta = 0.25;
+                if (otherCar.pos.x < car.pos.x) {
+                    limitLeft += AI_CAR_WIDTH;
+                }
+                else {
+                    limitRight -= AI_CAR_WIDTH;
+                }
             }
         }
     }

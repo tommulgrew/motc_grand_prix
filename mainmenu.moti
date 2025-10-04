@@ -128,6 +128,9 @@ void updateMainMenu(UIInput input) {
                         raceParams.aiCarRoster = makeAICarRoster(AI_CAR_COUNT);
                     }
                 }
+
+                raceParams.isQualificationLap = gameConfig.raceType != RACETYPE_PRACTICE;
+
                 startRace(raceParams);
             }
             else if (action.itemID = MAIN_MENU_TOURNAMENT_NEW) {

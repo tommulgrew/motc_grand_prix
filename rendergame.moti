@@ -66,7 +66,9 @@ void drawGame() {
 
     if (raceMode != RACEMODE_RESULTS) {
         drawCockpit();
-        drawMirror();
+        if (not race.isQualificationLap) {
+            drawMirror();
+        }
     }
     if (raceMode = RACEMODE_PRERACE or raceMode = RACEMODE_RACING) {
         drawHud();
@@ -418,21 +420,23 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs) {
                 }                
             }
 
-            float segRelZ = screenSeg.zIndex - player.pos.z;
-            segRelZ -= floor(segRelZ / world.length) * world.length;
-            while (carIndex < sortedCars.length and sortedCars[carIndex].relZ >= segRelZ) {
-                Car car = sortedCars[carIndex];
-                if (car.relZ < segRelZ + 1 && car != player) {
-                    colmap(aiCarPalettes[car.carIndex]);
-                    drawCar(
-                        new Transform {
-                            translate = screenSeg.T * segmentRelativePos(car.pos),
-                            skewX = screenSeg.T.skewX + car.turn,
-                            skewY = screenSeg.T.skewY + car.pitch
-                        });
-                    colmap();
+            if (not race.isQualificationLap) {
+                float segRelZ = screenSeg.zIndex - player.pos.z;
+                segRelZ -= floor(segRelZ / world.length) * world.length;
+                while (carIndex < sortedCars.length and sortedCars[carIndex].relZ >= segRelZ) {
+                    Car car = sortedCars[carIndex];
+                    if (car.relZ < segRelZ + 1 && car != player) {
+                        colmap(aiCarPalettes[car.carIndex]);
+                        drawCar(
+                            new Transform {
+                                translate = screenSeg.T * segmentRelativePos(car.pos),
+                                skewX = screenSeg.T.skewX + car.turn,
+                                skewY = screenSeg.T.skewY + car.pitch
+                            });
+                        colmap();
+                    }
+                    carIndex++;
                 }
-                carIndex++;
             }
         }
     }

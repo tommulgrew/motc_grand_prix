@@ -10,6 +10,11 @@ struct RaceParams {
     bool isPracticeMode;
     int playerColour;           // Index into playerCarPalettes array
     bool isDemo;
+    bool isQualificationLap;
+        // Qualification laps are implemented as a 1 lap race where:
+        //  * All cars start from the same position
+        //  * Cars cannot see each other
+        //  * Cars cannot collide with each other
 }
 
 struct FloatRange {
