@@ -9,18 +9,19 @@
 const int PAUSE_RESUME = 1;
 const int PAUSE_CONTROLLER = 2;
 const int PAUSE_QUIT = 3;
-const int PAUSE_CAR_COLOUR = 9;
-const int PAUSE_RACING_LINE = 10;
-const int PAUSE_GRAPHICS = 11;
+const int PAUSE_CAR_COLOUR = 4;
+const int PAUSE_RACING_LINE = 5;
+const int PAUSE_GRAPHICS = 6;
+const int PAUSE_SKIP_QUALIFIER = 7;
 
-const int PAUSE_CONTROLLER_DEADZONE = 4;
-const int PAUSE_CONTROLLER_SMOOTHING = 5;
-const int PAUSE_CONTROLLER_CURVE = 6;
-const int PAUSE_CONTROLLER_FACTOR = 7;
-const int PAUSE_CONTROLLER_BACK = 8;
+const int PAUSE_CONTROLLER_DEADZONE = 8;
+const int PAUSE_CONTROLLER_SMOOTHING = 9;
+const int PAUSE_CONTROLLER_CURVE = 10;
+const int PAUSE_CONTROLLER_FACTOR = 11;
+const int PAUSE_CONTROLLER_BACK = 12;
 
-const int PAUSE_GRAPHICS_DRAWDIST = 12;
-const int PAUSE_GRAPHICS_RESOLUTION = 13;
+const int PAUSE_GRAPHICS_DRAWDIST = 13;
+const int PAUSE_GRAPHICS_RESOLUTION = 14;
 
 // Pause submenu
 
@@ -104,6 +105,10 @@ void updatePauseMenu(UIInput input) {
                     pauseMenu.subMenu = PAUSE_MENU_MAIN;
                     pauseMenu.state = new MenuState;
                 }
+                else if (action.itemID = PAUSE_SKIP_QUALIFIER) {
+                    closePauseMenu();
+                    skipQualificationLap();
+                }
             }
             else if (action.menuAction = MENU_ACTION_CHANGE) {
                 if (action.itemID = PAUSE_CAR_COLOUR) {
@@ -155,14 +160,21 @@ void drawPauseMenu() {
 
 MenuItem[] getPauseMenuItems() {
     if (pauseMenu.subMenu = PAUSE_MENU_MAIN) {
-        return new MenuItem[] {
-            new MenuItem { id = PAUSE_RESUME, text = "Resume" },
-            new MenuItem { id = PAUSE_RACING_LINE, text = "Racing line: " + (gameConfig.showRacingLine ? "ON" : "OFF" ) },
-            new MenuItem { id = PAUSE_CAR_COLOUR, text = "Car colour: " + (gameConfig.playerColour + 1) },
-            new MenuItem { id = PAUSE_CONTROLLER, text = "Controller options..." },
-            new MenuItem { id = PAUSE_GRAPHICS, text = "Graphics options..." },
-            new MenuItem { id = PAUSE_QUIT, text = "Quit race", confirm = true }
+        MenuItem[] items = new MenuItem[] {
+            new MenuItem { id = PAUSE_RESUME, text = "Resume" }
         };
+
+        if (race.isQualificationLap and (raceMode = RACEMODE_PRERACE or raceMode = RACEMODE_RACING)) {
+            items.add(new MenuItem { id = PAUSE_SKIP_QUALIFIER, text = "Skip qualification lap" });
+        }
+
+        items.add(new MenuItem { id = PAUSE_RACING_LINE, text = "Racing line: " + (gameConfig.showRacingLine ? "ON" : "OFF" ) });
+        items.add(new MenuItem { id = PAUSE_CAR_COLOUR, text = "Car colour: " + (gameConfig.playerColour + 1) });
+        items.add(new MenuItem { id = PAUSE_CONTROLLER, text = "Controller options..." });
+        items.add(new MenuItem { id = PAUSE_GRAPHICS, text = "Graphics options..." });
+        items.add(new MenuItem { id = PAUSE_QUIT, text = "Quit race", confirm = true });
+
+        return items;
     }
     else if (pauseMenu.subMenu = PAUSE_MENU_CONTROLLER) {
         return new MenuItem[] {

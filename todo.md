@@ -88,27 +88,27 @@ Done
     - Generate roster
     - Collect results
     - Persist roster and results
-
-To do
-=====
-
-- Pause menu
-    - Graphics settings
+- DONE Pause menu
+    - DONE Graphics settings
         - DONE Screen resolution
-- Qualification lap
+- DONE Qualification lap
     - DONE Single lap
     - DONE No collisions
     - DONE Don't draw AI cars
     - DONE Hide cars from AI cars
-    - Player can skip if necessary from pause menu (will be placed last)
+    - DONE Player can skip if necessary from pause menu (will be placed last)
     - DONE Use results of qualification lap to order starting grid for race
-    - Show "Qualifying Lap" in pre-race
-    - HUD
-        - Don't show place
-        - Show race time only
-        - Don't show car in front/behind
+    - DONE Show "Qualifying Lap" in pre-race
+    - DONE HUD
+        - DONE Don't show place
+        - DONE Show race time only
+        - DONE Don't show car in front/behind
     - DONE Fix lap bell issue when race starts
     
+
+To do
+=====
+
 - Release MotC
 - Fix car shuddering bug when displaying race results
 - Fix car flickering when beside player

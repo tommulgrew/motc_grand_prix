@@ -21,6 +21,7 @@ void moveCar(Car car);
 void doCarCollisions();
 void setRaceMode(int mode);
 void setupRaceAfterQualifier();
+void skipQualificationLap();
 void startEngineSfx();
 
 // External
@@ -350,6 +351,23 @@ void setupRaceAfterQualifier() {
     // Switch to race mode
     setRaceMode(RACEMODE_PRERACE);
     startEngineSfx();
+}
+
+void skipQualificationLap() {
+
+    // Add AI cars to current race results
+    for (Car car : leaderboard) {
+        if (car != player && not car.race.isFinished) {
+            car.race.isFinished = true;
+            raceResults.add(car);
+        }
+    }
+
+    // Add player in last place
+    raceResults.add(player);
+
+    // Setup for race
+    setupRaceAfterQualifier();
 }
 
 void sortCars(float z) {
