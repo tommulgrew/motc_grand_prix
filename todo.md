@@ -108,13 +108,12 @@ Done
     - DONE - Fix pause menu vertical position
     - DONE - Fix main menu vertical position
     - DONE Car wheels are displayed in incorrect position
+- DONE Fix car shuddering bug when displaying race results
     
 
 To do
 =====
 
-- Release MotC
-- Fix car shuddering bug when displaying race results
 - Fix car flickering when beside player
 - Fade transitions
 - Menu music
@@ -125,3 +124,4 @@ To do
     - Clear unused screen space after resolution switch.
     - Weird upscaling glitch when using `SCALE_FIT` scaling mode
     - Can we improve filename display in "Find all references" etc.
+    - Release current version
