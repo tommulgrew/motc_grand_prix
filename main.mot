@@ -2,6 +2,7 @@
 #executable motgp
 #webtemplate driving
 #file assets/textures.png
+#file assets/music/title.ogg
 #file assets/sfx/getready.wav
 #file assets/sfx/go.wav
 #file assets/sfx/lapbell.wav
@@ -66,6 +67,7 @@ void setGameMode(int mode) {
 	if (gameMode != mode) {
 		gameMode = mode;
 		stopsfx();
+		stopmusic();
 		if (gameMode = GAMEMODE_MENU) initMainMenu();
 		else if (gameMode = GAMEMODE_RACE) initRace();
 		else assert(false, "Unknown game mode");

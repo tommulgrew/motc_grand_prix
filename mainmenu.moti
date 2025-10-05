@@ -53,6 +53,7 @@ void initMainMenu() {
         state = new MenuState,
         carPaletteIndex = rnd() * aiCarPalettes.length
     };
+    playmusic("assets/music/title.ogg");
 }
 
 void drawMainMenu() {
@@ -169,7 +170,7 @@ void updateMainMenu(UIInput input) {
             break;
         }
     }
-    if (mainMenu.idleTimer > 30 * 30) {
+    if (mainMenu.idleTimer > 106 * 30) {
         doDemo();
     }
 }

@@ -109,16 +109,16 @@ Done
     - DONE - Fix main menu vertical position
     - DONE Car wheels are displayed in incorrect position
 - DONE Fix car shuddering bug when displaying race results
-    
+- DONE Menu music
+- DONE Player car colour in results view
 
 To do
 =====
 
 - Fix car flickering when beside player
 - Fade transitions
-- Menu music
 - Title screen graphics
-- Player car colour in results view
+- Remaster menu music?
 
 - MotC 
     - Clear unused screen space after resolution switch.
