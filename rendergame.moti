@@ -685,7 +685,7 @@ void drawCarName(int[] palette, string name, int x, int y) {
 
 void drawCarName(Car car, int position, int x, int y) {
     drawCarName(
-        aiCarPalettes[car.carIndex], 
+        car != player ? aiCarPalettes[car.carIndex] : null, 
         (position + 1) + placeText[min(position, 3)] + " " + car.name, 
         x, y);
 }
