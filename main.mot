@@ -71,12 +71,12 @@ while (not quitApp) {
 
 void setGameMode(int mode) {
 	if (gameMode != mode) {
+		stopsfx();
 		if (gameMode != 0) {			// Not just starting game
 			fadeOut(colourPalette);
 		}
-		gameMode = mode;
-		stopsfx();
 		stopmusic();
+		gameMode = mode;
 		if (gameMode = GAMEMODE_MENU) initMainMenu();
 		else if (gameMode = GAMEMODE_RACE) initRace();
 		else assert(false, "Unknown game mode");

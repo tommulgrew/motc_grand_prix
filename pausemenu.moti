@@ -108,6 +108,8 @@ void updatePauseMenu(UIInput input) {
                 else if (action.itemID = PAUSE_SKIP_QUALIFIER) {
                     closePauseMenu();
                     skipQualificationLap();
+                    fadeOut(colourPalette);
+                    isFadeInScheduled = true;
                 }
             }
             else if (action.menuAction = MENU_ACTION_CHANGE) {
@@ -172,7 +174,12 @@ MenuItem[] getPauseMenuItems() {
         items.add(new MenuItem { id = PAUSE_CAR_COLOUR, text = "Car colour: " + (gameConfig.playerColour + 1) });
         items.add(new MenuItem { id = PAUSE_CONTROLLER, text = "Controller options..." });
         items.add(new MenuItem { id = PAUSE_GRAPHICS, text = "Graphics options..." });
-        items.add(new MenuItem { id = PAUSE_QUIT, text = "Quit race", confirm = true });
+        if (race.isPracticeMode) {
+            items.add(new MenuItem { id = PAUSE_QUIT, text = "Quit practice" });
+        }
+        else {
+            items.add(new MenuItem { id = PAUSE_QUIT, text = "Quit race", confirm = true });
+        }
 
         return items;
     }
