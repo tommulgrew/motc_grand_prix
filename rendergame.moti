@@ -725,8 +725,12 @@ void drawHud() {
     // Current lap
     int lap = getLap(player.pos.z);
     string lapText = lap;
-    printScaled(lapText, SCREEN_WIDTH - (lapText.length * 6 + 8) * PRATIO, 4 * PRATIO, 2 * PRATIO);
-    print("Lap", SCREEN_WIDTH - 45 * PRATIO, 4 * PRATIO);
+    int lapXOffset = race.isPracticeMode ? 0 : ((race.laps > 9 ? -12 : -6) - 6) * PRATIO;
+    printScaled(lapText, SCREEN_WIDTH - (lapText.length * 6 + 8) * PRATIO + lapXOffset, 4 * PRATIO, 2 * PRATIO);
+    print("Lap", SCREEN_WIDTH - 45 * PRATIO + lapXOffset, 4 * PRATIO);
+    if (not race.isPracticeMode) {
+        print("/" + race.laps, SCREEN_WIDTH - 2 * PRATIO + lapXOffset, 10 * PRATIO);
+    }
 
     // Times
     if (race.isPracticeMode) {
@@ -806,4 +810,13 @@ void drawResults() {
             print(formatTime(car.race.bestLapTime, "0"), LAP_TIME_X, y + 2 * PRATIO);
         }
     }    
+}
+
+void doFadeOut() {
+    fadeOut(colourPalette, FADE_OUT_TIME);
+}
+
+void fadeTransition() {
+    doFadeOut();
+    isFadeInScheduled = true;
 }

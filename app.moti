@@ -4,3 +4,4 @@ bool isFadeInScheduled;         // Schedule fade in after next frame is rendered
 // Forward declared functions
 
 void setGameMode(int mode);
+void fadeTransition();

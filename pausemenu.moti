@@ -108,8 +108,7 @@ void updatePauseMenu(UIInput input) {
                 else if (action.itemID = PAUSE_SKIP_QUALIFIER) {
                     closePauseMenu();
                     skipQualificationLap();
-                    fadeOut(colourPalette);
-                    isFadeInScheduled = true;
+                    fadeTransition();
                 }
             }
             else if (action.menuAction = MENU_ACTION_CHANGE) {

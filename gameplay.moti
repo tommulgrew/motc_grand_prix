@@ -134,8 +134,7 @@ void updateGame(UIInput uiInput) {
             }
             else if (uiInput.btnPressed[UI_SELECT]) {
                 setRaceMode(RACEMODE_RESULTS);
-                fadeOut(colourPalette);
-                isFadeInScheduled = true;
+                fadeTransition();
             }
         }
     }
@@ -147,8 +146,7 @@ void updateGame(UIInput uiInput) {
         if (raceSequenceTimer > 90 and uiInput.btnPressed[UI_SELECT]) {
             if (race.isQualificationLap) {
                 setupRaceAfterQualifier();
-                fadeOut(colourPalette);
-                isFadeInScheduled = true;
+                fadeTransition();
             }
             else {
                 if (not race.isDemo) {

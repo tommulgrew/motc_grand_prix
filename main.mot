@@ -73,7 +73,7 @@ void setGameMode(int mode) {
 	if (gameMode != mode) {
 		stopsfx();
 		if (gameMode != 0) {			// Not just starting game
-			fadeOut(colourPalette);
+			doFadeOut();
 		}
 		stopmusic();
 		gameMode = mode;
