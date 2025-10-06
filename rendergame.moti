@@ -447,7 +447,7 @@ void drawScreenSpaceSegments(ScreenSpaceSegment[] screenSegs, CameraInfo cam) {
                         colmap(aiCarPalettes[car.carIndex]);
                         drawCar(
                             new Transform {
-                                translate = screenSeg.T * segmentRelativePos(car.pos),
+                                translate = screenSeg.T * (segmentRelativePos(car.pos) + new Vec { z = -0.2 }),
                                 skewX = screenSeg.T.skewX + car.turn,
                                 skewY = screenSeg.T.skewY + car.pitch
                             });

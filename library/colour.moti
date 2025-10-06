@@ -1,0 +1,52 @@
+#include "trig"
+
+Vec vecFromColour(int c) {
+    return new Vec { 
+        x = ((c & 0xff0000) >> 16) / 255.0,
+        y = ((c & 0x00ff00) >> 8)  / 255.0,
+        z = ((c & 0x0000ff) >> 0)  / 255.0
+    };
+}
+
+int colorFromVec(Vec v) {
+    return (toint(v.x * 255) << 16)
+        |  (toint(v.y * 255) << 8)
+        |  (toint(v.z * 255) << 0);
+}
+
+int[] fade(int[] basePal, int targetCol, float amount) {
+    Vec targetVec = vecFromColour(targetCol);
+    int[] fadePal = new int[basePal.length];
+    for (int i = 0; i < basePal.length; i++) {
+        Vec v = vecFromColour(basePal[i]);
+        Vec f = lerp(v, targetVec, amount);
+        fadePal[i] = colorFromVec(f);
+    }
+    return fadePal;
+}
+
+void fadeOut(int[] palette, float period = 1, int fadeCol = 0, int fps = 30) {
+    float timestep = 1.0 / fps;
+    interval(0);
+    for (float t = 0; t < period; t += timestep) {
+        pal(fade(palette, fadeCol, t / period));
+        flip();
+        interval(timestep * 1000);
+    }
+
+    // Ensure fully faded out palette at end
+    pal(fade(palette, fadeCol, 1));
+}
+
+void fadeIn(int[] palette, float period = 1, int fadeCol = 0, int fps = 30) {
+    float timestep = 1.0 / fps;
+    interval(0);
+    for (float t = period; t > 0; t -= timestep) {
+        pal(fade(palette, fadeCol, t / period));
+        flip();
+        interval(timestep * 1000);
+    }
+
+    // Ensure fully faded in palette at end
+    pal(fade(palette, fadeCol, 0));
+}

@@ -1,4 +1,5 @@
 bool quitApp = false;
+bool isFadeInScheduled;         // Schedule fade in after next frame is rendered
 
 // Forward declared functions
 

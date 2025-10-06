@@ -144,6 +144,7 @@ void updateMainMenu(UIInput input) {
                 saveConfig();
                 saveTournament();
                 quitApp = true;
+                fadeOut(colourPalette);
             }
         }
         else if (action.menuAction = MENU_ACTION_CHANGE) {

@@ -1,5 +1,5 @@
-Fixed
-=====
+DONE
+====
 
 - DONE Quad edge issues
     - DONE Single pixel gap
@@ -10,12 +10,6 @@ Fixed
 - DONE Gaps in canopy in Monza track. Missing some logic to elongate models? Or is model wrong?
 - DONE AI cars shake when on starting positions. Possibly when z pos is an integer?
 - DONE AI car pitch incorrect on slopes
-
-To fix
-======
-
-- Shoulder things not generating correctly. Seems to miss out the middle curve?!
-- Windshield circle has gaps. Are lines not joining up?
 
 Done
 ====
@@ -119,9 +113,21 @@ To do
 - Fade transitions
 - Title screen graphics
 - Remaster menu music?
+- Shoulder things not generating correctly. Seems to miss out the middle curve?!
+- Windshield circle has gaps. Are lines not joining up?
+- Don't place corner distance signs when barrier is close to road.
 
 - MotC 
     - Clear unused screen space after resolution switch.
     - Weird upscaling glitch when using `SCALE_FIT` scaling mode
     - Can we improve filename display in "Find all references" etc.
     - Release current version
+
+Wishlist
+========
+
+- Finish line markings
+- Start grid markings
+- Make expert mode more competitive
+- Reduce AI car-to-car collisions
+- Fix gaps in model rendering

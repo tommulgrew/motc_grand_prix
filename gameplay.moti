@@ -278,7 +278,7 @@ void layoutCars(Car[] cars) {
 void initCars() {
 
     // Create car arrays
-    allCars = new Car[] { player };
+    allCars = new Car[0];
     sortedCars = new Car[] { player };
     leaderboard = new Car[] { player };
     raceResults = new Car[0];
@@ -304,6 +304,9 @@ void initCars() {
         rearViewCars.add(car);
         leaderboard.add(car);
     }
+
+    // Add player car (so they start from last in demo mode)
+    allCars.add(player);
 
     layoutCars(allCars);
 }

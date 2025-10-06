@@ -15,6 +15,7 @@
 #file assets/sfx/engine2.wav
 
 #include "library/trig"
+#include "library/colour"
 #include "assets"
 #include "tracks"
 #include "models"
@@ -59,18 +60,27 @@ while (not quitApp) {
 		// print("Heap used:" + stat(MEMORY_LASTGCHEAPUSED) + " " + ((stat(MEMORY_LASTGCHEAPUSED) * 100) / stat(MEMORY_HEAPSIZE)) + "%");
 		// print(hostplatform());
 
+		if (isFadeInScheduled) {
+			fadeIn(colourPalette);
+			isFadeInScheduled = false;
+		}
+
 		flip();
 	}
 }
 
 void setGameMode(int mode) {
 	if (gameMode != mode) {
+		if (gameMode != 0) {			// Not just starting game
+			fadeOut(colourPalette);
+		}
 		gameMode = mode;
 		stopsfx();
 		stopmusic();
 		if (gameMode = GAMEMODE_MENU) initMainMenu();
 		else if (gameMode = GAMEMODE_RACE) initRace();
 		else assert(false, "Unknown game mode");
+		isFadeInScheduled = true;
 	}
 }
 
