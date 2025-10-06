@@ -105,14 +105,13 @@ Done
 - DONE Fix car shuddering bug when displaying race results
 - DONE Menu music
 - DONE Player car colour in results view
+- DONE Fade transitions
 
 To do
 =====
 
 - Fix car flickering when beside player
-- Fade transitions
 - Title screen graphics
-- Remaster menu music?
 - Shoulder things not generating correctly. Seems to miss out the middle curve?!
 - Windshield circle has gaps. Are lines not joining up?
 - Don't place corner distance signs when barrier is close to road.
@@ -131,3 +130,4 @@ Wishlist
 - Make expert mode more competitive
 - Reduce AI car-to-car collisions
 - Fix gaps in model rendering
+- Remaster menu music
