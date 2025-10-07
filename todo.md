@@ -106,15 +106,13 @@ Done
 - DONE Menu music
 - DONE Player car colour in results view
 - DONE Fade transitions
+- DONE Don't place corner distance signs when barrier is close to road.
 
 To do
 =====
 
-- Fix car flickering when beside player
-- Title screen graphics
 - Shoulder things not generating correctly. Seems to miss out the middle curve?!
 - Windshield circle has gaps. Are lines not joining up?
-- Don't place corner distance signs when barrier is close to road.
 
 - MotC 
     - Clear unused screen space after resolution switch.
@@ -132,3 +130,5 @@ Wishlist
 - Fix gaps in model rendering
 - Remaster menu music
 - Better engine sfx
+- Title screen graphics
+- Fix car flickering when beside player
