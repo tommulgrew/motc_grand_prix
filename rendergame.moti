@@ -691,7 +691,7 @@ void drawCarName(Car car, int position, int x, int y) {
 }
 
 void drawHud() {
-    color(race.track.skyColour != 1 ? 3 : 12);
+    color(race.track.skyColour = 12 ? 3 : 12);
 
     // Simplified HUD during qualification
     if (race.isQualificationLap) {
