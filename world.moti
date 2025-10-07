@@ -44,8 +44,8 @@ TrackCurve[] curves;
 // Routines
 
 int getSegmentIndex(int z) {
-    // Note: z should never be negative!
-    return z % world.length;
+    int i = z % world.length;
+    return i >= 0 ? i : i + world.length;            // Ensure never negative
 }
 
 float getWorldZ(float z) {    
@@ -212,7 +212,31 @@ void generateRoadItems(Track track) {
 
         // Generate approaching corner signs
         if (abs(curveTurn(currentCurve, 0)) >= 0.1 and abs(curveTurn(prevCurve, 0)) < 0.01) {
-            placeItem(gameModels.distSignModel, new Vec { x = sgn(currentCurve.turn) * -5.5, z = currentCurve.z - 30 });
+
+            // Find closest left/right barrier point to road.
+            // Only add signs if there is room
+            float left = -1000, right = 1000;
+            float turn = 0;
+            for (int j = currentCurve.z - 30; j <= currentCurve.z - 5; j++) {
+                WorldSegment seg = getSegment(j);
+                left = max(left, seg.left);
+                right = min(right, seg.right);
+                turn = max(turn, abs(seg.turn));
+            }
+
+            // Add signs
+            if (turn < 0.02) {
+                if (currentCurve.turn > 0) {
+                    if (left <= -6) {
+                        placeItem(gameModels.distSignModel, new Vec { x = -5.5, z = currentCurve.z - 30 });            
+                    }
+                }
+                else {
+                    if (right >= 6) {
+                        placeItem(gameModels.distSignModel, new Vec { x =  5.5, z = currentCurve.z - 30 });            
+                    }
+                }
+            }
         }
 
         // Shoulder cover things
