@@ -170,7 +170,7 @@ MenuItem[] getPauseMenuItems() {
         }
 
         items.add(new MenuItem { id = PAUSE_RACING_LINE, text = "Racing line: " + (gameConfig.showRacingLine ? "ON" : "OFF" ) });
-        items.add(new MenuItem { id = PAUSE_CAR_COLOUR, text = "Car colour: " + (gameConfig.playerColour + 1) });
+        items.add(new MenuItem { id = PAUSE_CAR_COLOUR, text = "Car colour: " + (gameConfig.playerColour + 1), showLeftRight = true });
         items.add(new MenuItem { id = PAUSE_CONTROLLER, text = "Controller options..." });
         items.add(new MenuItem { id = PAUSE_GRAPHICS, text = "Graphics options..." });
         if (race.isPracticeMode) {
@@ -195,7 +195,7 @@ MenuItem[] getPauseMenuItems() {
         Vec res = screenResolutions[gameConfig.screenResIndex];
         return new MenuItem[] {
             new MenuItem { id = PAUSE_GRAPHICS_DRAWDIST, text = "Draw distance", showBar = true, valueText = gameConfig.drawDistance, fraction = (gameConfig.drawDistance - 30) / 120.0 },
-            new MenuItem { id = PAUSE_GRAPHICS_RESOLUTION, text = "Resolution: " + toint(res.x) + "x" + toint(res.y) },
+            new MenuItem { id = PAUSE_GRAPHICS_RESOLUTION, text = "Resolution: " + toint(res.x) + "x" + toint(res.y), showLeftRight = true },
             new MenuItem { id = PAUSE_CONTROLLER_BACK, text = "Back" }
         };
     }

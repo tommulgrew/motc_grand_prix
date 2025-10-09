@@ -33,6 +33,7 @@ struct MenuState {
 struct MenuItem {
     int id;
     string text;
+    bool showLeftRight;
     bool showBar;
     float fraction;
     string valueText;
@@ -171,6 +172,10 @@ void drawMenu(MenuParams params, MenuState menu, MenuItem[] items) {
         }
         else {
             drawMenuItemCentered(item.text, y - 4 * PRATIO, i = menu.y);
+            if (item.showLeftRight and i = menu.y) {
+                scaleTexture(gameTextures.arrowLeft,  SCREEN_WIDTH * 0.05 - 8 * PRATIO, y - 8 * PRATIO, 16 * PRATIO, 16 * PRATIO);
+                scaleTexture(gameTextures.arrowRight, SCREEN_WIDTH * 0.95 - 8 * PRATIO, y - 8 * PRATIO, 16 * PRATIO, 16 * PRATIO);
+            }
         }
     }
 }

@@ -113,6 +113,8 @@ To do
 
 - Shoulder things not generating correctly. Seems to miss out the middle curve?!
 - Windshield circle has gaps. Are lines not joining up?
+- Loop title music
+- Cancel player revs after qualification lap
 
 - MotC 
     - Clear unused screen space after resolution switch.

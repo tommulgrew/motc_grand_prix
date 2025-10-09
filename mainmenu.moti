@@ -178,14 +178,14 @@ void updateMainMenu(UIInput input) {
 
 MenuItem[] getMainMenuItems() {
     MenuItem[] items = new MenuItem[] {
-        new MenuItem { id = MAIN_MENU_RACETYPE, text = raceTypeNames[gameConfig.raceType] }
+        new MenuItem { id = MAIN_MENU_RACETYPE, text = raceTypeNames[gameConfig.raceType], showLeftRight = true }
     };
     if (gameConfig.raceType != RACETYPE_TOURNAMENT) {
-        items.add(new MenuItem { id = MAIN_MENU_TRACK, text = "Track: " + tracks[gameConfig.trackIndex].name });
+        items.add(new MenuItem { id = MAIN_MENU_TRACK, text = "Track: " + tracks[gameConfig.trackIndex].name, showLeftRight = true });
     }
     if (gameConfig.raceType != RACETYPE_PRACTICE) {
-        items.add(new MenuItem { id = MAIN_MENU_LAPS, text = "Laps: " + lapOptions[gameConfig.lapOptionIndex] });
-        items.add(new MenuItem { id = MAIN_MENU_DIFFICULTY, text = "Difficulty: " + difficultyLevels[gameConfig.difficulty].name });
+        items.add(new MenuItem { id = MAIN_MENU_LAPS, text = "Laps: " + lapOptions[gameConfig.lapOptionIndex], showLeftRight = true });
+        items.add(new MenuItem { id = MAIN_MENU_DIFFICULTY, text = "Difficulty: " + difficultyLevels[gameConfig.difficulty].name, showLeftRight = true });
     }
     if (gameConfig.raceType = RACETYPE_TOURNAMENT) {
         if (not tournament.isActive) {
