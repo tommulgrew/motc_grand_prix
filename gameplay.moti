@@ -325,6 +325,7 @@ void setupRaceAfterQualifier() {
         car.input = new CarInput;
         car.race = new CarRaceState { lap = 1 };        
     }
+    player.anim = new CarAnimation;
 
     // Layout cars in grid, in race result order
     layoutCars(raceResults);
