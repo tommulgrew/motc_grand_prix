@@ -154,7 +154,7 @@ GameTextures gameTextures = new GameTextures {
 };
 
 struct TitleTextures {
-    Texture car, textMots, textGrand, textPrix;
+    Texture car, textMots, textGrand, textPrix, background;
 }
 
 TitleTextures titleTextures;
@@ -164,7 +164,8 @@ TitleTextures titleTextures;
         car = loadTexture("titlecar.png", 12),
         textMots = loadTexture("titlemots.png", 12),
         textGrand = new Texture { image = textGrandPrix, w = 160, h = 60, tran = 12 },
-        textPrix = new Texture { image = textGrandPrix, u = 160, w = 160, h = 60, tran = 12}
+        textPrix = new Texture { image = textGrandPrix, u = 160, w = 160, h = 60, tran = 12},
+        background = loadTexture("titlebackground.png")
     };
 }
 

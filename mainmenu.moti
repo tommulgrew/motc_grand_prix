@@ -57,25 +57,19 @@ void initMainMenu() {
 }
 
 void drawMainMenu() {
-    cls(12);
 
-    // Title text
-    scaleTexture(titleTextures.textGrand, SCREEN_WIDTH / 2 - 80 * PRATIO, -5 * PRATIO, 160, 60);
-    scaleTexture(titleTextures.textPrix, SCREEN_WIDTH / 2 - 80 * PRATIO, 36 * PRATIO, 160, 60);
-    scaleTexture(titleTextures.textMots, 200 * PRATIO, 0, 44 * PRATIO, 12 * PRATIO);
-    // const int TITLE_BASE_SCALE = 2;
-    // int TITLE_X = SCREEN_WIDTH / 2 - 8 * 6 * TITLE_BASE_SCALE * PRATIO;
-    // int TITLE_Y = SCREEN_HEIGHT * 0.04;
-    // int TITLE_SCALE = TITLE_BASE_SCALE * PRATIO;
-    // color(5);
-    // printScaled("Mot's Grand Prix", TITLE_X, TITLE_Y + 2 * PRATIO, TITLE_SCALE);
-    // color(6);
-    // printScaled("Mot's Grand Prix", TITLE_X, TITLE_Y, TITLE_SCALE);
+    // Background
+    scaleTexture(titleTextures.background, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     if (gameConfig.raceType = RACETYPE_TOURNAMENT) {
         drawTournamentBoard();
     }
     else {
+
+        // Title
+        scaleTexture(titleTextures.textGrand, SCREEN_WIDTH / 2 - 80 * PRATIO, -5 * PRATIO, 160, 60);
+        scaleTexture(titleTextures.textPrix, SCREEN_WIDTH / 2 - 80 * PRATIO, 36 * PRATIO, 160, 60);
+        scaleTexture(titleTextures.textMots, 200 * PRATIO, 0, 44 * PRATIO, 12 * PRATIO);
 
         // Draw a racing car
         scaleTexture(titleTextures.car, 
