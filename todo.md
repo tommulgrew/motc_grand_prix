@@ -117,10 +117,10 @@ To do
 - Cancel player revs after qualification lap
 
 - MotC 
-    - Clear unused screen space after resolution switch.
+    - DONE - Clear unused screen space after resolution switch.
     - Weird upscaling glitch when using `SCALE_FIT` scaling mode
     - Can we improve filename display in "Find all references" etc.
-    - Release current version
+    - DONE - Release current version
 
 Wishlist
 ========
