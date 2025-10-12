@@ -71,17 +71,12 @@ void drawMainMenu() {
         scaleTexture(titleTextures.textPrix, SCREEN_WIDTH / 2 - 80 * PRATIO, 36 * PRATIO, 160, 60);
         scaleTexture(titleTextures.textMots, 200 * PRATIO, 0, 44 * PRATIO, 12 * PRATIO);
 
-        // Draw a racing car
-        scaleTexture(titleTextures.car, 
-            SCREEN_WIDTH / 2 - 80 * PRATIO, SCREEN_HEIGHT * 0.5 - 32 * PRATIO,
-            160 * PRATIO, 64 * PRATIO);
-        // colmap(aiCarPalettes[mainMenu.carPaletteIndex]);
-        // drawCar(new Transform {
-        //     translate = new Vec { z = 2.5, y = -0.1 },
-        //     skewX = -0.5,
-        //     skewY = -0.3
-        // });
-        // colmap();
+        if (gameConfig.raceType = RACETYPE_SINGLE) {
+            // Draw a racing car
+            scaleTexture(titleTextures.car, 
+                SCREEN_WIDTH / 2 - 80 * PRATIO, SCREEN_HEIGHT * 0.5 - 32 * PRATIO,
+                160 * PRATIO, 64 * PRATIO);
+        }
     }
 
     // Menu UI

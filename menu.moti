@@ -151,7 +151,7 @@ void drawMenu(MenuParams params, MenuState menu, MenuItem[] items) {
         float y = getMenuY(menu.animY, params, items.length) - h/2;
         color(7);
         rectfill(0, y, SCREEN_WIDTH, y + h);
-        color(3);
+        color(12);
         rect(-1, y, SCREEN_WIDTH + 1, y + h);
     }
 
@@ -189,8 +189,7 @@ void setMenuItemColor(bool isSelected) {
 }
 
 void drawMenuItem(string text, int x, int y, bool isSelected) {
-    setMenuItemColor(isSelected);
-    print(text, x, y);
+    outlinedPrint(text, x, y, isSelected and selectedFlash() ? 7 : 6, 0);
 }
 
 void drawMenuItemCentered(string text, int y, bool isSelected) {

@@ -246,6 +246,17 @@ int centerTextX(string text, float scale = 1) {
     return SCREEN_WIDTH / 2 - (text.length * 6) / 2 * scale;
 }
 
+void outlinedPrint(string text, int x, int y, int col, int outlineCol) {
+    color(outlineCol);
+    for (int ox = -1; ox <= 1; ox++) {
+        for (int oy = -1; oy <= 1; oy++) {
+            print(text, x + ox, y + oy);
+        }
+    }
+    color(col);
+    print(text, x, y);
+}
+
 void fancyPrint(string text, int col, int y, int x = -1, float scale = 1, int underlineColor = -1) {
     if (x = -1) { 
         x = centerTextX(text, scale);
