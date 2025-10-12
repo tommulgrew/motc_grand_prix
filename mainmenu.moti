@@ -62,6 +62,7 @@ void drawMainMenu() {
     // Title text
     scaleTexture(titleTextures.textGrand, SCREEN_WIDTH / 2 - 80 * PRATIO, -5 * PRATIO, 160, 60);
     scaleTexture(titleTextures.textPrix, SCREEN_WIDTH / 2 - 80 * PRATIO, 36 * PRATIO, 160, 60);
+    scaleTexture(titleTextures.textMots, 200 * PRATIO, 0, 44 * PRATIO, 12 * PRATIO);
     // const int TITLE_BASE_SCALE = 2;
     // int TITLE_X = SCREEN_WIDTH / 2 - 8 * 6 * TITLE_BASE_SCALE * PRATIO;
     // int TITLE_Y = SCREEN_HEIGHT * 0.04;

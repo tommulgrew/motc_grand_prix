@@ -154,16 +154,17 @@ GameTextures gameTextures = new GameTextures {
 };
 
 struct TitleTextures {
-    Texture car, textGrand, textPrix;
+    Texture car, textMots, textGrand, textPrix;
 }
 
 TitleTextures titleTextures;
 {
-    Image textImage = loadimg("assets/titletext.png", false);
+    Image textGrandPrix = loadimg("assets/titletext.png", false);
     titleTextures = new TitleTextures {
         car = loadTexture("titlecar.png", 12),
-        textGrand = new Texture { image = textImage, w = 160, h = 60, tran = 12 },
-        textPrix = new Texture { image = textImage, u = 160, w = 160, h = 60, tran = 12}
+        textMots = loadTexture("titlemots.png", 12),
+        textGrand = new Texture { image = textGrandPrix, w = 160, h = 60, tran = 12 },
+        textPrix = new Texture { image = textGrandPrix, u = 160, w = 160, h = 60, tran = 12}
     };
 }
 
