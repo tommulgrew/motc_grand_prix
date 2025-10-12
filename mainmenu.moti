@@ -67,8 +67,8 @@ void drawMainMenu() {
     else {
 
         // Title
-        scaleTexture(titleTextures.textGrand, SCREEN_WIDTH / 2 - 80 * PRATIO, -5 * PRATIO, 160, 60);
-        scaleTexture(titleTextures.textPrix, SCREEN_WIDTH / 2 - 80 * PRATIO, 36 * PRATIO, 160, 60);
+        scaleTexture(titleTextures.textGrand, SCREEN_WIDTH / 2 - 80 * PRATIO, -5 * PRATIO, 160 * PRATIO, 60 * PRATIO);
+        scaleTexture(titleTextures.textPrix, SCREEN_WIDTH / 2 - 80 * PRATIO, 36 * PRATIO, 160 * PRATIO, 60 * PRATIO);
         scaleTexture(titleTextures.textMots, 200 * PRATIO, 0, 44 * PRATIO, 12 * PRATIO);
 
         if (gameConfig.raceType = RACETYPE_SINGLE) {
