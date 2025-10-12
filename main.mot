@@ -2,6 +2,10 @@
 #executable motgp
 #webtemplate driving
 #file assets/textures.png
+#file assets/titlebackground.png
+#file assets/titlecar.png
+#file assets/titlemots.png
+#file assets/titletext.png
 #file assets/music/title.ogg
 #file assets/sfx/getready.wav
 #file assets/sfx/go.wav
