@@ -7,6 +7,7 @@ const int TILE_SIZE_PIXELS = 16;
 // Structures
 
 struct Texture {
+    Image image;
     string name;
     int u, v;           // Coordinates in textureImage
     int w, h;           // Size in textureImage
@@ -24,7 +25,10 @@ int[] colourPalette = new int[] {
     0x000000, 0x1c2a51, 0x125359, 0x0659b3,
     0xab5236, 0x5f574f, 0xc2c3c7, 0xf9ebe3,
     0xff004d, 0xffa300, 0xffec27, 0x00af41,
-    0x29adff, 0x83769c, 0x008751, 0xfccaa8
+    0x29adff, 0x83769c, 0x008751, 0xfccaa8,
+
+    // Extra title screen colours
+    0x7e2553
 };
 
 pal(colourPalette);
@@ -101,7 +105,23 @@ Texture fixTexture(Texture tex) {
     tex.v *= TILE_SIZE_PIXELS;
     tex.w *= TILE_SIZE_PIXELS;
     tex.h *= TILE_SIZE_PIXELS;
+
+    // Default to textureImage
+    if (tex.image = null) {
+        tex.image = textureImage;
+    }
+
     return tex;
+}
+
+Texture loadTexture(string filename, int trans = -1) {
+    Image image = loadimg("assets/" + filename, false);
+    return new Texture {
+        image = image,
+        w = imgwidth(image),
+        h = imgheight(image),
+        tran = trans
+    };
 }
 
 for (Texture tex : textures) {
@@ -132,6 +152,20 @@ GameTextures gameTextures = new GameTextures {
     arrowLeft = fixTexture(new Texture { name = "arrow_left", u = 8, v = 20, w = 1, h = 1, tran = 12 }),
     arrowRight = fixTexture(new Texture { name = "arrow_right", u = 9, v = 20, w = 1, h = 1, tran = 12 })
 };
+
+struct TitleTextures {
+    Texture car, textGrand, textPrix;
+}
+
+TitleTextures titleTextures;
+{
+    Image textImage = loadimg("assets/titletext.png", false);
+    titleTextures = new TitleTextures {
+        car = loadTexture("titlecar.png", 12),
+        textGrand = new Texture { image = textImage, w = 160, h = 60, tran = 12 },
+        textPrix = new Texture { image = textImage, u = 160, w = 160, h = 60, tran = 12}
+    };
+}
 
 // Colour substitution maps
 

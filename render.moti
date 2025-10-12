@@ -43,10 +43,10 @@ Vec project(Vec pt) {
 void scaleTexture(Texture tex, float x, float y, float w, float h, bool flipx = false) {
     tran(tex.tran);
     if (flipx) {
-        scaleimg(textureImage, x, y, w, h, tex.u + tex.w - 0.001, tex.v, -tex.w, tex.h);
+        scaleimg(tex.image, x, y, w, h, tex.u + tex.w - 0.001, tex.v, -tex.w, tex.h);
     }
     else {
-        scaleimg(textureImage, x, y, w, h, tex.u, tex.v, tex.w, tex.h);    
+        scaleimg(tex.image, x, y, w, h, tex.u, tex.v, tex.w, tex.h);    
     }
     tran(-1);
 }

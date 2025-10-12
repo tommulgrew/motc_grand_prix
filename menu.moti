@@ -151,7 +151,7 @@ void drawMenu(MenuParams params, MenuState menu, MenuItem[] items) {
         float y = getMenuY(menu.animY, params, items.length) - h/2;
         color(7);
         rectfill(0, y, SCREEN_WIDTH, y + h);
-        color(12);
+        color(3);
         rect(-1, y, SCREEN_WIDTH + 1, y + h);
     }
 

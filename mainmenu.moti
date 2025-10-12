@@ -34,7 +34,7 @@ struct MainMenuState {
 // Data
 
 MenuParams mainMenuParams = new MenuParams {
-    y = SCREEN_HEIGHT * 0.8,
+    y = SCREEN_HEIGHT * 0.82,
     itemSpacing = 14,
     barHeight = 16,
     drawBackground = false
@@ -57,17 +57,19 @@ void initMainMenu() {
 }
 
 void drawMainMenu() {
-    cls(1);
+    cls(12);
 
     // Title text
-    const int TITLE_BASE_SCALE = 2;
-    int TITLE_X = SCREEN_WIDTH / 2 - 8 * 6 * TITLE_BASE_SCALE * PRATIO;
-    int TITLE_Y = SCREEN_HEIGHT * 0.04;
-    int TITLE_SCALE = TITLE_BASE_SCALE * PRATIO;
-    color(5);
-    printScaled("Mot's Grand Prix", TITLE_X, TITLE_Y + 2 * PRATIO, TITLE_SCALE);
-    color(6);
-    printScaled("Mot's Grand Prix", TITLE_X, TITLE_Y, TITLE_SCALE);
+    scaleTexture(titleTextures.textGrand, SCREEN_WIDTH / 2 - 80 * PRATIO, -5 * PRATIO, 160, 60);
+    scaleTexture(titleTextures.textPrix, SCREEN_WIDTH / 2 - 80 * PRATIO, 36 * PRATIO, 160, 60);
+    // const int TITLE_BASE_SCALE = 2;
+    // int TITLE_X = SCREEN_WIDTH / 2 - 8 * 6 * TITLE_BASE_SCALE * PRATIO;
+    // int TITLE_Y = SCREEN_HEIGHT * 0.04;
+    // int TITLE_SCALE = TITLE_BASE_SCALE * PRATIO;
+    // color(5);
+    // printScaled("Mot's Grand Prix", TITLE_X, TITLE_Y + 2 * PRATIO, TITLE_SCALE);
+    // color(6);
+    // printScaled("Mot's Grand Prix", TITLE_X, TITLE_Y, TITLE_SCALE);
 
     if (gameConfig.raceType = RACETYPE_TOURNAMENT) {
         drawTournamentBoard();
@@ -75,13 +77,16 @@ void drawMainMenu() {
     else {
 
         // Draw a racing car
-        colmap(aiCarPalettes[mainMenu.carPaletteIndex]);
-        drawCar(new Transform {
-            translate = new Vec { z = 2.5, y = -0.1 },
-            skewX = -0.5,
-            skewY = -0.3
-        });
-        colmap();
+        scaleTexture(titleTextures.car, 
+            SCREEN_WIDTH / 2 - 80 * PRATIO, SCREEN_HEIGHT * 0.5 - 32 * PRATIO,
+            160 * PRATIO, 64 * PRATIO);
+        // colmap(aiCarPalettes[mainMenu.carPaletteIndex]);
+        // drawCar(new Transform {
+        //     translate = new Vec { z = 2.5, y = -0.1 },
+        //     skewX = -0.5,
+        //     skewY = -0.3
+        // });
+        // colmap();
     }
 
     // Menu UI
