@@ -15,8 +15,7 @@
 #file assets/sfx/crash3.wav
 #file assets/sfx/groundslide.wav
 #file assets/sfx/roadslide.wav
-#file assets/sfx/engine1.wav
-#file assets/sfx/engine2.wav
+#file assets/sfx/engine.wav
 
 #include "library/trig"
 #include "library/colour"
