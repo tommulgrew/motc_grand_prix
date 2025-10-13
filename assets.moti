@@ -3,6 +3,7 @@
 // Constants
 
 const int TILE_SIZE_PIXELS = 16;
+const float ENGINE_VOLUME = 0.2;
 
 // Structures
 

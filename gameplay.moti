@@ -625,7 +625,7 @@ void updatePlayerRevs() {
         float revs = player.vel - gear * r;
         revs *= (0.7 - gear * 0.1)/r;
         revs += gear * 0.1 + 0.15;
-        player.anim.revs = lerp(player.anim.revs, revs, 0.125);
+        player.anim.revs = lerp(player.anim.revs, revs, 0.18);
         updateEnginePitch();
     }
 }
@@ -887,5 +887,5 @@ void setRaceMode(int mode) {
 }
 
 void startEngineSfx() {
-    playsfx(gameSfx.engine, 0, true, 0.25);
+    playsfx(gameSfx.engine, 0, true, ENGINE_VOLUME);
 }

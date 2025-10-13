@@ -61,14 +61,12 @@ void openPauseMenu() {
     pauseMenu.isActive = true;
     pauseMenu.state = new MenuState;
     setvolume(0, 0);
-    setvolume(1, 0);
 }
 
 void closePauseMenu() {
     saveConfig();
     pauseMenu.isActive = false;
-    setvolume(0, 1);
-    setvolume(1, 1);
+    setvolume(0, ENGINE_VOLUME);
 }
 
 void updatePauseMenu(UIInput input) {
