@@ -16,7 +16,7 @@ struct Texture {
 }
 
 struct GameSfx {
-    Sfx getReady, go, lapBell, roadSlide, groundSlide, engine1, engine2;
+    Sfx getReady, go, lapBell, roadSlide, groundSlide, engine;
     Sfx[] collision;    
 }
 
@@ -190,8 +190,7 @@ GameSfx gameSfx = new GameSfx {
     },
     groundSlide = loadsfx("assets/sfx/groundslide.wav"),
     roadSlide = loadsfx("assets/sfx/roadslide.wav"),
-    engine1 = loadsfx("assets/sfx/engine1.wav"),
-    engine2 = loadsfx("assets/sfx/engine2.wav")
+    engine = loadsfx("assets/sfx/engine.wav")
 };
 
 // Car palettes

@@ -608,8 +608,7 @@ void updateAICars() {
 }
 
 void updateEnginePitch() {
-    setpitch(0, player.anim.revs * 35);
-    setpitch(1, player.anim.revs * 35);
+    setpitch(0, player.anim.revs * 14 - 13.755);
 }
 
 void updatePlayerRevs() {
@@ -888,6 +887,5 @@ void setRaceMode(int mode) {
 }
 
 void startEngineSfx() {
-    playsfx(gameSfx.engine1, 0, true);
-    playsfx(gameSfx.engine2, 1, true, 0.4);
+    playsfx(gameSfx.engine, 0, true, 0.25);
 }
