@@ -608,7 +608,7 @@ void updateAICars() {
 }
 
 void updateEnginePitch() {
-    setpitch(0, player.anim.revs * 14 - 13.755);
+    setpitch(0, player.anim.revs * 20 - 18);
 }
 
 void updatePlayerRevs() {
