@@ -101,3 +101,13 @@ DifficultyLevel[] difficultyLevels = new DifficultyLevel[] {
 };
 
 int[] lapOptions = new int[] { 1, 3, 5, 10, 20 };
+
+RumbleTypes rumbleTypes = new RumbleTypes {
+    offRoad = new RumbleType { lo = 0.1, factor = 4 },
+    slide = new RumbleType { lo = 0.1, hi = 0.5, factor = 1 },
+    offRoadSlide = new RumbleType { lo = 0.3, hi = 0.3, factor = 1 },
+    crash = new RumbleType { lo = 1, hi = 1, factor = 5 }
+};
+
+float rumbleLo, rumbleHi;
+float crashRumble;

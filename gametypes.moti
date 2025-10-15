@@ -86,3 +86,12 @@ struct Car {
     CarRaceState race;
     CarAIState aiState;
 }
+
+struct RumbleType {
+    float lo, hi;
+    float factor;
+}
+
+struct RumbleTypes {
+    RumbleType offRoad, slide, offRoadSlide, crash;
+}

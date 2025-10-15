@@ -23,6 +23,8 @@ void setRaceMode(int mode);
 void setupRaceAfterQualifier();
 void skipQualificationLap();
 void startEngineSfx();
+void doRumble(RumbleType type, float intensity);
+void updateRumble();
 
 // External
 void applyRaceResults(Car[] raceResults);
@@ -608,7 +610,7 @@ void updateAICars() {
 }
 
 void updateEnginePitch() {
-    setpitch(0, player.anim.revs * 20 - 18);
+    setfreq(0, player.anim.revs + 0.2);
 }
 
 void updatePlayerRevs() {
@@ -686,12 +688,17 @@ void carBarrierCollision(Car car, float barrierX, float barrierXd) {
         // Play collision sound effect, based on collision intensity
         if (intensity > 0.25)       collideSfx(3);
         else if (intensity > 0.1)   collideSfx(2);
-        else                        collideSfx(1);        
+        else                        collideSfx(1);
+        crashRumble = max(crashRumble, intensity);
     }
 }
 
 void moveCar(Car car) {
     bool isOnRoad = abs(car.pos.x) <= (ROAD_WIDTH - CAR_WIDTH) / 2;
+
+    if (not isOnRoad) {
+        doRumble(rumbleTypes.offRoad, player.vel);
+    }
 
     // Accelerate/brake
     if (car.input.accel < 0) {
@@ -738,7 +745,15 @@ void moveCar(Car car) {
     else {
         car.xd += sgn(xddif) * frictionSlide;
         if (car = player) {
-            slideSfx(isOnRoad ? gameSfx.roadSlide : gameSfx.groundSlide);
+            slideSfx(isOnRoad ? gameSfx.roadSlide : gameSfx.groundSlide);            
+            if (isOnRoad) {
+                slideSfx(gameSfx.roadSlide);
+                doRumble(rumbleTypes.slide, abs(xddif));
+            }
+            else {
+                slideSfx(gameSfx.groundSlide);
+                doRumble(rumbleTypes.offRoadSlide, abs(xddif));
+            }
         }
     }
 
@@ -846,7 +861,10 @@ void doCarCollisions() {
                     b.pos += posAdj;
 
                     // Collision sound effect
-                    if (a = player or b = player) collideSfx(abs(impulse) * 4);
+                    if (a = player or b = player) {
+                        collideSfx(abs(impulse) * 4);
+                        crashRumble = max(crashRumble, abs(impulse) * 4);
+                    }
                 }
             }
         }
@@ -888,4 +906,28 @@ void setRaceMode(int mode) {
 
 void startEngineSfx() {
     playsfx(gameSfx.engine, 0, true, ENGINE_VOLUME);
+}
+
+void doRumble(RumbleType type, float intensity) {
+
+    // Scale and clamp intensity
+    intensity = clamp(intensity * type.factor, 0, 1);
+
+    // Track highest rumble values for each frequency for the current frame
+    rumbleLo = max(rumbleLo, type.lo * intensity);
+    rumbleHi = max(rumbleHi, type.hi * intensity);
+}
+
+void updateRumble() {
+
+    // Apply crash rumble
+    doRumble(rumbleTypes.crash, crashRumble);
+    crashRumble = max(crashRumble - CRASH_RUMBLE_DROPOFF, 0);
+
+    // Set controller rumble to highest values from this frame
+	rumble(rumbleLo, rumbleHi, 33);
+
+    // Reset rumble values for next frame
+	rumbleLo = 0;
+	rumbleHi = 0;
 }

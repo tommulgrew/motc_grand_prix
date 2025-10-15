@@ -29,6 +29,7 @@ const int AI_CAR_COUNT = 7;
 
 const float FADE_OUT_TIME = 0.4;
 const float FADE_IN_TIME = 1.0;
+const float CRASH_RUMBLE_DROPOFF = 0.0175;
 
 // Enums
 
