@@ -93,5 +93,5 @@ struct RumbleType {
 }
 
 struct RumbleTypes {
-    RumbleType offRoad, slide, offRoadSlide, crash;
+    RumbleType offRoad, slide, offRoadSlide, crash, revs;
 }

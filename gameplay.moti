@@ -619,6 +619,7 @@ void updatePlayerRevs() {
         float revTarget = lerp(0.1, 0.85, max(player.input.accel, 0));
         player.anim.revs = lerp(player.anim.revs, revTarget, 0.075);
         updateEnginePitch();
+        doRumble(rumbleTypes.revs, player.anim.revs);
     }
     else if (raceMode = RACEMODE_RACING or raceMode = RACEMODE_POSTRACE) {
         // Base revs on speed, with some simulated gear ratios.
@@ -925,7 +926,9 @@ void updateRumble() {
     crashRumble = max(crashRumble - CRASH_RUMBLE_DROPOFF, 0);
 
     // Set controller rumble to highest values from this frame
-	rumble(rumbleLo, rumbleHi, 33);
+    if (not race.isDemo) {
+	    rumble(rumbleLo, rumbleHi, 33);
+    }
 
     // Reset rumble values for next frame
 	rumbleLo = 0;
